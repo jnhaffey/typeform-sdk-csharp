@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution_files", "_solutio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "typeform.sdk.csharp", "typeform.sdk.csharp\typeform.sdk.csharp.csproj", "{EA4089B4-3653-4ACA-B778-8ECA41979F26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typeform.Sdk.CSharp.UnitTests", "Typeform.Sdk.CSharp.UnitTests\Typeform.Sdk.CSharp.UnitTests.csproj", "{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{EA4089B4-3653-4ACA-B778-8ECA41979F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA4089B4-3653-4ACA-B778-8ECA41979F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA4089B4-3653-4ACA-B778-8ECA41979F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

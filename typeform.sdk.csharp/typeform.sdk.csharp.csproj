@@ -21,4 +21,16 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="CreateApi\" />
+    <Folder Include="Models\" />
+    <Folder Include="ResponseApi\" />
+    <Folder Include="WebhookApi\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl" Version="2.8.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
 </Project>

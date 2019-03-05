@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Typeform.Sdk.CSharp.Models.Fields;
+using Typeform.Sdk.CSharp.Models.Logics;
+using Typeform.Sdk.CSharp.Models.Screens;
+using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Models
 {
@@ -48,6 +52,6 @@ namespace Typeform.Sdk.CSharp.Models
         public DisplayObject DisplayObject { get; set; }
 
         [JsonProperty("settings")]
-        public Settings Settings { get; set; }
+        public Settings.Settings Settings { get; set; }
     }
 }

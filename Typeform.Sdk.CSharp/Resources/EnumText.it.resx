@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ProgressBar_Proportion" xml:space="preserve">
+    <value>Percentuale</value>
+  </data>
+  <data name="ProgressBar_Percentage" xml:space="preserve">
+    <value>Percentuale</value>
+  </data>
+  <data name="Language_Catalan" xml:space="preserve">
+    <value>Catalano</value>
+  </data>
+  <data name="Language_ChineseSimplified" xml:space="preserve">
+    <value>Cinese (semplificato)</value>
+  </data>
+  <data name="Language_Czech" xml:space="preserve">
+    <value>Ceco</value>
+  </data>
+  <data name="Language_Danish" xml:space="preserve">
+    <value>Danese</value>
+  </data>
+  <data name="Language_GermanFormal" xml:space="preserve">
+    <value>Tedesco (formale)</value>
+  </data>
+  <data name="Language_GermanInformal" xml:space="preserve">
+    <value>Tedesco (informale)</value>
+  </data>
+  <data name="Language_Greek" xml:space="preserve">
+    <value>Greco</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>Inglese</value>
+  </data>
+  <data name="Language_Spanish" xml:space="preserve">
+    <value>Spagnolo</value>
+  </data>
+  <data name="Language_Estonian" xml:space="preserve">
+    <value>Estone</value>
+  </data>
+  <data name="Language_Finnish" xml:space="preserve">
+    <value>Finlandese</value>
+  </data>
+  <data name="Language_French" xml:space="preserve">
+    <value>Francese</value>
+  </data>
+  <data name="Language_Croatian" xml:space="preserve">
+    <value>Croato</value>
+  </data>
+  <data name="Language_Hungarian" xml:space="preserve">
+    <value>Ungherese</value>
+  </data>
+  <data name="Language_Italian" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="Language_Japanese" xml:space="preserve">
+    <value>Giapponese</value>
+  </data>
+  <data name="Language_Korean" xml:space="preserve">
+    <value>Coreano</value>
+  </data>
+  <data name="Language_Dutch" xml:space="preserve">
+    <value>Olandese</value>
+  </data>
+  <data name="Language_Norwegian" xml:space="preserve">
+    <value>Norvegese</value>
+  </data>
+  <data name="Language_Polish" xml:space="preserve">
+    <value>Polacco</value>
+  </data>
+  <data name="Language_Portuguese" xml:space="preserve">
+    <value>Portoghese</value>
+  </data>
+  <data name="Language_Russian" xml:space="preserve">
+    <value>Russo</value>
+  </data>
+  <data name="Language_Swedish" xml:space="preserve">
+    <value>Svedese</value>
+  </data>
+  <data name="Language_Turkish" xml:space="preserve">
+    <value>Turco</value>
+  </data>
+  <data name="Language_Ukrainian" xml:space="preserve">
+    <value>Ucraino</value>
+  </data>
+  <data name="Language_ChineseTraditional" xml:space="preserve">
+    <value>Cinese (tradizionale)</value>
+  </data>
+  <data name="Attachment_Image" xml:space="preserve">
+    <value>Immagine</value>
+  </data>
+  <data name="Attachment_Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="ButtonMode_Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="ButtonMode_Redirect" xml:space="preserve">
+    <value>Redirect</value>
+  </data>
+  <data name="Field_Date" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Field_Dropdown" xml:space="preserve">
+    <value>A discesa</value>
+  </data>
+  <data name="Field_Email" xml:space="preserve">
+    <value>Posta elettronica</value>
+  </data>
+  <data name="Field_FileUpload" xml:space="preserve">
+    <value>Upload di file</value>
+  </data>
+  <data name="Field_Group" xml:space="preserve">
+    <value>Gruppo</value>
+  </data>
+  <data name="Field_Legal" xml:space="preserve">
+    <value>Legale</value>
+  </data>
+  <data name="Field_LongText" xml:space="preserve">
+    <value>Testo lungo</value>
+  </data>
+  <data name="Field_MultipleChoice" xml:space="preserve">
+    <value>Scelta multipla</value>
+  </data>
+  <data name="Field_Number" xml:space="preserve">
+    <value>Numero</value>
+  </data>
+  <data name="Field_OpinionScale" xml:space="preserve">
+    <value>Scala di parere</value>
+  </data>
+  <data name="Field_Payment" xml:space="preserve">
+    <value>Pagamento</value>
+  </data>
+  <data name="Field_PictureChoice" xml:space="preserve">
+    <value>Foto scelta</value>
+  </data>
+  <data name="Field_Rating" xml:space="preserve">
+    <value>Voto</value>
+  </data>
+  <data name="Field_ShortText" xml:space="preserve">
+    <value>Breve testo</value>
+  </data>
+  <data name="Field_Statement" xml:space="preserve">
+    <value>affermazione</value>
+  </data>
+  <data name="Field_Website" xml:space="preserve">
+    <value>Sito Web</value>
+  </data>
+  <data name="Field_YesNo" xml:space="preserve">
+    <value>Sì No</value>
+  </data>
+  <data name="Shape_Cat" xml:space="preserve">
+    <value>Gatto</value>
+  </data>
+  <data name="Shape_Circle" xml:space="preserve">
+    <value>Cerchio</value>
+  </data>
+  <data name="Shape_Cloud" xml:space="preserve">
+    <value>Nuvola</value>
+  </data>
+  <data name="Shape_Crown" xml:space="preserve">
+    <value>Corona</value>
+  </data>
+  <data name="Shape_Dog" xml:space="preserve">
+    <value>Cane</value>
+  </data>
+  <data name="Shape_Droplet" xml:space="preserve">
+    <value>Gocciolina</value>
+  </data>
+  <data name="Shape_Flag" xml:space="preserve">
+    <value>Bandiera</value>
+  </data>
+  <data name="Shape_Heart" xml:space="preserve">
+    <value>Cuore</value>
+  </data>
+  <data name="Shape_Lightbulb" xml:space="preserve">
+    <value>Lightbulb</value>
+  </data>
+  <data name="Shape_Pencil" xml:space="preserve">
+    <value>Matita</value>
+  </data>
+  <data name="Shape_Skull" xml:space="preserve">
+    <value>Teschio</value>
+  </data>
+  <data name="Shape_Star" xml:space="preserve">
+    <value>stella</value>
+  </data>
+  <data name="Shape_Thunderbult" xml:space="preserve">
+    <value>Thunderbult</value>
+  </data>
+  <data name="Shape_Tick" xml:space="preserve">
+    <value>spuntare</value>
+  </data>
+  <data name="Shape_Trophy" xml:space="preserve">
+    <value>Trofeo</value>
+  </data>
+  <data name="Shape_Up" xml:space="preserve">
+    <value>Fino</value>
+  </data>
+  <data name="Shape_User" xml:space="preserve">
+    <value>Utente</value>
+  </data>
+  <data name="DateFormat_MonthDayYear" xml:space="preserve">
+    <value>Mese giorno anno</value>
+  </data>
+  <data name="DateFormat_DayMonthYear" xml:space="preserve">
+    <value>Giorno mese anno</value>
+  </data>
+  <data name="DateFormat_YearMonthDay" xml:space="preserve">
+    <value>Anno mese giorno</value>
+  </data>
+  <data name="DateSeparator_Slash" xml:space="preserve">
+    <value>Slash (/)</value>
+  </data>
+  <data name="DateSeparator_Dash" xml:space="preserve">
+    <value>Trattino (-)</value>
+  </data>
+  <data name="DateSeparator_Dot" xml:space="preserve">
+    <value>Punto (.)</value>
+  </data>
+  <data name="Currency_AUD" xml:space="preserve">
+    <value>Dollaro australiano</value>
+  </data>
+  <data name="Currency_BRL" xml:space="preserve">
+    <value>Real brasiliano</value>
+  </data>
+  <data name="Currency_CAD" xml:space="preserve">
+    <value>Dollaro canadese</value>
+  </data>
+  <data name="Currency_CHF" xml:space="preserve">
+    <value>Franco svizzero</value>
+  </data>
+  <data name="Currency_DKK" xml:space="preserve">
+    <value>Corona danese</value>
+  </data>
+  <data name="Currency_EUR" xml:space="preserve">
+    <value>Euro europeo</value>
+  </data>
+  <data name="Currency_GBP" xml:space="preserve">
+    <value>Sterlina Gran Bretagna</value>
+  </data>
+  <data name="Currency_MXN" xml:space="preserve">
+    <value>Peso messicano</value>
+  </data>
+  <data name="Currency_NOK" xml:space="preserve">
+    <value>Corona norvegese</value>
+  </data>
+  <data name="Currency_SEK" xml:space="preserve">
+    <value>Corona svedese</value>
+  </data>
+  <data name="Currency_USD" xml:space="preserve">
+    <value>Dollaro degli Stati Uniti</value>
+  </data>
+  <data name="Action_Jump" xml:space="preserve">
+    <value>Salto</value>
+  </data>
+  <data name="Action_Add" xml:space="preserve">
+    <value>Aggiungere</value>
+  </data>
+  <data name="Action_Subtract" xml:space="preserve">
+    <value>Sottrarre</value>
+  </data>
+  <data name="Action_Multiply" xml:space="preserve">
+    <value>Si moltiplicano</value>
+  </data>
+  <data name="Action_Divide" xml:space="preserve">
+    <value>Dividere</value>
+  </data>
+  <data name="LogicAction_Field" xml:space="preserve">
+    <value>Campo</value>
+  </data>
+  <data name="LogicAction_Hidden" xml:space="preserve">
+    <value>Nascosta</value>
+  </data>
+  <data name="ConditionOperation_BeginsWith" xml:space="preserve">
+    <value>Inizia con</value>
+  </data>
+  <data name="ConditionOperation_EndsWith" xml:space="preserve">
+    <value>Finisce con</value>
+  </data>
+  <data name="ConditionOperation_Contains" xml:space="preserve">
+    <value>Contiene</value>
+  </data>
+  <data name="ConditionOperation_NotContains" xml:space="preserve">
+    <value>Non contiene</value>
+  </data>
+  <data name="ConditionOperation_LowerThan" xml:space="preserve">
+    <value>Inferiore a</value>
+  </data>
+  <data name="ConditionOperation_LowerEqualThan" xml:space="preserve">
+    <value>Inferiore o uguale a</value>
+  </data>
+  <data name="ConditionOperation_GreaterThan" xml:space="preserve">
+    <value>Maggiore di</value>
+  </data>
+  <data name="ConditionOperation_GreaterEqualThan" xml:space="preserve">
+    <value>Maggiore o uguale a</value>
+  </data>
+  <data name="ConditionOperation_Is" xml:space="preserve">
+    <value>È</value>
+  </data>
+  <data name="ConditionOperation_IsNot" xml:space="preserve">
+    <value>Non è</value>
+  </data>
+  <data name="ConditionOperation_Equal" xml:space="preserve">
+    <value>Pari</value>
+  </data>
+  <data name="ConditionOperation_NotEqual" xml:space="preserve">
+    <value>Non è uguale</value>
+  </data>
+  <data name="ConditionOperation_Always" xml:space="preserve">
+    <value>Sempre</value>
+  </data>
+  <data name="ConditionOperation_On" xml:space="preserve">
+    <value>Il</value>
+  </data>
+  <data name="ConditionOperation_NotOn" xml:space="preserve">
+    <value>Non su</value>
+  </data>
+  <data name="ConditionOperation_EarlierThan" xml:space="preserve">
+    <value>Precedenti a</value>
+  </data>
+  <data name="ConditionOperation_EarlierThanOrOn" xml:space="preserve">
+    <value>Più di e su</value>
+  </data>
+  <data name="ConditionOperation_LaterThan" xml:space="preserve">
+    <value>Più tardi</value>
+  </data>
+  <data name="ConditionOperation_LaterThanOrOn" xml:space="preserve">
+    <value>Oltre o su</value>
+  </data>
+</root>

@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Typeform.Sdk.CSharp\Typeform.Sdk.CSharp.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -7,8 +7,17 @@ using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Models
 {
-    public class CreateFormRequest
+    public class Form
     {
+        public Form()
+        {
+            Fields = new List<Field>();
+            Logic = new List<Logic>();
+            Hidden = new List<string>();
+            WelcomeScreens = new List<Screen<WelcomeScreenProperties>>();
+            ThankYouScreens = new List<Screen<ThankYouScreenProperties>>();
+        }
+
         /// <summary>
         ///     Title to use for the typeform.
         /// </summary>

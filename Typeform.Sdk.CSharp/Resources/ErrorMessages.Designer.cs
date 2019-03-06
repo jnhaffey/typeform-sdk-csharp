@@ -61,20 +61,56 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List {2} already contains the value &apos;{1}&apos; provided in {0}..
+        /// </summary>
+        public static string Guard_ForDuplicateItemsInList {
+            get {
+                return ResourceManager.GetString("Guard_ForDuplicateItemsInList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} cannot be null, empty, or whitespace..
+        /// </summary>
+        public static string Guard_ForNullOrEmptyOrWhitespace {
+            get {
+                return ResourceManager.GetString("Guard_ForNullOrEmptyOrWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} cannot be null..
+        /// </summary>
+        public static string Guard_ForNullValue {
+            get {
+                return ResourceManager.GetString("Guard_ForNullValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation Failed while building the form..
+        /// </summary>
+        public static string Validation_FormCreationException {
+            get {
+                return ResourceManager.GetString("Validation_FormCreationException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{PropertyName}&apos; is required..
         /// </summary>
-        public static string RequiredProperty {
+        public static string Validation_RequiredProperty {
             get {
-                return ResourceManager.GetString("RequiredProperty", resourceCulture);
+                return ResourceManager.GetString("Validation_RequiredProperty", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to &apos;{PropertyName}&apos; requires one..
         /// </summary>
-        public static string RequiresOne {
+        public static string Validation_RequiresOne {
             get {
-                return ResourceManager.GetString("RequiresOne", resourceCulture);
+                return ResourceManager.GetString("Validation_RequiresOne", resourceCulture);
             }
         }
     }

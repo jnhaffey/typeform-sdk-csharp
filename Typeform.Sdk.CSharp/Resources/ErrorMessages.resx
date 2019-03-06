@@ -97,10 +97,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RequiredProperty" xml:space="preserve">
+  <data name="Validation_RequiredProperty" xml:space="preserve">
     <value>'{PropertyName}' is required.</value>
   </data>
-  <data name="RequiresOne" xml:space="preserve">
+  <data name="Validation_RequiresOne" xml:space="preserve">
     <value>'{PropertyName}' requires one.</value>
+  </data>
+  <data name="Guard_ForNullValue" xml:space="preserve">
+    <value>{0} cannot be null.</value>
+  </data>
+  <data name="Validation_FormCreationException" xml:space="preserve">
+    <value>Validation Failed while building the form.</value>
+  </data>
+  <data name="Guard_ForDuplicateItemsInList" xml:space="preserve">
+    <value>List {2} already contains the value '{1}' provided in {0}.</value>
+  </data>
+  <data name="Guard_ForNullOrEmptyOrWhitespace" xml:space="preserve">
+    <value>{0} cannot be null, empty, or whitespace.</value>
   </data>
 </root>

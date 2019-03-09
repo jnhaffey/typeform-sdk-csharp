@@ -2,7 +2,7 @@
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Models.Shared;
 
-namespace Typeform.Sdk.CSharp.Models.Fields
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class Field
     {

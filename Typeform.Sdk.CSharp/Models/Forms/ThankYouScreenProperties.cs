@@ -2,7 +2,7 @@
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Models.Abstracts;
 
-namespace Typeform.Sdk.CSharp.Models.Screens
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class ThankYouScreenProperties : ScreenPropertyBase
     {

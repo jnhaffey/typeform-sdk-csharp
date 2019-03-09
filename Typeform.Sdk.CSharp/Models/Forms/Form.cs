@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Typeform.Sdk.CSharp.Models.Fields;
-using Typeform.Sdk.CSharp.Models.Logics;
-using Typeform.Sdk.CSharp.Models.Screens;
 using Typeform.Sdk.CSharp.Models.Shared;
 
-namespace Typeform.Sdk.CSharp.Models
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class Form
     {
@@ -25,7 +22,7 @@ namespace Typeform.Sdk.CSharp.Models
         public string Title { get; set; }
 
         [JsonProperty("settings")]
-        public Settings.Settings Settings { get; set; }
+        public Settings Settings { get; set; }
 
         /// <summary>
         ///     URL of the theme to use for the typeform. If you don't specify a URL for the theme, Typeform applies a new copy of

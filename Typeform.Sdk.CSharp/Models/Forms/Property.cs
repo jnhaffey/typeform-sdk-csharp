@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Enums;
 
-namespace Typeform.Sdk.CSharp.Models.Fields
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class Property
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Typeform.Sdk.CSharp.Models.Fields
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class Validations
     {

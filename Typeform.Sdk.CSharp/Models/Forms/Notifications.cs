@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Typeform.Sdk.CSharp.Models.Settings
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class Notifications
     {

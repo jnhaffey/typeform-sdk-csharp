@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Models.Abstracts;
 
-namespace Typeform.Sdk.CSharp.Models.Screens
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class WelcomeScreenProperties : ScreenPropertyBase
     {

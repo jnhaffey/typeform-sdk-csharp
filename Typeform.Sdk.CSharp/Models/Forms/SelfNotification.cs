@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Models.Abstracts;
 
-namespace Typeform.Sdk.CSharp.Models.Settings
+namespace Typeform.Sdk.CSharp.Models.Forms
 {
     public class SelfNotification : NotificationBase
     {

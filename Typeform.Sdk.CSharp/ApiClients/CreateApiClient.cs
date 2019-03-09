@@ -1,9 +1,54 @@
 ﻿using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using Flurl;
+using Flurl.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Typeform.Sdk.CSharp.Models;
+using Typeform.Sdk.CSharp.Models.Workspaces;
 
-namespace Typeform.Sdk.CSharp.Apis
+namespace Typeform.Sdk.CSharp.ApiClients
 {
-    internal sealed class CreateApi
+    /// <summary>
+    ///     Typeform Create API Client.
+    /// </summary>
+    public sealed class CreateApiClient
     {
+        private readonly string _accountPathSegment;
+        private readonly string _apiKey;
+        private readonly string _formUrlPathSegment;
+        private readonly string _imageUrlPathSegment;
+        private readonly ILogger<CreateApiClient> _logger;
+        private readonly string _themeUrlPathSegment;
+        private readonly string _workspaceUrlPathSegment;
+
+        /// <summary>
+        ///     Instantiate an instance of the Create API Client.
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <param name="logger"></param>
+        public CreateApiClient(string apiKey, ILogger<CreateApiClient> logger = null)
+        {
+            _apiKey = apiKey;
+            _logger = logger;
+            _accountPathSegment = "me";
+            _formUrlPathSegment = "forms";
+            _imageUrlPathSegment = "images";
+            _themeUrlPathSegment = "themes";
+            _workspaceUrlPathSegment = "workspaces";
+        }
+
+        #region Account
+
+        public void RetrieveAccount()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region Form
 
         public void CreateForm()
@@ -118,9 +163,31 @@ namespace Typeform.Sdk.CSharp.Apis
 
         #region Workspaces
 
-        public void RetrieveWorkSpaces()
+        public async Task<QueryResponse<Workspace>> RetrieveWorkSpaces(QueryParameters queryParameters,
+            CancellationToken token = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            var urlQuery = Constants.BaseUrl
+                .AppendPathSegment(_workspaceUrlPathSegment)
+                .SetQueryParams(queryParameters.GetQueryParametersForUrl())
+                .WithOAuthBearerToken(_apiKey);
+            _logger.LogDebug("Calling Url: {urlQuery}", urlQuery.Url);
+
+            var apiResults = await urlQuery.GetAsync(token);
+            _logger.LogDebug("Call Results: {@apiResults}", apiResults);
+
+            if (apiResults.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<QueryResponse<Workspace>>(
+                    await apiResults.Content.ReadAsStringAsync());
+
+            if (apiResults.StatusCode == HttpStatusCode.Forbidden)
+            {
+                var errorResponse =
+                    JsonConvert.DeserializeObject<ErrorResponse>(await apiResults.Content.ReadAsStringAsync());
+                _logger.LogError("API call failed: {failureDetails}", errorResponse);
+                throw new Exception(errorResponse.Description);
+            }
+
+            return null;
         }
 
         public void CreateWorkspace()

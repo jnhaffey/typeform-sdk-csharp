@@ -70,6 +70,24 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value provided ({1}) for &apos;{0}&apos; is above the maximum value of {2}..
+        /// </summary>
+        public static string Guard_ForMaxValue {
+            get {
+                return ResourceManager.GetString("Guard_ForMaxValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value provided ({1}) for &apos;{0}&apos; is below the minimum value of {2}..
+        /// </summary>
+        public static string Guard_ForMinValue {
+            get {
+                return ResourceManager.GetString("Guard_ForMinValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} cannot be null, empty, or whitespace..
         /// </summary>
         public static string Guard_ForNullOrEmptyOrWhitespace {

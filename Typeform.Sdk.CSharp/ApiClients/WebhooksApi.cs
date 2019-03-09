@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Typeform.Sdk.CSharp.Apis
+namespace Typeform.Sdk.CSharp.ApiClients
 {
     public class WebhooksApi
     {

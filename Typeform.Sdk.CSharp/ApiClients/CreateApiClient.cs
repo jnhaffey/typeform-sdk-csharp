@@ -50,14 +50,14 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// </summary>
         /// <returns></returns>
         /// <exception cref="AuthenticationException"></exception>
-        public async Task<Account> RetrieveAccount()
+        public async Task<Account> RetrieveAccount(CancellationToken token = default(CancellationToken))
         {
             var urlQuery = Constants.BaseUrl
                 .AppendPathSegment(_accountPathSegment)
                 .WithOAuthBearerToken(_apiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
-            var apiResults = await urlQuery.GetAsync();
+            var apiResults = await urlQuery.GetAsync(token);
             _logger.DebugRawResults(apiResults);
 
             if (apiResults.IsSuccessStatusCode)
@@ -230,9 +230,37 @@ namespace Typeform.Sdk.CSharp.ApiClients
             throw new NotImplementedException();
         }
 
-        public void RetrieveWorkspace()
+        /// <summary>
+        ///     Retrieve a workspace.
+        /// </summary>
+        /// <param name="workspaceId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="AuthenticationException"></exception>
+        /// <exception cref="Exception"></exception>
+        public async Task<Workspace> RetrieveWorkspace(string workspaceId,
+            CancellationToken token = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            var urlQuery = Constants.BaseUrl
+                .AppendPathSegments(_workspaceUrlPathSegment, workspaceId)
+                .WithOAuthBearerToken(_apiKey);
+            _logger.LogUrlCall(urlQuery.Url);
+
+            var apiResults = await urlQuery.GetAsync(token);
+
+            if (apiResults.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<Workspace>(
+                    await apiResults.Content.ReadAsStringAsync());
+
+            if (apiResults.StatusCode == HttpStatusCode.Forbidden)
+            {
+                var errorResponse =
+                    JsonConvert.DeserializeObject<ErrorResponse>(await apiResults.Content.ReadAsStringAsync());
+                _logger.LogError("API call failed: {failureDetails}", errorResponse);
+                throw new AuthenticationException(errorResponse.Description);
+            }
+
+            throw new Exception("Unknown Error");
         }
 
         public void UpdateWorkspace()

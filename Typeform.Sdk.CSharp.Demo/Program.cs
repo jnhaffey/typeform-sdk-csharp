@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Typeform.Sdk.CSharp.ApiClients;
-using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Demo
 {
@@ -14,11 +13,11 @@ namespace Typeform.Sdk.CSharp.Demo
     {
         private static async Task Main(string[] args)
         {
-            // Get and Setup Configuration
-            var configBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile("appsettings.Development.json", true, true);
+            /********************
+             * To execute this demo project, you must populate the following variables.
+             ********************/
+            var apiKey = "";
+            var workGroupId = "";
 
             // Setup Logging
             Log.Logger = new LoggerConfiguration()
@@ -30,51 +29,30 @@ namespace Typeform.Sdk.CSharp.Demo
 
             // Setup Service Provider
             var serviceProvider = new ServiceCollection()
-                .AddSingleton<IConfiguration>(options => configBuilder.Build())
                 .AddLogging(loggerBuilder => loggerBuilder.AddSerilog(dispose: true))
+                .AddSingleton<IConfiguration>(options => new ConfigurationBuilder()
+                    .AddInMemoryCollection(new Dictionary<string, string> {{"apiKey", apiKey}})
+                    .AddEnvironmentVariables()
+                    .Build())
+                .AddSingleton(options =>
+                {
+                    var logger = options.GetService<ILogger<CreateApiClient>>();
+                    var keyToUse = options.GetService<IConfiguration>()["apiKey"];
+                    return new CreateApiClient(keyToUse, logger);
+                })
                 .BuildServiceProvider();
 
             // ACCOUNTS
-            await ExecuteRetrieveAccount(serviceProvider);
+            var accountEndPoints = new AccountEndPoints(serviceProvider);
+            await accountEndPoints.ExecuteRetrieveAccount();
 
             // WORKSPACES
-            await ExecuteRetrieveWorkspaces(serviceProvider);
+            var workspaceEndPoints = new WorkSpaceEndPoints(serviceProvider);
+            await workspaceEndPoints.ExecuteRetrieveWorkspaces();
+            await workspaceEndPoints.ExecuteRetrieveWorkspace(workGroupId);
 
             Console.WriteLine("Press any key...");
             Console.ReadLine();
-        }
-
-        private static async Task ExecuteRetrieveAccount(ServiceProvider serviceProvider)
-        {
-            var config = serviceProvider.GetService<IConfiguration>();
-            var createApiLogger = serviceProvider.GetService<ILogger<CreateApiClient>>();
-
-            PrintStartOfNewExecution("EXECUTING RETRIEVAL OF ACCOUNT");
-            var createApiClient = new CreateApiClient(config["Typeform:ApiKey"], createApiLogger);
-            var results = await createApiClient.RetrieveAccount();
-            PrintEndOfExecution(results);
-        }
-
-        private static async Task ExecuteRetrieveWorkspaces(ServiceProvider serviceProvider)
-        {
-            var config = serviceProvider.GetService<IConfiguration>();
-            var createApiLogger = serviceProvider.GetService<ILogger<CreateApiClient>>();
-
-            PrintStartOfNewExecution("EXECUTING RETRIEVAL OF WORKSPACES");
-            var createApiClient = new CreateApiClient(config["Typeform:ApiKey"], createApiLogger);
-            var results = await createApiClient.RetrieveWorkSpaces(QueryParameters.Create());
-            PrintEndOfExecution(results);
-        }
-
-        private static void PrintStartOfNewExecution(string title)
-        {
-            Log.Information("------------- {title} -------------", title.ToUpper());
-        }
-
-        private static void PrintEndOfExecution<TData>(TData results)
-        {
-            Log.Information("{@results}", results);
-            Log.Information($"-----------------------------------{Environment.NewLine}");
         }
     }
 }

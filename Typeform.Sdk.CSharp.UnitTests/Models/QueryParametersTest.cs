@@ -2,6 +2,7 @@
 using Bogus;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Models;
+using Typeform.Sdk.CSharp.Models.Shared;
 using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models

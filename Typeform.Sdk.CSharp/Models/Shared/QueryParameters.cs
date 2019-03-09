@@ -1,4 +1,4 @@
-﻿namespace Typeform.Sdk.CSharp.Models
+﻿namespace Typeform.Sdk.CSharp.Models.Shared
 {
     public class QueryParameters
     {

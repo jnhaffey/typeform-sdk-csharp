@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Typeform.Sdk.CSharp.Models
+namespace Typeform.Sdk.CSharp.Models.Shared
 {
     public class QueryResponse<TItems>
     {

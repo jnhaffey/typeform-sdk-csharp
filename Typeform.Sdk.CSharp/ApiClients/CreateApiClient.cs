@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Net;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Typeform.Sdk.CSharp.Models;
+using Typeform.Sdk.CSharp.Extensions;
+using Typeform.Sdk.CSharp.Models.Accounts;
+using Typeform.Sdk.CSharp.Models.Shared;
 using Typeform.Sdk.CSharp.Models.Workspaces;
 
 namespace Typeform.Sdk.CSharp.ApiClients
@@ -42,9 +45,34 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
         #region Account
 
-        public void RetrieveAccount()
+        /// <summary>
+        ///     Retrieve your own account information.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="AuthenticationException"></exception>
+        public async Task<Account> RetrieveAccount()
         {
-            throw new NotImplementedException();
+            var urlQuery = Constants.BaseUrl
+                .AppendPathSegment(_accountPathSegment)
+                .WithOAuthBearerToken(_apiKey);
+            _logger.LogUrlCall(urlQuery.Url);
+
+            var apiResults = await urlQuery.GetAsync();
+            _logger.DebugRawResults(apiResults);
+
+            if (apiResults.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<Account>(
+                    await apiResults.Content.ReadAsStringAsync());
+
+            if (apiResults.StatusCode == HttpStatusCode.Forbidden)
+            {
+                var errorResponse =
+                    JsonConvert.DeserializeObject<ErrorResponse>(await apiResults.Content.ReadAsStringAsync());
+                _logger.LogError("API call failed: {failureDetails}", errorResponse);
+                throw new AuthenticationException(errorResponse.Description);
+            }
+
+            throw new Exception("Unknown Error");
         }
 
         #endregion
@@ -163,6 +191,13 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
         #region Workspaces
 
+        /// <summary>
+        ///     Retrieve all workspaces in your account.
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="AuthenticationException"></exception>
         public async Task<QueryResponse<Workspace>> RetrieveWorkSpaces(QueryParameters queryParameters,
             CancellationToken token = default(CancellationToken))
         {
@@ -170,10 +205,10 @@ namespace Typeform.Sdk.CSharp.ApiClients
                 .AppendPathSegment(_workspaceUrlPathSegment)
                 .SetQueryParams(queryParameters.GetQueryParametersForUrl())
                 .WithOAuthBearerToken(_apiKey);
-            _logger.LogDebug("Calling Url: {urlQuery}", urlQuery.Url);
+            _logger.LogUrlCall(urlQuery.Url);
 
             var apiResults = await urlQuery.GetAsync(token);
-            _logger.LogDebug("Call Results: {@apiResults}", apiResults);
+            _logger.DebugRawResults(apiResults);
 
             if (apiResults.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<QueryResponse<Workspace>>(
@@ -184,10 +219,10 @@ namespace Typeform.Sdk.CSharp.ApiClients
                 var errorResponse =
                     JsonConvert.DeserializeObject<ErrorResponse>(await apiResults.Content.ReadAsStringAsync());
                 _logger.LogError("API call failed: {failureDetails}", errorResponse);
-                throw new Exception(errorResponse.Description);
+                throw new AuthenticationException(errorResponse.Description);
             }
 
-            return null;
+            throw new Exception("Unknown Error");
         }
 
         public void CreateWorkspace()

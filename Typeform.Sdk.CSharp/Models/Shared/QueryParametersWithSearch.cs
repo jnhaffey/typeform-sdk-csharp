@@ -90,6 +90,7 @@
         {
             return new
             {
+                search = SearchFilter,
                 page = Page,
                 page_size = PageSize
             };

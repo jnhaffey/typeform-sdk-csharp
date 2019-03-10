@@ -51,5 +51,18 @@
             Page = page;
             return this;
         }
+
+        /// <summary>
+        ///     Returns the object for setting Query Parameter Values in Flurl.
+        /// </summary>
+        /// <returns></returns>
+        public object GetQueryParametersForUrl()
+        {
+            return new
+            {
+                page = Page,
+                page_size = PageSize
+            };
+        }
     }
 }

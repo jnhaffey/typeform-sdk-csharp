@@ -21,10 +21,11 @@ namespace Typeform.Sdk.CSharp.Extensions
         /// </summary>
         /// <typeparam name="TData"></typeparam>
         /// <param name="logger"></param>
+        /// <param name="nameOfData"></param>
         /// <param name="data"></param>
-        public static void DebugRawData<TData>(this ILogger logger, TData data)
+        public static void DebugRawData<TData>(this ILogger logger, string nameOfData, TData data)
         {
-            logger.LogDebug("Raw: {@data}", data);
+            logger.LogDebug("Raw {nameOfData}: {@data}", nameOfData, data);
         }
     }
 }

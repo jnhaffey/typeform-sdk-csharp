@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Typeform.Sdk.CSharp.ApiClients;
+using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Demo.EndPoints
 {
     internal class ThemeEndPoints
     {
-        private CreateApiClient _createApiClient;
+        private readonly CreateApiClient _createApiClient;
 
         public ThemeEndPoints(ServiceProvider serviceProvider)
         {
@@ -16,7 +17,7 @@ namespace Typeform.Sdk.CSharp.Demo.EndPoints
         public async Task ExecuteRetrieveThemes()
         {
             HelperMethods.PrintStartOfNewExecution("EXECUTING RETRIEVAL OF THEMES");
-            var results = await _createApiClient.RetrieveThemes();
+            var results = await _createApiClient.RetrieveThemes(QueryParameters.Create());
             HelperMethods.PrintEndOfExecution(results);
         }
 

@@ -15,11 +15,9 @@ namespace Typeform.Sdk.CSharp.Demo
         private static async Task Main(string[] args)
         {
             /********************
-             * To execute this demo project, you must populate the following variables.
+             * To execute this demo project, you must populate the following variable.
              ********************/
             var apiKey = "";
-            var workGroupId = "BAD";
-            var themeId = "";
 
             // Setup Logging
             Log.Logger = new LoggerConfiguration()
@@ -53,12 +51,15 @@ namespace Typeform.Sdk.CSharp.Demo
                 // WORKSPACES
                 var workspaceEndPoints = new WorkSpaceEndPoints(serviceProvider);
                 await workspaceEndPoints.ExecuteRetrieveWorkspaces();
-                await workspaceEndPoints.ExecuteRetrieveWorkspace(workGroupId);
+                var workspaceId = await workspaceEndPoints.ExecuteCreateWorkspace();
+                await workspaceEndPoints.ExecuteRetrieveWorkspace(workspaceId);
+                await workspaceEndPoints.ExecuteUpdateWorkspace(workspaceId);
+                await workspaceEndPoints.ExecuteDeleteWorkspace(workspaceId);
 
                 // THEMES
                 var themeEndPoints = new ThemeEndPoints(serviceProvider);
                 await themeEndPoints.ExecuteRetrieveThemes();
-                await themeEndPoints.ExecuteRetrieveTheme(themeId);
+                //await themeEndPoints.ExecuteRetrieveTheme(themeId);
             }
             catch (Exception ex)
             {

@@ -16,15 +16,15 @@ namespace Typeform.Sdk.CSharp.Extensions
         }
 
         /// <summary>
-        ///     Logs the value of the result data from a call.
-        ///     Format: Call Results: {data}
+        ///     Logs the value of the raw data from a call.
+        ///     Format: Raw: {data}
         /// </summary>
         /// <typeparam name="TData"></typeparam>
         /// <param name="logger"></param>
         /// <param name="data"></param>
-        public static void DebugRawResults<TData>(this ILogger logger, TData data)
+        public static void DebugRawData<TData>(this ILogger logger, TData data)
         {
-            logger.LogDebug("Call Results: {@data}", data);
+            logger.LogDebug("Raw: {@data}", data);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Typeform.Sdk.CSharp.ApiClients;
+using Typeform.Sdk.CSharp.Demo.EndPoints;
 
 namespace Typeform.Sdk.CSharp.Demo
 {
@@ -17,12 +18,13 @@ namespace Typeform.Sdk.CSharp.Demo
              * To execute this demo project, you must populate the following variables.
              ********************/
             var apiKey = "";
-            var workGroupId = "";
+            var workGroupId = "BAD";
+            var themeId = "";
 
             // Setup Logging
             Log.Logger = new LoggerConfiguration()
-                //.MinimumLevel.Debug()
-                .MinimumLevel.Information()
+                .MinimumLevel.Debug()
+                //.MinimumLevel.Information()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
@@ -42,17 +44,31 @@ namespace Typeform.Sdk.CSharp.Demo
                 })
                 .BuildServiceProvider();
 
-            // ACCOUNTS
-            var accountEndPoints = new AccountEndPoints(serviceProvider);
-            await accountEndPoints.ExecuteRetrieveAccount();
+            try
+            {
+                // ACCOUNTS
+                var accountEndPoints = new AccountEndPoints(serviceProvider);
+                await accountEndPoints.ExecuteRetrieveAccount();
 
-            // WORKSPACES
-            var workspaceEndPoints = new WorkSpaceEndPoints(serviceProvider);
-            await workspaceEndPoints.ExecuteRetrieveWorkspaces();
-            await workspaceEndPoints.ExecuteRetrieveWorkspace(workGroupId);
+                // WORKSPACES
+                var workspaceEndPoints = new WorkSpaceEndPoints(serviceProvider);
+                await workspaceEndPoints.ExecuteRetrieveWorkspaces();
+                await workspaceEndPoints.ExecuteRetrieveWorkspace(workGroupId);
 
-            Console.WriteLine("Press any key...");
-            Console.ReadLine();
+                // THEMES
+                var themeEndPoints = new ThemeEndPoints(serviceProvider);
+                await themeEndPoints.ExecuteRetrieveThemes();
+                await themeEndPoints.ExecuteRetrieveTheme(themeId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("An exception was thrown. {exception}", ex);
+            }
+            finally
+            {
+                Console.WriteLine("Press any key...");
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Typeform.Sdk.CSharp.ApiClients;
 using Typeform.Sdk.CSharp.Models.Shared;
 
-namespace Typeform.Sdk.CSharp.Demo
+namespace Typeform.Sdk.CSharp.Demo.EndPoints
 {
     internal class WorkSpaceEndPoints
     {
@@ -17,7 +17,7 @@ namespace Typeform.Sdk.CSharp.Demo
         public async Task ExecuteRetrieveWorkspaces()
         {
             HelperMethods.PrintStartOfNewExecution("EXECUTING RETRIEVAL OF WORKSPACES");
-            var results = await _createApiClient.RetrieveWorkSpaces(QueryParameters.Create());
+            var results = await _createApiClient.RetrieveWorkSpaces(QueryParametersWithSearch.Create());
             HelperMethods.PrintEndOfExecution(results);
         }
 

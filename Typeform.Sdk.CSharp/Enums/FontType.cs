@@ -1,0 +1,37 @@
+﻿namespace Typeform.Sdk.CSharp.Enums
+{
+    public enum FontType
+    {
+        Acme,
+        Arial,
+        Arvo,
+        AvenirNext,
+        Bangers,
+        Cabin,
+        CabinCondensed,
+        Courier,
+        CreteRound,
+        DancingScript,
+        Exo,
+        Georgia,
+        Handlee,
+        HelveticaNeue,
+        Karla,
+        Lato,
+        Lekton,
+        Lobster,
+        Lora,
+        McLaren,
+        Montserrat,
+        NixieOne,
+        OldStandardTT,
+        OpenSansOswald,
+        PlayfairDisplay,
+        Quicksand,
+        Raleway,
+        Signika,
+        Sniglet,
+        SourceSansPro,
+        Vollkorn
+    }
+}

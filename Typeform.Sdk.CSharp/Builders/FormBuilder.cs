@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using FluentValidation;
-using Typeform.Sdk.CSharp.Models;
 using Typeform.Sdk.CSharp.Models.Forms;
 using Typeform.Sdk.CSharp.Resources;
 using Typeform.Sdk.CSharp.Validations;

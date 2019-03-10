@@ -1,7 +1,6 @@
 ﻿using System;
 using Bogus;
 using FluentAssertions;
-using Typeform.Sdk.CSharp.Models;
 using Typeform.Sdk.CSharp.Models.Shared;
 using Xunit;
 
@@ -10,21 +9,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
     public class QueryParametersTest
     {
         private readonly Randomizer bogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
-
-        [Fact]
-        public void QueryParameters_ClearSearchFilter()
-        {
-            // ARRANGE
-            var searchFilterToUse = bogusRandomizer.AlphaNumeric(15);
-            var queryParameters = QueryParameters.Create(searchFilterToUse);
-
-            // ACT
-            queryParameters.ClearSearchFilter();
-
-            // ASSERT
-            queryParameters.SearchFilter.Should().NotBe(searchFilterToUse);
-            queryParameters.SearchFilter.Should().BeEmpty();
-        }
 
         [Fact]
         public void QueryParameters_Create_With_Page_Parameter_Only()
@@ -38,7 +22,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             queryParameterToTest.Page.Should().NotBe(1);
             queryParameterToTest.Page.Should().Be(100);
             queryParameterToTest.PageSize.Should().Be(10);
-            queryParameterToTest.SearchFilter.Should().BeEmpty();
         }
 
         [Fact]
@@ -53,17 +36,14 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             queryParameterToTest.Page.Should().Be(1);
             queryParameterToTest.PageSize.Should().NotBe(10);
             queryParameterToTest.PageSize.Should().Be(100);
-            queryParameterToTest.SearchFilter.Should().BeEmpty();
         }
 
         [Fact]
-        public void QueryParameters_Create_With_SearchFilter_PageSize_Page_Parameter()
+        public void QueryParameters_Create_With_PageSize_Page_Parameter()
         {
             // ARRANGE
-            var searchFilterValueToUse = bogusRandomizer.AlphaNumeric(25);
-
             // ACT
-            var queryParameterToTest = QueryParameters.Create(searchFilterValueToUse, 10, 100);
+            var queryParameterToTest = QueryParameters.Create(10, 100);
 
             // ASSERT
             queryParameterToTest.Should().BeOfType<QueryParameters>();
@@ -71,25 +51,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             queryParameterToTest.Page.Should().Be(10);
             queryParameterToTest.PageSize.Should().NotBe(10);
             queryParameterToTest.PageSize.Should().Be(100);
-            queryParameterToTest.SearchFilter.Should().NotBeNullOrEmpty();
-            queryParameterToTest.SearchFilter.Should().Be(searchFilterValueToUse);
-        }
-
-        [Fact]
-        public void QueryParameters_Create_With_SearchFilter_Parameter_Only()
-        {
-            // ARRANGE
-            var searchFilterValueToUse = bogusRandomizer.AlphaNumeric(25);
-
-            // ACT
-            var queryParameterToTest = QueryParameters.Create(searchFilterValueToUse);
-
-            // ASSERT
-            queryParameterToTest.Should().BeOfType<QueryParameters>();
-            queryParameterToTest.Page.Should().Be(1);
-            queryParameterToTest.PageSize.Should().Be(10);
-            queryParameterToTest.SearchFilter.Should().NotBeNullOrEmpty();
-            queryParameterToTest.SearchFilter.Should().Be(searchFilterValueToUse);
         }
 
         [Fact]
@@ -103,7 +64,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             queryParameterToTest.Should().BeOfType<QueryParameters>();
             queryParameterToTest.Page.Should().Be(1);
             queryParameterToTest.PageSize.Should().Be(10);
-            queryParameterToTest.SearchFilter.Should().BeEmpty();
         }
 
         [Fact]
@@ -171,21 +131,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
             actionToTest.Invoke().PageSize.Should().Be(100);
-        }
-
-        [Fact]
-        public void QueryParameters_SetSearchFilter()
-        {
-            // ARRANGE
-            var searchFilterValue = bogusRandomizer.AlphaNumeric(15);
-            var queryParameters = QueryParameters.Create();
-
-            // ACT
-            Func<QueryParameters> actionToTest = () => queryParameters.SetSearchFilter(searchFilterValue);
-
-            // ASSERT
-            actionToTest.Should().NotThrow<ArgumentException>();
-            actionToTest.Invoke().SearchFilter.Should().Be(searchFilterValue);
         }
     }
 }

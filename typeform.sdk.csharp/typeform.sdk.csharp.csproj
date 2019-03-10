@@ -54,8 +54,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Exceptions\" />
-  </ItemGroup>
-
 </Project>

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Typeform.Sdk.CSharp.ApiClients;
 
-namespace Typeform.Sdk.CSharp.Demo
+namespace Typeform.Sdk.CSharp.Demo.EndPoints
 {
     internal class AccountEndPoints
     {

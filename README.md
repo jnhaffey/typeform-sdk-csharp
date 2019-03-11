@@ -1,4 +1,14 @@
-[BUILD_BADGE](#)
+*Development Branch*  
+[![Build status](https://jnhaffey.visualstudio.com/Typeform-Sdk-CSharp/_apis/build/status/Typeform-Sdk-CSharp-Development)](https://jnhaffey.visualstudio.com/Typeform-Sdk-CSharp/_build/latest?definitionId=9)
+![Test status](https://img.shields.io/azure-devops/tests/jnhaffey/Typeform-Sdk-CSharp/9.svg)
+![Release status](https://img.shields.io/azure-devops/release/:jnhaffey/:Typeform-Sdk-CSharp/:1/:1.svg)
+![NuGet package](https://img.shields.io/nuget/vpre/typeform.sdk.csharp.svg)
+
+*Master Branch*  
+[![Build status](https://jnhaffey.visualstudio.com/Typeform-Sdk-CSharp/_apis/build/status/Typeform-Sdk-CSharp-Development)](https://jnhaffey.visualstudio.com/Typeform-Sdk-CSharp/_build/latest?definitionId=10)
+![Test status](https://img.shields.io/azure-devops/tests/jnhaffey/Typeform-Sdk-CSharp/10.svg)
+![Release status](https://img.shields.io/azure-devops/release/:jnhaffey/:Typeform-Sdk-CSharp/:2/:2.svg)
+![NuGet package](https://img.shields.io/nuget/v/typeform.sdk.csharp.svg)
 
 # Typeform SDK CSharp
 

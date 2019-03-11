@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Bogus;
 using FluentAssertions;
+using Typeform.Sdk.CSharp.ApiClients;
+using Typeform.Sdk.CSharp.Exceptions;
 using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests
@@ -42,6 +44,34 @@ namespace Typeform.Sdk.CSharp.UnitTests
 
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
+        }
+
+        [Fact]
+        public void ForInitializedClient_Initialized()
+        {
+            // ARRANGE
+            var createApiClient = new CreateApiClient(bogusRandomizer.AlphaNumeric(5));
+
+            // ACT
+            Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
+
+            // ASSERT
+            actionToTest.Should().NotThrow<UninitializedClientException>();
+        }
+
+        [Fact]
+        public void ForInitializedClient_Uninitialized()
+        {
+            // ARRANGE
+            var clientName = nameof(CreateApiClient);
+            var createApiClient = new CreateApiClient("");
+
+            // ACT
+            Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
+
+            // ASSERT
+            actionToTest.Should().Throw<UninitializedClientException>()
+                .WithMessage($"The '{clientName}' does not contain an API Key." );
         }
 
         [Fact]

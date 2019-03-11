@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Typeform.Sdk.CSharp.Abstracts;
+using Typeform.Sdk.CSharp.Exceptions;
 using Typeform.Sdk.CSharp.Resources;
 
 namespace Typeform.Sdk.CSharp
@@ -74,6 +76,17 @@ namespace Typeform.Sdk.CSharp
             if (value > maxValueAllowed)
                 throw new ArgumentException(string.Format(ErrorMessages.Guard_ForMaxValue, parameterName, value,
                     maxValueAllowed));
+        }
+
+        /// <summary>
+        ///     Checks that the API Key has been initialized.
+        /// </summary>
+        /// <exception cref="UninitializedClientException"></exception>
+        public static void ForInitializedClient<TApiClient>(TApiClient apiClient)
+            where TApiClient : ApiClientBase
+        {
+            if (string.IsNullOrWhiteSpace(apiClient.ApiKey))
+                throw new UninitializedClientException(typeof(TApiClient).Name);
         }
     }
 }

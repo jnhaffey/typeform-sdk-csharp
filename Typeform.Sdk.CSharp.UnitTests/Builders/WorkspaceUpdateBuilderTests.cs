@@ -22,7 +22,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
 
             // ASSERT
             functionToTest.Should().NotThrow<ArgumentException>();
-            functionToTest.Should().BeOfType<WorkspaceUpdateBuilder>();
+            functionToTest.Invoke().Should().BeOfType<WorkspaceUpdateBuilder>();
             functionToTest.Invoke().WorkspaceId.Should().Be(workspaceIdToUse);
         }
 

@@ -141,4 +141,7 @@
   <data name="Guard_ForMinValue" xml:space="preserve">
     <value>The value provided ({1}) for '{0}' is below the minimum value of {2}.</value>
   </data>
+  <data name="Validation_WorkspaceUpdateBuilder_MissingWorkspaceId" xml:space="preserve">
+    <value>A Workspace Id is required.</value>
+  </data>
 </root>

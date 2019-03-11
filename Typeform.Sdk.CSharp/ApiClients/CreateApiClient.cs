@@ -3,10 +3,12 @@ using System.Net;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using Flurl;
 using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Typeform.Sdk.CSharp.Abstracts;
 using Typeform.Sdk.CSharp.Builders;
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Exceptions;
@@ -22,10 +24,9 @@ namespace Typeform.Sdk.CSharp.ApiClients
     /// <summary>
     ///     Typeform Create API Client.
     /// </summary>
-    public sealed class CreateApiClient
+    public sealed class CreateApiClient : ApiClientBase
     {
         private readonly string _accountPathSegment;
-        private readonly string _apiKey;
         private readonly string _formUrlPathSegment;
         private readonly string _imageUrlPathSegment;
         private readonly ILogger<CreateApiClient> _logger;
@@ -37,9 +38,9 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// </summary>
         /// <param name="apiKey"></param>
         /// <param name="logger"></param>
-        public CreateApiClient(string apiKey, ILogger<CreateApiClient> logger = null)
+        public CreateApiClient(string apiKey = "", ILogger<CreateApiClient> logger = null)
+            : base(apiKey)
         {
-            _apiKey = apiKey;
             _logger = logger;
             _accountPathSegment = "me";
             _formUrlPathSegment = "forms";
@@ -57,9 +58,10 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// <returns>Account details.</returns>
         public async Task<Account> RetrieveAccount(CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
                 .AppendPathSegment(_accountPathSegment)
-                .WithOAuthBearerToken(_apiKey);
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try
@@ -96,41 +98,49 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
         public void CreateForm()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveForms()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void UpdateForm()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void UpdateForm(string wholeForm)
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveForm()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void DeleteForm()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveCustomFormMessages()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void UpdateCustomMessages()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
@@ -140,36 +150,43 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
         public void RetrieveImageBySize()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveBackgroundBySize()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveChoiceImageBySize()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void CreateImage()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveImagesCollection()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void RetrieveImage()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void DeleteImage()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
@@ -188,10 +205,11 @@ namespace Typeform.Sdk.CSharp.ApiClients
         public async Task<QueryResponse<Theme>> RetrieveThemes(QueryParameters queryParameters,
             CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
                 .AppendPathSegment(_themeUrlPathSegment)
                 .SetQueryParams(queryParameters.GetQueryParametersForUrl())
-                .WithOAuthBearerToken(_apiKey);
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try
@@ -232,11 +250,12 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// <returns>Single Theme.</returns>
         public async Task<Theme> RetrieveTheme(string themeId, CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             Guard.ForNullOrEmptyOrWhitespace(themeId, nameof(themeId));
 
             var urlQuery = BaseUrl
                 .AppendPathSegments(_themeUrlPathSegment, themeId)
-                .WithOAuthBearerToken(_apiKey);
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try
@@ -278,16 +297,19 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
         public void CreateTheme()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void UpdateTheme()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
         public void DeleteTheme()
         {
+            Guard.ForInitializedClient(this);
             throw new NotImplementedException();
         }
 
@@ -306,10 +328,11 @@ namespace Typeform.Sdk.CSharp.ApiClients
             QueryParametersWithSearch queryParametersWithSearch,
             CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
                 .AppendPathSegment(_workspaceUrlPathSegment)
                 .SetQueryParams(queryParametersWithSearch.GetQueryParametersForUrl())
-                .WithOAuthBearerToken(_apiKey);
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try
@@ -351,11 +374,12 @@ namespace Typeform.Sdk.CSharp.ApiClients
         public async Task<Workspace> RetrieveWorkspace(string workspaceId,
             CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             Guard.ForNullOrEmptyOrWhitespace(workspaceId, nameof(workspaceId));
 
             var urlQuery = BaseUrl
                 .AppendPathSegments(_workspaceUrlPathSegment, workspaceId)
-                .WithOAuthBearerToken(_apiKey);
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try
@@ -405,12 +429,13 @@ namespace Typeform.Sdk.CSharp.ApiClients
         public async Task<Workspace> CreateWorkspace(string workspaceName,
             CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             Guard.ForNullOrEmptyOrWhitespace(workspaceName, nameof(workspaceName));
 
             var urlQuery = BaseUrl
                 .AppendPathSegments(_workspaceUrlPathSegment)
-                .WithHeader("Content-Type","application/json")
-                .WithOAuthBearerToken(_apiKey);
+                .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try
@@ -445,7 +470,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// <summary>
         ///     Update a workspace.
         /// </summary>
-        /// <param name="workspaceId">Unique ID for the workspace.</param>
+        /// <param name="builder"></param>
         /// <param name="token">Cancellation Token (Optional)</param>
         /// <exception cref="AuthenticationException">Thrown if unable to authenticate.</exception>
         /// <exception cref="RecordNotFoundException">Thrown if no workspace can be found with the id provided.</exception>
@@ -453,19 +478,22 @@ namespace Typeform.Sdk.CSharp.ApiClients
         public async Task UpdateWorkspace(WorkspaceUpdateBuilder builder,
             CancellationToken token = default(CancellationToken))
         {
-            // TODO : Add Validation Check
-
-            var urlQuery = BaseUrl
-                .AppendPathSegments(_workspaceUrlPathSegment, builder.WorkspaceId)
-                .WithOAuthBearerToken(_apiKey);
-            _logger.LogUrlCall(urlQuery.Url);
-
+            Guard.ForInitializedClient(this);
             try
             {
-                _logger.DebugRawData(DebugNames.JsonPatch, builder.ToJsonPatch());
-                var apiResults = await urlQuery.PatchJsonAsync(builder.ToJsonPatch(), token);
-                _logger.DebugRawData(DebugNames.ApiResults, apiResults);
-                _logger.DebugRawData(DebugNames.ApiContent, await apiResults.Content.ReadAsStringAsync());
+                if (await builder.IsValid(token))
+                {
+                    var urlQuery = BaseUrl
+                        .AppendPathSegments(_workspaceUrlPathSegment, builder.WorkspaceId)
+                        .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
+                        .WithOAuthBearerToken(ApiKey);
+                    _logger.LogUrlCall(urlQuery.Url);
+
+                    _logger.DebugRawData(DebugNames.JsonPatch, builder.ToJsonPatch());
+                    var apiResults = await urlQuery.PatchJsonAsync(builder.ToJsonPatch(), token);
+                    _logger.DebugRawData(DebugNames.ApiResults, apiResults);
+                    _logger.DebugRawData(DebugNames.ApiContent, await apiResults.Content.ReadAsStringAsync());
+                }
             }
             catch (FlurlHttpException ex)
             {
@@ -487,9 +515,14 @@ namespace Typeform.Sdk.CSharp.ApiClients
                     throw new RecordNotFoundException(RecordType.Workspace, builder.WorkspaceId);
                 }
             }
+            catch (ValidationException ex)
+            {
+                _logger.LogError("Build Validation Failure: {@validationErrors}", ex);
+                throw;
+            }
             catch (Exception ex)
             {
-                _logger.LogError("An unknown error has occured. {exception}", ex);
+                _logger.LogError("An unknown error has occured. {@exception}", ex);
                 throw;
             }
         }
@@ -504,11 +537,12 @@ namespace Typeform.Sdk.CSharp.ApiClients
         public async Task DeleteWorkspace(string workspaceId,
             CancellationToken token = default(CancellationToken))
         {
+            Guard.ForInitializedClient(this);
             Guard.ForNullOrEmptyOrWhitespace(workspaceId, nameof(workspaceId));
 
             var urlQuery = BaseUrl
                 .AppendPathSegments(_workspaceUrlPathSegment, workspaceId)
-                .WithOAuthBearerToken(_apiKey);
+                .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
             try

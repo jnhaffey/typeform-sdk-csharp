@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Newtonsoft.Json.Linq;
+using Typeform.Sdk.CSharp.Extensions;
+using Typeform.Sdk.CSharp.Interfaces;
 using Typeform.Sdk.CSharp.Models.Shared;
+using Typeform.Sdk.CSharp.Validations;
 
 namespace Typeform.Sdk.CSharp.Builders
 {
     /// <summary>
     /// </summary>
-    public class WorkspaceUpdateBuilder
+    public class WorkspaceUpdateBuilder : IIsValidatable<WorkspaceUpdateBuildValidation, WorkspaceUpdateBuilder>
     {
         private const string Name = "/name";
         private const string Member = "/member";
@@ -23,6 +29,24 @@ namespace Typeform.Sdk.CSharp.Builders
         ///     The Workspace Id to be use.
         /// </summary>
         public string WorkspaceId { get; private set; }
+
+        #region Implementation of IIsValidatable
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     Validates the model.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<bool> IsValid(CancellationToken token = default(CancellationToken))
+        {
+            var validator = new WorkspaceUpdateBuildValidation();
+            var validation = await validator.ValidateAsync(this, token);
+            if (validation.IsValid) return true;
+            throw new ValidationException(validation.Errors);
+        }
+
+        #endregion
 
         /// <summary>
         ///     Create a new instance of the WorkspaceUpdateBuilder.
@@ -90,7 +114,7 @@ namespace Typeform.Sdk.CSharp.Builders
             if (_nameChange != null)
             {
                 dynamic nameChange = new JObject();
-                nameChange.op = _nameChange.Operation.ToString();
+                nameChange.op = _nameChange.Operation.ToLowerString();
                 nameChange.path = _nameChange.Path;
                 nameChange.value = _nameChange.Value;
                 patchData.Add(nameChange);
@@ -99,7 +123,7 @@ namespace Typeform.Sdk.CSharp.Builders
             foreach (var mbrChange in _memberChanges)
             {
                 dynamic memberChange = new JObject();
-                memberChange.op = mbrChange.Operation.ToString();
+                memberChange.op = mbrChange.Operation.ToLowerString();
                 memberChange.path = mbrChange.Path;
                 memberChange.value = new JObject();
                 memberChange.value.email = mbrChange.Value;

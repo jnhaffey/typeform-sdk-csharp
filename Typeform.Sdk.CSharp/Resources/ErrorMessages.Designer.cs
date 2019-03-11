@@ -131,5 +131,14 @@ namespace Typeform.Sdk.CSharp.Resources {
                 return ResourceManager.GetString("Validation_RequiresOne", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Workspace Id is required..
+        /// </summary>
+        public static string Validation_WorkspaceUpdateBuilder_MissingWorkspaceId {
+            get {
+                return ResourceManager.GetString("Validation_WorkspaceUpdateBuilder_MissingWorkspaceId", resourceCulture);
+            }
+        }
     }
 }

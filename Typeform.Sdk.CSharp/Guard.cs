@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Typeform.Sdk.CSharp.Abstracts;
+using Typeform.Sdk.CSharp.Exceptions;
 using Typeform.Sdk.CSharp.Resources;
 
 namespace Typeform.Sdk.CSharp
@@ -21,7 +23,7 @@ namespace Typeform.Sdk.CSharp
         }
 
         /// <summary>
-        /// Checks if the string value is Null, Empty, or Whitespaces only.
+        ///     Checks if the string value is Null, Empty, or Whitespaces only.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="parameterName"></param>
@@ -48,6 +50,43 @@ namespace Typeform.Sdk.CSharp
             if (list.Contains(value))
                 throw new ArgumentException(
                     string.Format(ErrorMessages.Guard_ForDuplicateItemsInList, parameterName, value, listName));
+        }
+
+        /// <summary>
+        ///     Checks if the value is below the minimum value allowed.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="minValueAllowed"></param>
+        /// <param name="parameterName"></param>
+        public static void ForMinValue(int value, int minValueAllowed, string parameterName)
+        {
+            if (value < minValueAllowed)
+                throw new ArgumentException(string.Format(ErrorMessages.Guard_ForMinValue, parameterName, value,
+                    minValueAllowed));
+        }
+
+        /// <summary>
+        ///     Checks if the value is above the maximum value allowed.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxValueAllowed"></param>
+        /// <param name="parameterName"></param>
+        public static void ForMaxValue(int value, int maxValueAllowed, string parameterName)
+        {
+            if (value > maxValueAllowed)
+                throw new ArgumentException(string.Format(ErrorMessages.Guard_ForMaxValue, parameterName, value,
+                    maxValueAllowed));
+        }
+
+        /// <summary>
+        ///     Checks that the API Key has been initialized.
+        /// </summary>
+        /// <exception cref="UninitializedClientException"></exception>
+        public static void ForInitializedClient<TApiClient>(TApiClient apiClient)
+            where TApiClient : ApiClientBase
+        {
+            if (string.IsNullOrWhiteSpace(apiClient.ApiKey))
+                throw new UninitializedClientException(typeof(TApiClient).Name);
         }
     }
 }

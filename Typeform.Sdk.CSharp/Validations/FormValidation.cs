@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Typeform.Sdk.CSharp.Models;
+using Typeform.Sdk.CSharp.Models.Forms;
 using Typeform.Sdk.CSharp.Resources;
 
 namespace Typeform.Sdk.CSharp.Validations

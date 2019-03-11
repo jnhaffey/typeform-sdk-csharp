@@ -13,9 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution_files", "_solutio
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typeform.Sdk.CSharp.UnitTests", "Typeform.Sdk.CSharp.UnitTests\Typeform.Sdk.CSharp.UnitTests.csproj", "{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typeform.Sdk.CSharp.UnitTests", "Typeform.Sdk.CSharp.UnitTests\Typeform.Sdk.CSharp.UnitTests.csproj", "{6AF32E92-1FF0-403E-94B1-A1F3A75EAC9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typeform.Sdk.CSharp", "Typeform.Sdk.CSharp\Typeform.Sdk.CSharp.csproj", "{B4EF308A-87F4-445C-88F0-30A77EA4ED93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typeform.Sdk.CSharp", "Typeform.Sdk.CSharp\Typeform.Sdk.CSharp.csproj", "{B4EF308A-87F4-445C-88F0-30A77EA4ED93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typeform.Sdk.CSharp.Demo", "Typeform.Sdk.CSharp.Demo\Typeform.Sdk.CSharp.Demo.csproj", "{95ADDB9C-677A-41F4-83C3-8BEF9146FE16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{B4EF308A-87F4-445C-88F0-30A77EA4ED93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4EF308A-87F4-445C-88F0-30A77EA4ED93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4EF308A-87F4-445C-88F0-30A77EA4ED93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95ADDB9C-677A-41F4-83C3-8BEF9146FE16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95ADDB9C-677A-41F4-83C3-8BEF9146FE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95ADDB9C-677A-41F4-83C3-8BEF9146FE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95ADDB9C-677A-41F4-83C3-8BEF9146FE16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

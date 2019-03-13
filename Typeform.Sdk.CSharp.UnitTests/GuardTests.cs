@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bogus;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.ApiClients;
 using Typeform.Sdk.CSharp.Exceptions;
@@ -10,8 +9,84 @@ namespace Typeform.Sdk.CSharp.UnitTests
 {
     public class GuardTests
     {
-        private const string ParameterName = "UNIT_TEST_PARAMETER_NAME";
-        private readonly Randomizer bogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
+        [Fact]
+        public void ForBetweenValues_Above()
+        {
+            // ARRANGE
+            var value = 2;
+            var min = -1;
+            var max = 1;
+
+            // ACT
+            Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<ArgumentOutOfRangeException>()
+                .WithMessage(
+                    $"The value '{value}' provided for {TestData.Guards.ParameterName} is out of range.  Valid range is {min} through {max}.*");
+        }
+
+        [Fact]
+        public void ForBetweenValues_Below()
+        {
+            // ARRANGE
+            var value = -2;
+            var min = -1;
+            var max = 1;
+
+            // ACT
+            Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<ArgumentOutOfRangeException>()
+                .WithMessage(
+                    $"The value '{value}' provided for {TestData.Guards.ParameterName} is out of range.  Valid range is {min} through {max}.*");
+        }
+
+        [Fact]
+        public void ForBetweenValues_Between()
+        {
+            // ARRANGE
+            var value = 0;
+            var min = -1;
+            var max = 1;
+
+            // ACT
+            Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ForBetweenValues_Maximum()
+        {
+            // ARRANGE
+            var value = 1;
+            var min = -1;
+            var max = 1;
+
+            // ACT
+            Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ForBetweenValues_Minimum()
+        {
+            // ARRANGE
+            var value = -1;
+            var min = -1;
+            var max = 1;
+
+            // ACT
+            Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
 
         [Fact]
         public void ForDuplicateItemsInList_With_Duplicate()
@@ -21,14 +96,14 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var wordToUse = "FIRST";
 
             // ACT
-            Action actionToTest = () => Guard.ForDuplicateItemsInList(wordToUse, ParameterName,
+            Action actionToTest = () => Guard.ForDuplicateItemsInList(wordToUse, TestData.Guards.ParameterName,
                 listToUse, nameof(listToUse));
 
             // ASSERT
             actionToTest.Should()
                 .Throw<ArgumentException>()
                 .WithMessage(
-                    $"List {nameof(listToUse)} already contains the value '{wordToUse}' provided in {ParameterName}.");
+                    $"List {nameof(listToUse)} already contains the value '{wordToUse}' provided in {TestData.Guards.ParameterName}.");
         }
 
         [Fact]
@@ -39,7 +114,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var wordToUse = "FORTH";
 
             // ACT
-            Action actionToTest = () => Guard.ForDuplicateItemsInList(wordToUse, ParameterName,
+            Action actionToTest = () => Guard.ForDuplicateItemsInList(wordToUse, TestData.Guards.ParameterName,
                 listToUse, nameof(listToUse));
 
             // ASSERT
@@ -47,10 +122,151 @@ namespace Typeform.Sdk.CSharp.UnitTests
         }
 
         [Fact]
+        public void ForHexColorValue_with_Empty()
+        {
+            // ARRANGE
+            var hexValue = string.Empty;
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<ArgumentNullException>()
+                .WithMessage($"{TestData.Guards.ParameterName} cannot be null, empty, or whitespace.*");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Invalid_Hex1()
+        {
+            // ARRANGE
+            var hexValue = "000";
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<InvalidHexColorException>()
+                .WithMessage(
+                    $"The value '{hexValue}' provided for {TestData.Guards.ParameterName} is not a valid Hex Color.  Format should be '#000' or '#000000'.");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Invalid_Hex2()
+        {
+            // ARRANGE
+            var hexValue = "#00";
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<InvalidHexColorException>()
+                .WithMessage(
+                    $"The value '{hexValue}' provided for {TestData.Guards.ParameterName} is not a valid Hex Color.  Format should be '#000' or '#000000'.");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Invalid_Hex3()
+        {
+            // ARRANGE
+            var hexValue = "#0000";
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<InvalidHexColorException>()
+                .WithMessage(
+                    $"The value '{hexValue}' provided for {TestData.Guards.ParameterName} is not a valid Hex Color.  Format should be '#000' or '#000000'.");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Invalid_Hex4()
+        {
+            // ARRANGE
+            var hexValue = "#0000000";
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<InvalidHexColorException>()
+                .WithMessage(
+                    $"The value '{hexValue}' provided for {TestData.Guards.ParameterName} is not a valid Hex Color.  Format should be '#000' or '#000000'.");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Invalid_Hex5()
+        {
+            // ARRANGE
+            var hexValue = "#Z00000";
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<InvalidHexColorException>()
+                .WithMessage(
+                    $"The value '{hexValue}' provided for {TestData.Guards.ParameterName} is not a valid Hex Color.  Format should be '#000' or '#000000'.");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Null()
+        {
+            // ARRANGE
+            string hexValue = null;
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<ArgumentNullException>()
+                .WithMessage($"{TestData.Guards.ParameterName} cannot be null, empty, or whitespace.*");
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Valid_Six_Char_Hex()
+        {
+            // ARRANGE
+            // ACT
+            Action actionToTest = () =>
+                Guard.ForHexColorValue(TestData.Themes.SixCharHexColor, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Valid_Three_Char_Hex()
+        {
+            // ARRANGE
+            // ACT
+            Action actionToTest = () =>
+                Guard.ForHexColorValue(TestData.Themes.ThreeCharHexColor, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ForHexColorValue_with_Whitespace()
+        {
+            // ARRANGE
+            var hexValue = " ";
+
+            // ACT
+            Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<ArgumentNullException>()
+                .WithMessage($"{TestData.Guards.ParameterName} cannot be null, empty, or whitespace.*");
+        }
+
+        [Fact]
         public void ForInitializedClient_Initialized()
         {
             // ARRANGE
-            var createApiClient = new CreateApiClient(bogusRandomizer.AlphaNumeric(5));
+            var createApiClient = new CreateApiClient(TestData.BogusRandomizer.AlphaNumeric(5));
 
             // ACT
             Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
@@ -71,7 +287,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
 
             // ASSERT
             actionToTest.Should().Throw<UninitializedClientException>()
-                .WithMessage($"The '{clientName}' does not contain an API Key." );
+                .WithMessage($"The '{clientName}' does not contain an API Key.");
         }
 
         [Fact]
@@ -82,13 +298,13 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var maxValue = 0;
 
             // ACT
-            Action actionToTest = () => Guard.ForMaxValue(valueToUse, maxValue, ParameterName);
+            Action actionToTest = () => Guard.ForMaxValue(valueToUse, maxValue, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should()
                 .Throw<ArgumentException>()
                 .WithMessage(
-                    $"The value provided ({valueToUse}) for '{ParameterName}' is above the maximum value of {maxValue}.");
+                    $"The value provided ({valueToUse}) for '{TestData.Guards.ParameterName}' is above the maximum value of {maxValue}.");
         }
 
         [Fact]
@@ -99,7 +315,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var maxValue = 0;
 
             // ACT
-            Action actionToTest = () => Guard.ForMaxValue(valueToUse, maxValue, ParameterName);
+            Action actionToTest = () => Guard.ForMaxValue(valueToUse, maxValue, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
@@ -113,7 +329,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var minValue = 0;
 
             // ACT
-            Action actionToTest = () => Guard.ForMaxValue(valueToUse, minValue, ParameterName);
+            Action actionToTest = () => Guard.ForMaxValue(valueToUse, minValue, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
@@ -127,7 +343,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var minValue = 0;
 
             // ACT
-            Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, ParameterName);
+            Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
@@ -141,13 +357,13 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var minValue = 0;
 
             // ACT
-            Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, ParameterName);
+            Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should()
                 .Throw<ArgumentException>()
                 .WithMessage(
-                    $"The value provided ({valueToUse}) for '{ParameterName}' is below the minimum value of {minValue}.");
+                    $"The value provided ({valueToUse}) for '{TestData.Guards.ParameterName}' is below the minimum value of {minValue}.");
         }
 
         [Fact]
@@ -158,7 +374,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var minValue = 0;
 
             // ACT
-            Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, ParameterName);
+            Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
@@ -171,12 +387,12 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var valueToUse = string.Empty;
 
             // ACT
-            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, ParameterName);
+            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should()
                 .Throw<ArgumentException>()
-                .WithMessage($"{ParameterName} cannot be null, empty, or whitespace.*");
+                .WithMessage($"{TestData.Guards.ParameterName} cannot be null, empty, or whitespace.*");
         }
 
         [Fact]
@@ -186,22 +402,22 @@ namespace Typeform.Sdk.CSharp.UnitTests
             string valueToUse = null;
 
             // ACT
-            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, ParameterName);
+            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should()
                 .Throw<ArgumentException>()
-                .WithMessage($"{ParameterName} cannot be null, empty, or whitespace.*");
+                .WithMessage($"{TestData.Guards.ParameterName} cannot be null, empty, or whitespace.*");
         }
 
         [Fact]
         public void ForNullOrEmptyOrWhitespace_With_Value()
         {
             // ARRANGE
-            var valueToUse = bogusRandomizer.AlphaNumeric(10);
+            var valueToUse = TestData.BogusRandomizer.AlphaNumeric(10);
 
             // ACT
-            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, ParameterName);
+            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should().NotThrow<ArgumentException>();
@@ -214,12 +430,39 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var valueToUse = " ";
 
             // ACT
-            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, ParameterName);
+            Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should()
                 .Throw<ArgumentException>()
-                .WithMessage($"{ParameterName} cannot be null, empty, or whitespace.*");
+                .WithMessage($"{TestData.Guards.ParameterName} cannot be null, empty, or whitespace.*");
+        }
+
+        [Fact]
+        public void ForValidUrl_With_Valid_Url()
+        {
+            // ARRANGE
+            var url = TestData.BogusFaker.Internet.Url();
+
+            // ACT
+            Action actionToTest = () => Guard.ForInvalidUrl(url, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ForValidUrl_With_Invalid_Url()
+        {
+            // ARRANGE
+            var url = TestData.BogusRandomizer.AlphaNumeric(15);
+
+            // ACT
+            Action actionToTest = () => Guard.ForInvalidUrl(url, TestData.Guards.ParameterName);
+
+            // ASSERT
+            actionToTest.Should().Throw<UriFormatException>()
+                .WithMessage($"The URL '{url}' provided for {TestData.Guards.ParameterName} is not valid.");
         }
     }
 }

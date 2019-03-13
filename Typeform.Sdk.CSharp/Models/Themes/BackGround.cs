@@ -25,6 +25,6 @@ namespace Typeform.Sdk.CSharp.Models.Themes
         ///     Brightness for the background. -1 is least bright (minimum) and 1 is most bright (maximum).
         /// </summary>
         [JsonProperty("brightness")]
-        public int Brightness { get; set; }
+        public decimal Brightness { get; set; }
     }
 }

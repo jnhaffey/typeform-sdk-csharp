@@ -12,6 +12,26 @@
             internal const string ContentType = "Content-Type";
         }
 
+        internal static class UrlPathSegments
+        {
+            internal static class CreateApi
+            {
+                internal const string AccountPathSegment = "me";
+                internal const string FormUrlPathSegment = "forms";
+                internal const string ImageUrlPathSegment = "images";
+                internal const string ThemeUrlPathSegment = "themes";
+                internal const string WorkspaceUrlPathSegment = "workspaces";
+            }
+
+            internal static class ResponseApi
+            {
+            }
+
+            internal static class WebhookApi
+            {
+            }
+        }
+
         internal static class MimeTypes
         {
             internal const string TextPlain = "text/plain";

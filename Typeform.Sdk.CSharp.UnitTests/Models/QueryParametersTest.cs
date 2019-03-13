@@ -8,8 +8,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
     public class QueryParametersTest
     {
-        private readonly Randomizer bogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
-
         [Fact]
         public void QueryParameters_Create_With_Page_Parameter_Only()
         {

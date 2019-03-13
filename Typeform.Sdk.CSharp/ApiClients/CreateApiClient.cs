@@ -26,12 +26,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
     /// </summary>
     public sealed class CreateApiClient : ApiClientBase
     {
-        private readonly string _accountPathSegment;
-        private readonly string _formUrlPathSegment;
-        private readonly string _imageUrlPathSegment;
         private readonly ILogger<CreateApiClient> _logger;
-        private readonly string _themeUrlPathSegment;
-        private readonly string _workspaceUrlPathSegment;
 
         /// <summary>
         ///     Instantiate an instance of the Create API Client.
@@ -42,11 +37,6 @@ namespace Typeform.Sdk.CSharp.ApiClients
             : base(apiKey)
         {
             _logger = logger;
-            _accountPathSegment = "me";
-            _formUrlPathSegment = "forms";
-            _imageUrlPathSegment = "images";
-            _themeUrlPathSegment = "themes";
-            _workspaceUrlPathSegment = "workspaces";
         }
 
         #region Account
@@ -60,7 +50,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
         {
             Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
-                .AppendPathSegment(_accountPathSegment)
+                .AppendPathSegment(UrlPathSegments.CreateApi.AccountPathSegment)
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
@@ -207,7 +197,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
         {
             Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
-                .AppendPathSegment(_themeUrlPathSegment)
+                .AppendPathSegment(UrlPathSegments.CreateApi.ThemeUrlPathSegment)
                 .SetQueryParams(queryParameters.GetQueryParametersForUrl())
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
@@ -254,7 +244,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
             Guard.ForNullOrEmptyOrWhitespace(themeId, nameof(themeId));
 
             var urlQuery = BaseUrl
-                .AppendPathSegments(_themeUrlPathSegment, themeId)
+                .AppendPathSegments(UrlPathSegments.CreateApi.ThemeUrlPathSegment, themeId)
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
@@ -330,7 +320,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
         {
             Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
-                .AppendPathSegment(_workspaceUrlPathSegment)
+                .AppendPathSegment(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment)
                 .SetQueryParams(queryParametersWithSearch.GetQueryParametersForUrl())
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
@@ -378,7 +368,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
             Guard.ForNullOrEmptyOrWhitespace(workspaceId, nameof(workspaceId));
 
             var urlQuery = BaseUrl
-                .AppendPathSegments(_workspaceUrlPathSegment, workspaceId)
+                .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment, workspaceId)
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 
@@ -433,7 +423,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
             Guard.ForNullOrEmptyOrWhitespace(workspaceName, nameof(workspaceName));
 
             var urlQuery = BaseUrl
-                .AppendPathSegments(_workspaceUrlPathSegment)
+                .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment)
                 .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
@@ -484,7 +474,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
                 if (await builder.IsValid(token))
                 {
                     var urlQuery = BaseUrl
-                        .AppendPathSegments(_workspaceUrlPathSegment, builder.WorkspaceId)
+                        .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment, builder.WorkspaceId)
                         .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
                         .WithOAuthBearerToken(ApiKey);
                     _logger.LogUrlCall(urlQuery.Url);
@@ -541,7 +531,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
             Guard.ForNullOrEmptyOrWhitespace(workspaceId, nameof(workspaceId));
 
             var urlQuery = BaseUrl
-                .AppendPathSegments(_workspaceUrlPathSegment, workspaceId)
+                .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment, workspaceId)
                 .WithOAuthBearerToken(ApiKey);
             _logger.LogUrlCall(urlQuery.Url);
 

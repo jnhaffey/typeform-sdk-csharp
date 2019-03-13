@@ -144,4 +144,13 @@
   <data name="Validation_WorkspaceUpdateBuilder_MissingWorkspaceId" xml:space="preserve">
     <value>A Workspace Id is required.</value>
   </data>
+  <data name="Guard_ForBetweenValues" xml:space="preserve">
+    <value>The value '{0}' provided for {1} is out of range.  Valid range is {2} through {3}.</value>
+  </data>
+  <data name="Guard_ForHexColorValue" xml:space="preserve">
+    <value>The value '{0}' provided for {1} is not a valid Hex Color.  Format should be '#000' or '#000000'.</value>
+  </data>
+  <data name="Guard_ForInvalidUrl" xml:space="preserve">
+    <value>The URL '{0}' provided for {1} is not valid.</value>
+  </data>
 </root>

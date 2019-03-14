@@ -59,7 +59,10 @@ namespace Typeform.Sdk.CSharp.Demo
                 // THEMES
                 var themeEndPoints = new ThemeEndPoints(serviceProvider);
                 await themeEndPoints.ExecuteRetrieveThemes();
-                //await themeEndPoints.ExecuteRetrieveTheme(themeId);
+                var themeId = await themeEndPoints.ExecuteCreateTheme();
+                await themeEndPoints.ExecuteRetrieveTheme(themeId);
+                await themeEndPoints.ExecuteUpdateTheme(themeId);
+                await themeEndPoints.ExecuteDeleteTheme(themeId);
             }
             catch (Exception ex)
             {

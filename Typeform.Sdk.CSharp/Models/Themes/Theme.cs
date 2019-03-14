@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Enums;
+using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Models.Themes
 {
@@ -9,6 +10,12 @@ namespace Typeform.Sdk.CSharp.Models.Themes
         {
             Font = FontType.SourceSansPro;
         }
+
+        /// <summary>
+        ///     Url to Self.
+        /// </summary>
+        [JsonIgnore]
+        public HrefObject Self { get; set; }
 
         /// <summary>
         ///     Settings for the background.

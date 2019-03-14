@@ -1,21 +1,25 @@
 ﻿using System;
-using Bogus;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Builders;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Builders
 {
     public class WorkspaceUpdateBuilderTests
     {
-        private readonly Randomizer bogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
-        private readonly Faker bogusFaker = new Faker();
+        public WorkspaceUpdateBuilderTests(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
+        private readonly ITestOutputHelper _testOutputHelper;
 
         [Fact]
         public void Create_with_WorkspaceId()
         {
             // ARRANGE
-            var workspaceIdToUse = bogusRandomizer.AlphaNumeric(5);
+            var workspaceIdToUse = TestData.BogusRandomizer.AlphaNumeric(5);
 
             // ACT
             Func<WorkspaceUpdateBuilder> functionToTest = () => WorkspaceUpdateBuilder.Create(workspaceIdToUse);
@@ -23,7 +27,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
             // ASSERT
             functionToTest.Should().NotThrow<ArgumentException>();
             functionToTest.Invoke().Should().BeOfType<WorkspaceUpdateBuilder>();
-            functionToTest.Invoke().WorkspaceId.Should().Be(workspaceIdToUse);
         }
 
         [Fact]
@@ -41,19 +44,21 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
         public void ToJsonPatch()
         {
             // ARRANGE
-            var workspaceIdToUse = bogusRandomizer.AlphaNumeric(5);
-            var workspaceNameToChange = bogusRandomizer.Word();
-            var emailToAdd = bogusFaker.Person.Email;
-            var emailToRemove = bogusFaker.Person.Email;
-            var workspaceUpdateBuilderToTest = WorkspaceUpdateBuilder.Create(workspaceIdToUse)
+            var workspaceIdToUse = TestData.BogusRandomizer.AlphaNumeric(5);
+            var workspaceNameToChange = TestData.BogusRandomizer.Word();
+            var emailToAdd = TestData.BogusFaker.Person.Email;
+            var emailToRemove = TestData.BogusFaker.Person.Email;
+            var workspaceUpdateBuilder = WorkspaceUpdateBuilder.Create(workspaceIdToUse)
                 .ReplaceName(workspaceNameToChange)
                 .AddMember(emailToAdd)
                 .RemoveMember(emailToRemove);
 
             // ACT
-            var jsonPatchData = workspaceUpdateBuilderToTest.ToJsonPatch();
+            var jsonPatchData = workspaceUpdateBuilder.ToJson();
 
             // ASSERT
+            jsonPatchData.Should().NotBeEmpty();
+            _testOutputHelper.WriteLine($"Raw Json: {jsonPatchData}");
         }
     }
 }

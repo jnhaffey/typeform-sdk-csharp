@@ -3,7 +3,7 @@ using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Models.Workspaces
 {
-    public class Forms : HrefObject
+    public class WorkspaceForms : HrefObject
     {
         /// <summary>
         ///     Number of typeforms in the workspace.

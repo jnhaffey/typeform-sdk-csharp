@@ -11,6 +11,11 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public static Randomizer BogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
         public static Faker BogusFaker = new Faker();
 
+        public static class Workspace
+        {
+            public const string Name = "UNIT_TEST_WORKSPACE";
+        }
+
         public static class Themes
         {
             public const string Name = "THEME_UNIT_TEST";

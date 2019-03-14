@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Flurl;
 using Typeform.Sdk.CSharp.Abstracts;
@@ -133,6 +134,20 @@ namespace Typeform.Sdk.CSharp
         {
             if (!Url.IsValid(value))
                 throw new UriFormatException(string.Format(ErrorMessages.Guard_ForInvalidUrl, value, parameterName));
+        }
+
+        /// <summary>
+        ///     Checks if an enum value is in a list of enum values.
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="enumValue"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="options"></param>
+        public static void ForAllowedOptions<TEnum>(TEnum enumValue, string parameterName, params TEnum[] options)
+        {
+            if (!options.Any(x => x.Equals(enumValue)))
+                throw new ArgumentOutOfRangeException(parameterName, enumValue,
+                    string.Format(ErrorMessages.Guard_ForAllowedOptions));
         }
     }
 }

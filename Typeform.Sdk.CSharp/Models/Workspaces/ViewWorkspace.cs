@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Models.Shared;
 
 namespace Typeform.Sdk.CSharp.Models.Workspaces
 {
-    public class Workspace
+    public class ViewWorkspace
     {
         /// <summary>
         ///     Unique identifier for the workspace.
@@ -33,12 +34,18 @@ namespace Typeform.Sdk.CSharp.Models.Workspaces
         ///     Link and count of typeforms in the workspace.
         /// </summary>
         [JsonProperty("forms")]
-        public Forms Forms { get; set; }
+        public WorkspaceForms Forms { get; set; }
 
         /// <summary>
         ///     Link to the workspace.
         /// </summary>
         [JsonProperty("self")]
         public HrefObject SelfLink { get; set; }
+
+        /// <summary>
+        ///     List of members.
+        /// </summary>
+        [JsonProperty("members")]
+        public List<WorkspaceMember> Members { get; set; }
     }
 }

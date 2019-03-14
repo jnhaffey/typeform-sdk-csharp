@@ -2,33 +2,24 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
-using Microsoft.AspNetCore.JsonPatch.Operations;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Typeform.Sdk.CSharp.Extensions;
 using Typeform.Sdk.CSharp.Interfaces;
-using Typeform.Sdk.CSharp.Models.Shared;
-using Typeform.Sdk.CSharp.Validations;
+using Typeform.Sdk.CSharp.Models.Workspaces;
+using Typeform.Sdk.CSharp.Models.Workspaces.Validations;
 
 namespace Typeform.Sdk.CSharp.Builders
 {
     /// <summary>
     /// </summary>
-    public class WorkspaceUpdateBuilder : IIsValidatable<WorkspaceUpdateBuildValidation, WorkspaceUpdateBuilder>
+    public class WorkspaceUpdateBuilder : IIsValidatable<UpdateWorkspaceValidation, UpdateWorkspace>,
+        IToJson
     {
-        private const string Name = "/name";
-        private const string Member = "/member";
-        private readonly List<Patch<string>> _memberChanges;
-        private Patch<string> _nameChange;
+        private UpdateWorkspace _updateWorkspace;
 
         private WorkspaceUpdateBuilder()
         {
-            _memberChanges = new List<Patch<string>>();
         }
-
-        /// <summary>
-        ///     The Workspace Id to be use.
-        /// </summary>
-        public string WorkspaceId { get; private set; }
 
         #region Implementation of IIsValidatable
 
@@ -38,12 +29,28 @@ namespace Typeform.Sdk.CSharp.Builders
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<bool> IsValid(CancellationToken token = default(CancellationToken))
+        public async Task<bool> IsValid(CancellationToken token = default)
         {
-            var validator = new WorkspaceUpdateBuildValidation();
-            var validation = await validator.ValidateAsync(this, token);
+            var validator = new UpdateWorkspaceValidation();
+            var validation = await validator.ValidateAsync(_updateWorkspace, token);
             if (validation.IsValid) return true;
             throw new ValidationException(validation.Errors);
+        }
+
+        #endregion
+
+        #region Implementation of IToJson
+
+        /// <summary>
+        ///     Convert data to JSON Patch Model.
+        /// </summary>
+        /// <returns></returns>
+        public string ToJson()
+        {
+            var list = new List<dynamic>();
+            list.AddRange(_updateWorkspace.UpdateMemberOptions);
+            list.Add(_updateWorkspace.UpdateWorkspaceName);
+            return JsonConvert.SerializeObject(list);
         }
 
         #endregion
@@ -59,7 +66,7 @@ namespace Typeform.Sdk.CSharp.Builders
 
             return new WorkspaceUpdateBuilder
             {
-                WorkspaceId = workspaceId
+                _updateWorkspace = UpdateWorkspace.Create(workspaceId)
             };
         }
 
@@ -71,8 +78,7 @@ namespace Typeform.Sdk.CSharp.Builders
         public WorkspaceUpdateBuilder ReplaceName(string name)
         {
             Guard.ForNullOrEmptyOrWhitespace(name, nameof(name));
-
-            _nameChange = new Patch<string> {Operation = OperationType.Replace, Path = Name, Value = name};
+            _updateWorkspace.ChangeWorkspaceName(name);
             return this;
         }
 
@@ -84,8 +90,7 @@ namespace Typeform.Sdk.CSharp.Builders
         public WorkspaceUpdateBuilder AddMember(string emailAddress)
         {
             Guard.ForNullOrEmptyOrWhitespace(emailAddress, nameof(emailAddress));
-
-            _memberChanges.Add(new Patch<string> {Operation = OperationType.Add, Path = Member, Value = emailAddress});
+            _updateWorkspace.AddMember(emailAddress);
             return this;
         }
 
@@ -97,40 +102,17 @@ namespace Typeform.Sdk.CSharp.Builders
         public WorkspaceUpdateBuilder RemoveMember(string emailAddress)
         {
             Guard.ForNullOrEmptyOrWhitespace(emailAddress, nameof(emailAddress));
-
-            _memberChanges.Add(
-                new Patch<string> {Operation = OperationType.Remove, Path = Member, Value = emailAddress});
+            _updateWorkspace.RemoveMember(emailAddress);
             return this;
         }
 
         /// <summary>
-        ///     Convert data to JSON Patch Model.
+        ///     Build the Update Workspace.
         /// </summary>
         /// <returns></returns>
-        public object ToJsonPatch()
+        public UpdateWorkspace Build()
         {
-            var patchData = new List<JObject>();
-
-            if (_nameChange != null)
-            {
-                dynamic nameChange = new JObject();
-                nameChange.op = _nameChange.Operation.ToLowerString();
-                nameChange.path = _nameChange.Path;
-                nameChange.value = _nameChange.Value;
-                patchData.Add(nameChange);
-            }
-
-            foreach (var mbrChange in _memberChanges)
-            {
-                dynamic memberChange = new JObject();
-                memberChange.op = mbrChange.Operation.ToLowerString();
-                memberChange.path = mbrChange.Path;
-                memberChange.value = new JObject();
-                memberChange.value.email = mbrChange.Value;
-                patchData.Add(memberChange);
-            }
-
-            return new JArray(patchData);
+            return _updateWorkspace;
         }
     }
 }

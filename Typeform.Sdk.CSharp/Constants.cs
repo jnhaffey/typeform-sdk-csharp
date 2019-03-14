@@ -55,5 +55,14 @@
             internal const string ApiContent = "API Content";
             internal const string JsonPatch = "JSON Patch";
         }
+
+        internal static class PatchOptions
+        {
+            internal static class Workspace
+            {
+                internal const string Name = "/name";
+                internal const string Member = "/member";
+            }
+        }
     }
 }

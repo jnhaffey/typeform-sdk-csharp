@@ -153,4 +153,7 @@
   <data name="Guard_ForInvalidUrl" xml:space="preserve">
     <value>The URL '{0}' provided for {1} is not valid.</value>
   </data>
+  <data name="Guard_ForAllowedOptions" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

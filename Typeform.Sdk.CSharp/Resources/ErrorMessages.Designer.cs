@@ -61,6 +61,15 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Guard_ForAllowedOptions {
+            get {
+                return ResourceManager.GetString("Guard_ForAllowedOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value &apos;{0}&apos; provided for {1} is out of range.  Valid range is {2} through {3}..
         /// </summary>
         public static string Guard_ForBetweenValues {

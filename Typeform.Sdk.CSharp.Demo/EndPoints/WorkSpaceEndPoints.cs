@@ -25,7 +25,7 @@ namespace Typeform.Sdk.CSharp.Demo.EndPoints
         public async Task<string> ExecuteCreateWorkspace()
         {
             HelperMethods.PrintStartOfNewExecution("EXECUTING CREATION OF WORKSPACE");
-            var results = await _createApiClient.CreateWorkspace("SDK Created Workspace");
+            var results = await _createApiClient.CreateWorkspace("SDK Created ViewWorkspace");
             HelperMethods.PrintEndOfExecution(results);
             return results.Id;
         }
@@ -41,7 +41,7 @@ namespace Typeform.Sdk.CSharp.Demo.EndPoints
         {
             HelperMethods.PrintStartOfNewExecution("EXECUTING UPDATING OF WORKSPACE");
             var updateBuilder = WorkspaceUpdateBuilder.Create(workspaceId)
-                .ReplaceName("Workspace Name Changed from SDK");
+                .ReplaceName("ViewWorkspace Name Changed from SDK");
             await _createApiClient.UpdateWorkspace(updateBuilder);
             HelperMethods.PrintEndOfExecution("UPDATED");
         }

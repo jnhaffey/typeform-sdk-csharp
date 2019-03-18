@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Typeform.Sdk.CSharp.Interfaces;
 using Typeform.Sdk.CSharp.Models.Workspaces;
 using Typeform.Sdk.CSharp.Models.Workspaces.Validations;
@@ -12,8 +11,7 @@ namespace Typeform.Sdk.CSharp.Builders
 {
     /// <summary>
     /// </summary>
-    public class WorkspaceUpdateBuilder : IIsValidatable<UpdateWorkspaceValidation, UpdateWorkspace>,
-        IToJson
+    public class WorkspaceUpdateBuilder : IIsValidatable<UpdateWorkspaceValidation, UpdateWorkspace>
     {
         private UpdateWorkspace _updateWorkspace;
 
@@ -39,21 +37,17 @@ namespace Typeform.Sdk.CSharp.Builders
 
         #endregion
 
-        #region Implementation of IToJson
-
         /// <summary>
         ///     Convert data to JSON Patch Model.
         /// </summary>
         /// <returns></returns>
-        public string ToJson()
+        public string ToJsonPatch()
         {
             var list = new List<dynamic>();
             list.AddRange(_updateWorkspace.UpdateMemberOptions);
             list.Add(_updateWorkspace.UpdateWorkspaceName);
             return JsonConvert.SerializeObject(list);
         }
-
-        #endregion
 
         /// <summary>
         ///     Create a new instance of the WorkspaceUpdateBuilder.

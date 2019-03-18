@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Bogus;
+using Typeform.Sdk.CSharp.Enums;
+using Typeform.Sdk.CSharp.Exceptions;
+using Typeform.Sdk.CSharp.Models.Shared;
+using Typeform.Sdk.CSharp.Models.Workspaces;
 
 namespace Typeform.Sdk.CSharp.UnitTests
 {
@@ -13,7 +18,49 @@ namespace Typeform.Sdk.CSharp.UnitTests
 
         public static class Workspace
         {
-            public const string Name = "UNIT_TEST_WORKSPACE";
+            private static string FullWorkspaceId = "ABC123";
+            private static string FullWorkspaceSelfUrl = $"https://api.typeform.com/workspaces/{FullWorkspaceId}";
+            private static string FullWorkspaceFormsUrl = $"{FullWorkspaceSelfUrl}/forms";
+
+            public static ViewWorkspace FullWorkspace = new ViewWorkspace
+            {
+                Id = FullWorkspaceId,
+                Name = "UNIT_TEST_WORKSPACE",
+                Default = true,
+                Shared = false,
+                SelfLink = new HrefObject
+                {
+                    Url = FullWorkspaceSelfUrl
+                },
+                Forms = new WorkspaceForms
+                {
+                    Count = 0,
+                    Url = FullWorkspaceFormsUrl
+                },
+                Members = new List<WorkspaceMember>
+                {
+                    new WorkspaceMember
+                    {
+                        Email = "owner@example.com",
+                        Name = "Account Owner",
+                        Role = MemberRoleType.Owner
+                    },
+                    new WorkspaceMember
+                    {
+                        Email = "member@example.com",
+                        Name = "Account Member",
+                        Role = MemberRoleType.Member
+                    }
+                }
+            };
+
+            public static string DefaultJson = $"{{\"id\":\"{FullWorkspace.Id}\"," +
+                                               $"\"name\":\"{FullWorkspace.Name}\"," +
+                                               $"\"default\":{FullWorkspace.Default.ToLowerString()}," +
+                                               $"\"shared\":{FullWorkspace.Shared.ToLowerString()}," +
+                                               $"\"forms\":{{\"count\":{FullWorkspace.Forms.Count},\"href\":\"{FullWorkspace.Forms.Url}\"}}," +
+                                               $"\"self\":{{\"href\":\"{FullWorkspace.SelfLink.Url}\"}}," +
+                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int)FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int)FullWorkspace.Members[1].Role}}}]}}";
         }
 
         public static class Themes

@@ -85,7 +85,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
             var updateWorkspace = UpdateWorkspace.Create(workspaceId);
-            updateWorkspace.ChangeWorkspaceName(TestData.Workspace.Name);
+            updateWorkspace.ChangeWorkspaceName(TestData.Workspace.FullWorkspace.Name);
             var nameToChangeTo = TestData.BogusRandomizer.AlphaNumeric(10);
 
             // ACT
@@ -94,7 +94,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             // ASSERT
             updateWorkspace.UpdateWorkspaceName.Operation.Should().Be(OperationType.Replace);
             updateWorkspace.UpdateWorkspaceName.Path.Should().Be("/name");
-            updateWorkspace.UpdateWorkspaceName.Value.Should().NotBe(TestData.Workspace.Name);
+            updateWorkspace.UpdateWorkspaceName.Value.Should().NotBe(TestData.Workspace.FullWorkspace.Name);
             updateWorkspace.UpdateWorkspaceName.Value.Should().Be(nameToChangeTo);
         }
 
@@ -136,12 +136,12 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var updateWorkspace = UpdateWorkspace.Create(workspaceId);
 
             // ACT
-            updateWorkspace.ChangeWorkspaceName(TestData.Workspace.Name);
+            updateWorkspace.ChangeWorkspaceName(TestData.Workspace.FullWorkspace.Name);
 
             // ASSERT
             updateWorkspace.UpdateWorkspaceName.Operation.Should().Be(OperationType.Replace);
             updateWorkspace.UpdateWorkspaceName.Path.Should().Be("/name");
-            updateWorkspace.UpdateWorkspaceName.Value.Should().Be(TestData.Workspace.Name);
+            updateWorkspace.UpdateWorkspaceName.Value.Should().Be(TestData.Workspace.FullWorkspace.Name);
         }
 
         [Fact]

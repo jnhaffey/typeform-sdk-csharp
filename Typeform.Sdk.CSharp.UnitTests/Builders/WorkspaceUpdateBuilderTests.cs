@@ -8,13 +8,12 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
 {
     public class WorkspaceUpdateBuilderTests
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         public WorkspaceUpdateBuilderTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
         }
-
-        private readonly ITestOutputHelper _testOutputHelper;
-
+        
         [Fact]
         public void Create_with_WorkspaceId()
         {
@@ -54,7 +53,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
                 .RemoveMember(emailToRemove);
 
             // ACT
-            var jsonPatchData = workspaceUpdateBuilder.ToJson();
+            var jsonPatchData = workspaceUpdateBuilder.ToJsonPatch();
 
             // ASSERT
             jsonPatchData.Should().NotBeEmpty();

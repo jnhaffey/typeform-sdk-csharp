@@ -588,8 +588,8 @@ namespace Typeform.Sdk.CSharp.ApiClients
                         .WithOAuthBearerToken(ApiKey);
                     _logger.LogUrlCall(urlQuery.Url);
 
-                    _logger.DebugRawData(DebugNames.JsonPatch, builder.ToJson());
-                    var apiResults = await urlQuery.PatchJsonAsync(builder.ToJson(), token);
+                    _logger.DebugRawData(DebugNames.JsonPatch, builder.ToJsonPatch());
+                    var apiResults = await urlQuery.PatchJsonAsync(builder.ToJsonPatch(), token);
                     _logger.DebugRawData(DebugNames.ApiResults, apiResults);
                     _logger.DebugRawData(DebugNames.ApiContent, await apiResults.Content.ReadAsStringAsync());
                 }

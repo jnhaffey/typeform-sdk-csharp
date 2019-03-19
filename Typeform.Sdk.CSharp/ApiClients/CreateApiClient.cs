@@ -17,6 +17,7 @@ using Typeform.Sdk.CSharp.Models.Accounts;
 using Typeform.Sdk.CSharp.Models.Shared;
 using Typeform.Sdk.CSharp.Models.Themes;
 using Typeform.Sdk.CSharp.Models.Workspaces;
+using Typeform.Sdk.CSharp.Modifiers;
 using Typeform.Sdk.CSharp.Validations;
 using static Typeform.Sdk.CSharp.Constants;
 
@@ -573,23 +574,23 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// <exception cref="AuthenticationException">Thrown if unable to authenticate.</exception>
         /// <exception cref="RecordNotFoundException">Thrown if no workspace can be found with the id provided.</exception>
         /// <returns></returns>
-        public async Task UpdateWorkspace(WorkspaceUpdateBuilder builder,
+        public async Task UpdateWorkspace(WorkspaceModifier modifier,
             CancellationToken token = default)
         {
             Guard.ForInitializedClient(this);
             try
             {
-                if (await builder.IsValid(token))
+                if (await modifier.IsValid(token))
                 {
-                    var updateWorkspace = builder.Build();
+                    var updateWorkspace = modifier.BuildUpdate();
                     var urlQuery = BaseUrl
                         .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment, updateWorkspace.WorkspaceId)
                         .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
                         .WithOAuthBearerToken(ApiKey);
                     _logger.LogUrlCall(urlQuery.Url);
 
-                    _logger.DebugRawData(DebugNames.JsonPatch, builder.ToJsonPatch());
-                    var apiResults = await urlQuery.PatchJsonAsync(builder.ToJsonPatch(), token);
+                    _logger.DebugRawData(DebugNames.JsonPatch, modifier.ToJsonPatch());
+                    var apiResults = await urlQuery.PatchJsonAsync(modifier.ToJsonPatch(), token);
                     _logger.DebugRawData(DebugNames.ApiResults, apiResults);
                     _logger.DebugRawData(DebugNames.ApiContent, await apiResults.Content.ReadAsStringAsync());
                 }
@@ -607,7 +608,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
                 if (ex.Call.HttpStatus == HttpStatusCode.NotFound)
                 {
-                    var updateWorkspace = builder.Build();
+                    var updateWorkspace = modifier.BuildUpdate();
                     var errorResponse =
                         JsonConvert.DeserializeObject<ErrorResponse>(await ex.Call.Response.Content
                             .ReadAsStringAsync());

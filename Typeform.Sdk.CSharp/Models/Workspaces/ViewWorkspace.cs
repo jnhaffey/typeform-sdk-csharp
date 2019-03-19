@@ -9,6 +9,11 @@ namespace Typeform.Sdk.CSharp.Models.Workspaces
 {
     public class ViewWorkspace : IToJson, IFromJson<ViewWorkspace>
     {
+        public ViewWorkspace()
+        {
+            Members = new List<WorkspaceMember>();
+        }
+
         /// <summary>
         ///     Unique identifier for the workspace.
         /// </summary>

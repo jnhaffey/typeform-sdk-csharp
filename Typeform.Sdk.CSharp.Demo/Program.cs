@@ -52,8 +52,8 @@ namespace Typeform.Sdk.CSharp.Demo
                 var workspaceEndPoints = new WorkSpaceEndPoints(serviceProvider);
                 await workspaceEndPoints.ExecuteRetrieveWorkspaces();
                 var workspaceId = await workspaceEndPoints.ExecuteCreateWorkspace();
-                await workspaceEndPoints.ExecuteRetrieveWorkspace(workspaceId);
-                await workspaceEndPoints.ExecuteUpdateWorkspace(workspaceId);
+                var workspace = await workspaceEndPoints.ExecuteRetrieveWorkspace(workspaceId);
+                await workspaceEndPoints.ExecuteUpdateWorkspace(workspace);
                 await workspaceEndPoints.ExecuteDeleteWorkspace(workspaceId);
 
                 // THEMES

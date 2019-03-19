@@ -149,5 +149,25 @@ namespace Typeform.Sdk.CSharp
                 throw new ArgumentOutOfRangeException(parameterName, enumValue,
                     string.Format(ErrorMessages.Guard_ForAllowedOptions));
         }
+
+        /// <summary>
+        ///     Checks if a required object is null to perform an operation.
+        /// </summary>
+        /// <param name="nullCheck"></param>
+        /// <param name="message"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static void ForInvalidOperations(object nullCheck, string message)
+        {
+            if (nullCheck == null)
+                throw new InvalidOperationException(message);
+        }
+
+        public static void ForInvalidEmailForm(string emailAddress, string parameterName)
+        {
+            if (!Constants.RegularExpressions.EmailAddress.IsMatch(emailAddress))
+            {
+                throw new InvalidEmailException($"The email address provided, '{emailAddress}' in the parameter '{parameterName}' is not valid.");
+            }
+        }
     }
 }

@@ -141,7 +141,7 @@
   <data name="Guard_ForMinValue" xml:space="preserve">
     <value>The value provided ({1}) for '{0}' is below the minimum value of {2}.</value>
   </data>
-  <data name="Validation_WorkspaceUpdateBuilder_MissingWorkspaceId" xml:space="preserve">
+  <data name="Validation_WorkspaceModifier_MissingWorkspaceId" xml:space="preserve">
     <value>A Workspace Id is required.</value>
   </data>
   <data name="Guard_ForBetweenValues" xml:space="preserve">
@@ -154,6 +154,12 @@
     <value>The URL '{0}' provided for {1} is not valid.</value>
   </data>
   <data name="Guard_ForAllowedOptions" xml:space="preserve">
-    <value></value>
+    <value />
+  </data>
+  <data name="Validation_WorkspaceModifier_NoChange" xml:space="preserve">
+    <value>There are no changes applied to the workspace.</value>
+  </data>
+  <data name="Validation_WorkspaceBuilder_MissingWorkspaceName" xml:space="preserve">
+    <value>A Workspace Name is required.</value>
   </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Linq;
+using FluentValidation;
 using Typeform.Sdk.CSharp.Resources;
 
 namespace Typeform.Sdk.CSharp.Models.Workspaces.Validations
@@ -9,12 +10,17 @@ namespace Typeform.Sdk.CSharp.Models.Workspaces.Validations
         {
             RuleFor(w => w.WorkspaceId)
                 .NotEmpty()
-                .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceUpdate_MissingWorkspaceId");
+                .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceModifier_MissingWorkspaceId");
+
             RuleFor(w => w.UpdateMemberOptions)
-                .NotNull()
-                .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceUpdate_UpdateOperationEmpty");
-            RuleForEach(w => w.UpdateMemberOptions)
-                .SetValidator(new WorkspacePatchValidation());
+                .NotEmpty()
+                .When(w => w.UpdateWorkspaceName == null)
+                .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceModifier_NoChange");
+
+            RuleFor(w => w.UpdateWorkspaceName)
+                .NotEmpty()
+                .When(w => w.UpdateMemberOptions.Any() == false)
+                .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceModifier_NoChange");
         }
     }
 }

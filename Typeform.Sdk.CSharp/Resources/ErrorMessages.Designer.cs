@@ -169,11 +169,29 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A Workspace Name is required..
+        /// </summary>
+        public static string Validation_WorkspaceBuilder_MissingWorkspaceName {
+            get {
+                return ResourceManager.GetString("Validation_WorkspaceBuilder_MissingWorkspaceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A Workspace Id is required..
         /// </summary>
-        public static string Validation_WorkspaceUpdateBuilder_MissingWorkspaceId {
+        public static string Validation_WorkspaceModifier_MissingWorkspaceId {
             get {
-                return ResourceManager.GetString("Validation_WorkspaceUpdateBuilder_MissingWorkspaceId", resourceCulture);
+                return ResourceManager.GetString("Validation_WorkspaceModifier_MissingWorkspaceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no changes applied to the workspace..
+        /// </summary>
+        public static string Validation_WorkspaceModifier_NoChange {
+            get {
+                return ResourceManager.GetString("Validation_WorkspaceModifier_NoChange", resourceCulture);
             }
         }
     }

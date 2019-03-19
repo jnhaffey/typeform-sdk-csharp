@@ -10,17 +10,22 @@ namespace Typeform.Sdk.CSharp.UnitTests
 {
     public static class TestData
     {
+        public const string NullValue = null;
         public const string EmptyValue = "";
         public const string WhiteSpaceValue = " ";
         public const string FormTitle = "TEST_FORM";
+        public const string InvalidJson = "{{[]}}";
         public static Randomizer BogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
         public static Faker BogusFaker = new Faker();
 
         public static class Workspace
         {
-            private static string FullWorkspaceId = "ABC123";
-            private static string FullWorkspaceSelfUrl = $"https://api.typeform.com/workspaces/{FullWorkspaceId}";
-            private static string FullWorkspaceFormsUrl = $"{FullWorkspaceSelfUrl}/forms";
+            private static readonly string FullWorkspaceId = "ABC123";
+
+            private static readonly string FullWorkspaceSelfUrl =
+                $"https://api.typeform.com/workspaces/{FullWorkspaceId}";
+
+            private static readonly string FullWorkspaceFormsUrl = $"{FullWorkspaceSelfUrl}/forms";
 
             public static ViewWorkspace FullWorkspace = new ViewWorkspace
             {
@@ -60,7 +65,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
                                                $"\"shared\":{FullWorkspace.Shared.ToLowerString()}," +
                                                $"\"forms\":{{\"count\":{FullWorkspace.Forms.Count},\"href\":\"{FullWorkspace.Forms.Url}\"}}," +
                                                $"\"self\":{{\"href\":\"{FullWorkspace.SelfLink.Url}\"}}," +
-                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int)FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int)FullWorkspace.Members[1].Role}}}]}}";
+                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int) FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int) FullWorkspace.Members[1].Role}}}]}}";
         }
 
         public static class Themes

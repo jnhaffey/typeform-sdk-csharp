@@ -1,4 +1,6 @@
-﻿namespace Typeform.Sdk.CSharp
+﻿using System.Text.RegularExpressions;
+
+namespace Typeform.Sdk.CSharp
 {
     public static class Constants
     {
@@ -63,6 +65,11 @@
                 internal const string Name = "/name";
                 internal const string Member = "/member";
             }
+        }
+
+        public class RegularExpressions
+        {
+            public static Regex EmailAddress = new Regex("(@)(.+)$");
         }
     }
 }

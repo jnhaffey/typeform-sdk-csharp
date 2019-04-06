@@ -582,9 +582,10 @@ namespace Typeform.Sdk.CSharp.ApiClients
             {
                 if (await modifier.IsValid(token))
                 {
-                    var updateWorkspace = modifier.BuildUpdate();
+                    var updateWorkspace = modifier.Modify();
                     var urlQuery = BaseUrl
-                        .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment, updateWorkspace.WorkspaceId)
+                        .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment,
+                            updateWorkspace.WorkspaceId)
                         .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
                         .WithOAuthBearerToken(ApiKey);
                     _logger.LogUrlCall(urlQuery.Url);
@@ -608,7 +609,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
                 if (ex.Call.HttpStatus == HttpStatusCode.NotFound)
                 {
-                    var updateWorkspace = modifier.BuildUpdate();
+                    var updateWorkspace = modifier.Modify();
                     var errorResponse =
                         JsonConvert.DeserializeObject<ErrorResponse>(await ex.Call.Response.Content
                             .ReadAsStringAsync());

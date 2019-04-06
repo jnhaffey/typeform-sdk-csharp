@@ -75,7 +75,8 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
 
             // ASSERT
             actionToTest.Should().Throw<ArgumentOutOfRangeException>()
-                .WithMessage($"The value '{brightnessValue}' provided for brightness is out of range.  Valid range is -1 through 1.*");
+                .WithMessage(
+                    $"The value '{brightnessValue}' provided for brightness is out of range.  Valid range is -1 through 1.*");
         }
 
         [Fact]
@@ -90,7 +91,8 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
 
             // ASSERT
             actionToTest.Should().Throw<ArgumentOutOfRangeException>()
-                .WithMessage($"The value '{brightnessValue}' provided for brightness is out of range.  Valid range is -1 through 1.*");
+                .WithMessage(
+                    $"The value '{brightnessValue}' provided for brightness is out of range.  Valid range is -1 through 1.*");
         }
 
         [Fact]

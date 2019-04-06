@@ -25,7 +25,7 @@ namespace Typeform.Sdk.CSharp.Enums
 
         [Display(ResourceType = typeof(EnumText), Name = "Field_LongText")]
         LongText,
-        
+
         [Display(ResourceType = typeof(EnumText), Name = "Field_MultipleChoice")]
         MultipleChoice,
 

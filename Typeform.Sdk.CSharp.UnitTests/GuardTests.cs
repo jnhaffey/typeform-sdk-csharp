@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using Typeform.Sdk.CSharp.ApiClients;
 using Typeform.Sdk.CSharp.Exceptions;
 using Xunit;
@@ -12,12 +12,37 @@ namespace Typeform.Sdk.CSharp.UnitTests
     public class GuardTests
     {
         [Fact]
+        public void ForAllowedOptions_With_Found_Allowed_Option()
+        {
+            // ARRANGE
+            // ACT
+            Action actionToTest = () =>
+                Guard.ForAllowedOptions(TestEnum.Test0, TestData.Guards.ParameterName, TestEnum.Test0, TestEnum.Test2);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ForAllowedOptions_With_Found_Not_Allowed_Option()
+        {
+            // ARRANGE
+            // ACT
+            Action actionToTest = () =>
+                Guard.ForAllowedOptions(TestEnum.Test1, TestData.Guards.ParameterName, TestEnum.Test0, TestEnum.Test2);
+
+            // ASSERT
+            actionToTest.Should().Throw<ArgumentOutOfRangeException>();
+            //.WithMessage("");
+        }
+
+        [Fact]
         public void ForBetweenValues_Above()
         {
             // ARRANGE
-            int value = 2;
-            int min = -1;
-            int max = 1;
+            var value = 2;
+            var min = -1;
+            var max = 1;
 
             // ACT
             Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
@@ -32,9 +57,9 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForBetweenValues_Below()
         {
             // ARRANGE
-            int value = -2;
-            int min = -1;
-            int max = 1;
+            var value = -2;
+            var min = -1;
+            var max = 1;
 
             // ACT
             Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
@@ -49,9 +74,9 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForBetweenValues_Between()
         {
             // ARRANGE
-            int value = 0;
-            int min = -1;
-            int max = 1;
+            var value = 0;
+            var min = -1;
+            var max = 1;
 
             // ACT
             Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
@@ -64,9 +89,9 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForBetweenValues_Maximum()
         {
             // ARRANGE
-            int value = 1;
-            int min = -1;
-            int max = 1;
+            var value = 1;
+            var min = -1;
+            var max = 1;
 
             // ACT
             Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
@@ -79,9 +104,9 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForBetweenValues_Minimum()
         {
             // ARRANGE
-            int value = -1;
-            int min = -1;
-            int max = 1;
+            var value = -1;
+            var min = -1;
+            var max = 1;
 
             // ACT
             Action actionToTest = () => Guard.ForBetweenValues(value, min, max, TestData.Guards.ParameterName);
@@ -94,8 +119,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForDuplicateItemsInList_With_Duplicate()
         {
             // ARRANGE
-            List<string> listToUse = new List<string> { "FIRST", "SECOND", "THIRD" };
-            string wordToUse = "FIRST";
+            var listToUse = new List<string> {"FIRST", "SECOND", "THIRD"};
+            var wordToUse = "FIRST";
 
             // ACT
             Action actionToTest = () => Guard.ForDuplicateItemsInList(wordToUse, TestData.Guards.ParameterName,
@@ -112,8 +137,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForDuplicateItemsInList_With_Out_Duplicate()
         {
             // ARRANGE
-            List<string> listToUse = new List<string> { "FIRST", "SECOND", "THIRD" };
-            string wordToUse = "FORTH";
+            var listToUse = new List<string> {"FIRST", "SECOND", "THIRD"};
+            var wordToUse = "FORTH";
 
             // ACT
             Action actionToTest = () => Guard.ForDuplicateItemsInList(wordToUse, TestData.Guards.ParameterName,
@@ -127,7 +152,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Empty()
         {
             // ARRANGE
-            string hexValue = string.Empty;
+            var hexValue = string.Empty;
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -141,7 +166,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Invalid_Hex1()
         {
             // ARRANGE
-            string hexValue = "000";
+            var hexValue = "000";
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -156,7 +181,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Invalid_Hex2()
         {
             // ARRANGE
-            string hexValue = "#00";
+            var hexValue = "#00";
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -171,7 +196,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Invalid_Hex3()
         {
             // ARRANGE
-            string hexValue = "#0000";
+            var hexValue = "#0000";
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -186,7 +211,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Invalid_Hex4()
         {
             // ARRANGE
-            string hexValue = "#0000000";
+            var hexValue = "#0000000";
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -201,7 +226,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Invalid_Hex5()
         {
             // ARRANGE
-            string hexValue = "#Z00000";
+            var hexValue = "#Z00000";
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -254,7 +279,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForHexColorValue_with_Whitespace()
         {
             // ARRANGE
-            string hexValue = " ";
+            var hexValue = " ";
 
             // ACT
             Action actionToTest = () => Guard.ForHexColorValue(hexValue, TestData.Guards.ParameterName);
@@ -268,7 +293,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForInitializedClient_Initialized()
         {
             // ARRANGE
-            CreateApiClient createApiClient = new CreateApiClient(TestData.BogusRandomizer.AlphaNumeric(5));
+            var createApiClient = new CreateApiClient(TestData.BogusRandomizer.AlphaNumeric(5));
 
             // ACT
             Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
@@ -281,8 +306,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForInitializedClient_Uninitialized()
         {
             // ARRANGE
-            string clientName = nameof(CreateApiClient);
-            CreateApiClient createApiClient = new CreateApiClient("");
+            var clientName = nameof(CreateApiClient);
+            var createApiClient = new CreateApiClient("");
 
             // ACT
             Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
@@ -293,11 +318,40 @@ namespace Typeform.Sdk.CSharp.UnitTests
         }
 
         [Fact]
+        public void ForInvalidOperations_With_Invalid_Object()
+        {
+            // ARRANGE
+            var errorMessage = "OBJECT IS NULL";
+            object testObject = null;
+
+            // ACT
+            Action actionToTest = () => Guard.ForInvalidOperations(testObject, errorMessage);
+
+            // ASSERT
+            actionToTest.Should().Throw<InvalidOperationException>()
+                .WithMessage(errorMessage);
+        }
+
+        [Fact]
+        public void ForInvalidOperations_With_Valid_Object()
+        {
+            // ARRANGE
+            var errorMessage = "OBJECT IS NULL";
+            var testObject = new object();
+
+            // ACT
+            Action actionToTest = () => Guard.ForInvalidOperations(testObject, errorMessage);
+
+            // ASSERT
+            actionToTest.Should().NotThrow();
+        }
+
+        [Fact]
         public void ForMaxValue_Above()
         {
             // ARRANGE
-            int valueToUse = 1;
-            int maxValue = 0;
+            var valueToUse = 1;
+            var maxValue = 0;
 
             // ACT
             Action actionToTest = () => Guard.ForMaxValue(valueToUse, maxValue, TestData.Guards.ParameterName);
@@ -313,8 +367,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForMaxValue_Below()
         {
             // ARRANGE
-            int valueToUse = -1;
-            int maxValue = 0;
+            var valueToUse = -1;
+            var maxValue = 0;
 
             // ACT
             Action actionToTest = () => Guard.ForMaxValue(valueToUse, maxValue, TestData.Guards.ParameterName);
@@ -327,8 +381,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForMaxValue_Exact()
         {
             // ARRANGE
-            int valueToUse = 0;
-            int minValue = 0;
+            var valueToUse = 0;
+            var minValue = 0;
 
             // ACT
             Action actionToTest = () => Guard.ForMaxValue(valueToUse, minValue, TestData.Guards.ParameterName);
@@ -341,8 +395,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForMinValue_Above()
         {
             // ARRANGE
-            int valueToUse = 1;
-            int minValue = 0;
+            var valueToUse = 1;
+            var minValue = 0;
 
             // ACT
             Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, TestData.Guards.ParameterName);
@@ -355,8 +409,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForMinValue_Below()
         {
             // ARRANGE
-            int valueToUse = -1;
-            int minValue = 0;
+            var valueToUse = -1;
+            var minValue = 0;
 
             // ACT
             Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, TestData.Guards.ParameterName);
@@ -372,8 +426,8 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForMinValue_Exact()
         {
             // ARRANGE
-            int valueToUse = 0;
-            int minValue = 0;
+            var valueToUse = 0;
+            var minValue = 0;
 
             // ACT
             Action actionToTest = () => Guard.ForMinValue(valueToUse, minValue, TestData.Guards.ParameterName);
@@ -386,7 +440,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForNullOrEmptyOrWhitespace_With_Empty()
         {
             // ARRANGE
-            string valueToUse = string.Empty;
+            var valueToUse = string.Empty;
 
             // ACT
             Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
@@ -416,7 +470,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForNullOrEmptyOrWhitespace_With_Value()
         {
             // ARRANGE
-            string valueToUse = TestData.BogusRandomizer.AlphaNumeric(10);
+            var valueToUse = TestData.BogusRandomizer.AlphaNumeric(10);
 
             // ACT
             Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
@@ -429,7 +483,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForNullOrEmptyOrWhitespace_With_Whitespace()
         {
             // ARRANGE
-            string valueToUse = " ";
+            var valueToUse = " ";
 
             // ACT
             Action actionToTest = () => Guard.ForNullOrEmptyOrWhitespace(valueToUse, TestData.Guards.ParameterName);
@@ -441,23 +495,10 @@ namespace Typeform.Sdk.CSharp.UnitTests
         }
 
         [Fact]
-        public void ForValidUrl_With_Valid_Url()
-        {
-            // ARRANGE
-            string url = TestData.BogusFaker.Internet.Url();
-
-            // ACT
-            Action actionToTest = () => Guard.ForInvalidUrl(url, TestData.Guards.ParameterName);
-
-            // ASSERT
-            actionToTest.Should().NotThrow();
-        }
-
-        [Fact]
         public void ForValidUrl_With_Invalid_Url()
         {
             // ARRANGE
-            string url = TestData.BogusRandomizer.AlphaNumeric(15);
+            var url = TestData.BogusRandomizer.AlphaNumeric(15);
 
             // ACT
             Action actionToTest = () => Guard.ForInvalidUrl(url, TestData.Guards.ParameterName);
@@ -468,55 +509,16 @@ namespace Typeform.Sdk.CSharp.UnitTests
         }
 
         [Fact]
-        public void ForInvalidOperations_With_Valid_Object()
+        public void ForValidUrl_With_Valid_Url()
         {
             // ARRANGE
-            string errorMessage = "OBJECT IS NULL";
-            object testObject = new object();
+            var url = TestData.BogusFaker.Internet.Url();
 
             // ACT
-            Action actionToTest = () => Guard.ForInvalidOperations(testObject, errorMessage);
+            Action actionToTest = () => Guard.ForInvalidUrl(url, TestData.Guards.ParameterName);
 
             // ASSERT
             actionToTest.Should().NotThrow();
-        }
-
-        [Fact]
-        public void ForInvalidOperations_With_Invalid_Object()
-        {
-            // ARRANGE
-            string errorMessage = "OBJECT IS NULL";
-            object testObject = null;
-
-            // ACT
-            Action actionToTest = () => Guard.ForInvalidOperations(testObject, errorMessage);
-
-            // ASSERT
-            actionToTest.Should().Throw<InvalidOperationException>()
-                .WithMessage(errorMessage);
-        }
-
-        [Fact]
-        public void ForAllowedOptions_With_Found_Allowed_Option()
-        {
-            // ARRANGE
-            // ACT
-            Action actionToTest = () => Guard.ForAllowedOptions(TestEnum.Test0, TestData.Guards.ParameterName, TestEnum.Test0, TestEnum.Test2);
-
-            // ASSERT
-            actionToTest.Should().NotThrow();
-        }
-
-        [Fact]
-        public void ForAllowedOptions_With_Found_Not_Allowed_Option()
-        {
-            // ARRANGE
-            // ACT
-            Action actionToTest = () => Guard.ForAllowedOptions(TestEnum.Test1, TestData.Guards.ParameterName, TestEnum.Test0, TestEnum.Test2);
-
-            // ASSERT
-            actionToTest.Should().Throw<ArgumentOutOfRangeException>();
-            //.WithMessage("");
         }
     }
 }

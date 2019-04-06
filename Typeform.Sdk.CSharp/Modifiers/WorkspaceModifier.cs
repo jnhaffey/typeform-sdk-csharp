@@ -11,7 +11,8 @@ using Typeform.Sdk.CSharp.Models.Workspaces.Validations;
 
 namespace Typeform.Sdk.CSharp.Modifiers
 {
-    public class WorkspaceModifier : IIsValidatable<UpdateWorkspaceValidation, UpdateWorkspace>
+    public class WorkspaceModifier : IIsValidatable<UpdateWorkspaceValidation, UpdateWorkspace>,
+        IModifier<UpdateWorkspace>
     {
         private readonly ViewWorkspace _originalWorkSpace;
         private readonly UpdateWorkspace _updateWorkspace;
@@ -36,6 +37,19 @@ namespace Typeform.Sdk.CSharp.Modifiers
             var validation = await validator.ValidateAsync(_updateWorkspace, token);
             if (validation.IsValid) return true;
             throw new ValidationException(validation.Errors);
+        }
+
+        #endregion
+
+        #region Implementation of IModifier<out UpdateWorkspace>
+
+        /// <summary>
+        ///     Creates the Update Workspace Model.
+        /// </summary>
+        /// <returns></returns>
+        public UpdateWorkspace Modify()
+        {
+            return _updateWorkspace;
         }
 
         #endregion
@@ -104,15 +118,6 @@ namespace Typeform.Sdk.CSharp.Modifiers
             if (_originalWorkSpace.Members.Any(x => x.Email.Equals(emailAddress)))
                 _updateWorkspace.RemoveMember(emailAddress);
             return this;
-        }
-
-        /// <summary>
-        ///     Build the Update Workspace Model.
-        /// </summary>
-        /// <returns></returns>
-        public UpdateWorkspace BuildUpdate()
-        {
-            return _updateWorkspace;
         }
 
         /// <summary>

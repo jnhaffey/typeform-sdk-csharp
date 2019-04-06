@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using Typeform.Sdk.CSharp.Models.Workspaces;
 using Xunit;
 

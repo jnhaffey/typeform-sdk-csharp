@@ -86,7 +86,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Modifiers
             var workspaceModifierToUse = WorkspaceModifier.Create(TestData.Workspace.FullWorkspace);
 
             // ACT
-            Func<UpdateWorkspace> funcToTest = () => workspaceModifierToUse.BuildUpdate();
+            Func<UpdateWorkspace> funcToTest = () => workspaceModifierToUse.Modify();
 
             // ASSERT
             funcToTest.Should().NotThrow<InvalidOperationException>();
@@ -165,20 +165,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Modifiers
         }
 
         [Fact]
-        public async Task IsValid_Pass()
-        {
-            // ARRANGE
-            var workspaceModifierToUse = WorkspaceModifier.Create(TestData.Workspace.FullWorkspace);
-            workspaceModifierToUse.ReplaceName(TestData.BogusRandomizer.AlphaNumeric(5));
-
-            // ACT
-            var results = await workspaceModifierToUse.IsValid();
-
-            // ARRANGE
-            results.Should().BeTrue();
-        }
-
-        [Fact]
         public async Task IsValid_Fail_No_Change()
         {
             // ARRANGE
@@ -191,6 +177,20 @@ namespace Typeform.Sdk.CSharp.UnitTests.Modifiers
             funcToTest.Should().Throw<ValidationException>()
                 .WithMessage("*-- UpdateMemberOptions: There are no changes applied to the workspace.*" +
                              "*-- UpdateWorkspaceName: There are no changes applied to the workspace.*");
+        }
+
+        [Fact]
+        public async Task IsValid_Pass()
+        {
+            // ARRANGE
+            var workspaceModifierToUse = WorkspaceModifier.Create(TestData.Workspace.FullWorkspace);
+            workspaceModifierToUse.ReplaceName(TestData.BogusRandomizer.AlphaNumeric(5));
+
+            // ACT
+            var results = await workspaceModifierToUse.IsValid();
+
+            // ARRANGE
+            results.Should().BeTrue();
         }
 
         [Fact]
@@ -219,7 +219,8 @@ namespace Typeform.Sdk.CSharp.UnitTests.Modifiers
 
             // ASSERT
             funcToTest.Should().Throw<InvalidEmailException>()
-                .WithMessage($"The email address provided, '{invalidEmailAddress}' in the parameter 'emailAddress' is not valid.");
+                .WithMessage(
+                    $"The email address provided, '{invalidEmailAddress}' in the parameter 'emailAddress' is not valid.");
         }
 
         [Fact]

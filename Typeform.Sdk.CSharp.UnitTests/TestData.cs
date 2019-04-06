@@ -1,7 +1,7 @@
-﻿using Bogus;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Bogus;
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Exceptions;
 using Typeform.Sdk.CSharp.Models.Shared;
@@ -67,7 +67,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
                                                $"\"shared\":{FullWorkspace.Shared.ToLowerString()}," +
                                                $"\"forms\":{{\"count\":{FullWorkspace.Forms.Count},\"href\":\"{FullWorkspace.Forms.Url}\"}}," +
                                                $"\"self\":{{\"href\":\"{FullWorkspace.SelfLink.Url}\"}}," +
-                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int)FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int)FullWorkspace.Members[1].Role}}}]}}";
+                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int) FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int) FullWorkspace.Members[1].Role}}}]}}";
         }
 
         public static class Themes

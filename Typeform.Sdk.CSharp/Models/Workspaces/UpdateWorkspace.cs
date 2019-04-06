@@ -41,7 +41,7 @@ namespace Typeform.Sdk.CSharp.Models.Workspaces
         public UpdateWorkspace ChangeWorkspaceName(string workspaceName)
         {
             Guard.ForNullOrEmptyOrWhitespace(workspaceName, nameof(workspaceName));
-            if (UpdateWorkspaceName == null) 
+            if (UpdateWorkspaceName == null)
                 UpdateWorkspaceName = PatchDocument<string>.Create(OperationType.Replace, Workspace.Name)
                     .ChangeValue(workspaceName);
             else

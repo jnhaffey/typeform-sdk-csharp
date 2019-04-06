@@ -7,6 +7,7 @@ namespace Typeform.Sdk.CSharp.Enums
     {
         [Display(ResourceType = typeof(EnumText), Name = "Attachment_Image")]
         Image,
+
         [Display(ResourceType = typeof(EnumText), Name = "Attachment_Video")]
         Video
     }

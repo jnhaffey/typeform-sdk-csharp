@@ -8,7 +8,7 @@ namespace Typeform.Sdk.CSharp.Exceptions
         {
         }
 
-        public InvalidHexColorException(string message) 
+        public InvalidHexColorException(string message)
             : base(message)
         {
         }

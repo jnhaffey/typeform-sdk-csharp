@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Bogus;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Models.Shared;
@@ -6,6 +7,7 @@ using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
+    [ExcludeFromCodeCoverage]
     public class QueryParametersWithSearchTest
     {
         [Fact]

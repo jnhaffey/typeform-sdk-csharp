@@ -2,12 +2,12 @@
 
 namespace Typeform.Sdk.CSharp
 {
-    public static class Constants
+    internal static class Constants
     {
         /// <summary>
         ///     Base URL for Typeform.
         /// </summary>
-        public const string BaseUrl = "https://api.typeform.com/";
+        internal const string BaseUrl = "https://api.typeform.com/";
 
         internal static class Headers
         {
@@ -67,9 +67,9 @@ namespace Typeform.Sdk.CSharp
             }
         }
 
-        public class RegularExpressions
+        internal class RegularExpressions
         {
-            public static Regex EmailAddress = new Regex("(@)(.+)$");
+            internal static Regex EmailAddress = new Regex("(@)(.+)$");
         }
     }
 }

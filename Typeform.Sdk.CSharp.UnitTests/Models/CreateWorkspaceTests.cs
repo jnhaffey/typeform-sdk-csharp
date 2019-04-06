@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
+using System.Diagnostics.CodeAnalysis;
 using Typeform.Sdk.CSharp.Models.Workspaces;
 using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
+    [ExcludeFromCodeCoverage]
     public class CreateWorkspaceTests
     {
         [Fact]

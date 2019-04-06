@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Bogus;
+using System;
 using System.Collections.Generic;
-using Bogus;
+using System.Diagnostics.CodeAnalysis;
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Exceptions;
 using Typeform.Sdk.CSharp.Models.Shared;
@@ -8,6 +9,7 @@ using Typeform.Sdk.CSharp.Models.Workspaces;
 
 namespace Typeform.Sdk.CSharp.UnitTests
 {
+    [ExcludeFromCodeCoverage]
     public static class TestData
     {
         public const string NullValue = null;
@@ -65,7 +67,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
                                                $"\"shared\":{FullWorkspace.Shared.ToLowerString()}," +
                                                $"\"forms\":{{\"count\":{FullWorkspace.Forms.Count},\"href\":\"{FullWorkspace.Forms.Url}\"}}," +
                                                $"\"self\":{{\"href\":\"{FullWorkspace.SelfLink.Url}\"}}," +
-                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int) FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int) FullWorkspace.Members[1].Role}}}]}}";
+                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int)FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int)FullWorkspace.Members[1].Role}}}]}}";
         }
 
         public static class Themes
@@ -85,5 +87,12 @@ namespace Typeform.Sdk.CSharp.UnitTests
             public const string Property1 = "PROPERTY_1";
             public const string Property2 = "PROPERTY_2";
         }
+    }
+
+    public enum TestEnum
+    {
+        Test0 = 0,
+        Test1 = 1,
+        Test2 = 2
     }
 }

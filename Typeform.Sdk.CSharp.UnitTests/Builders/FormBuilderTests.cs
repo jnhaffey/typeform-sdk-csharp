@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -11,6 +12,7 @@ using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Builders
 {
+    [ExcludeFromCodeCoverage]
     public class FormBuilderTests
     {
         [Fact]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Builders;
@@ -8,6 +9,7 @@ using Xunit.Abstractions;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Builders
 {
+    [ExcludeFromCodeCoverage]
     public class WorkspaceBuilderTests
     {
         public WorkspaceBuilderTests(ITestOutputHelper testOutputHelper)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentValidation;
@@ -11,6 +12,7 @@ using Xunit.Abstractions;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Modifiers
 {
+    [ExcludeFromCodeCoverage]
     public class WorkspaceModifierTests
     {
         public WorkspaceModifierTests(ITestOutputHelper testOutputHelper)

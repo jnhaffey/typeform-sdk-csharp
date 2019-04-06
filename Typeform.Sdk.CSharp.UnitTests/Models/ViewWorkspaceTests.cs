@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.AspNetCore.JsonPatch.Operations;
@@ -10,6 +11,7 @@ using Xunit.Abstractions;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ViewWorkspaceTests
     {
         public ViewWorkspaceTests(ITestOutputHelper testOutputHelper)

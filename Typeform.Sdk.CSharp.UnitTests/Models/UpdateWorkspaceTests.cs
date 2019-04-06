@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.AspNetCore.JsonPatch.Operations;
@@ -7,6 +8,7 @@ using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
+    [ExcludeFromCodeCoverage]
     public class UpdateWorkspaceTests
     {
         [Fact]

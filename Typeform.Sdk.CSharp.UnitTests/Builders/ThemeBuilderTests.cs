@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Builders;
 using Typeform.Sdk.CSharp.Enums;
@@ -7,6 +8,7 @@ using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Builders
 {
+    [ExcludeFromCodeCoverage]
     public class ThemeBuilderTests
     {
         [Fact]

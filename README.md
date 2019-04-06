@@ -16,6 +16,10 @@ All code is built from the Typeform developer documentation [https://developer.t
 
 *Coming Soon*
 
+## Notes
+
+- The creation of the WorkspaceBuild seems a bit pointless but the plan is to use it for any future validation or additionals that Typeform may add.
+
 ## Usage Examples
 
 *Coming Soon*

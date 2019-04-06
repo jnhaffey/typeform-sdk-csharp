@@ -11,7 +11,8 @@ namespace Typeform.Sdk.CSharp.Builders
 {
     /// <summary>
     /// </summary>
-    public class WorkspaceBuilder : IIsValidatable<CreateWorksapceValidation, CreateWorkspace>
+    public class WorkspaceBuilder : IIsValidatable<CreateWorksapceValidation, CreateWorkspace>,
+        IBuilder<CreateWorkspace>
     {
         private readonly CreateWorkspace _workspace;
 
@@ -24,26 +25,36 @@ namespace Typeform.Sdk.CSharp.Builders
 
         #endregion
 
-        #region Implementation of IIsValidatable<CreateWorksapceValidation,CreateWorkspace>
-
-        public async Task<bool> IsValid(CancellationToken token = default)
-        {
-            var validator = new CreateWorksapceValidation();
-            var validation = await validator.ValidateAsync(_workspace);
-            if (validation.IsValid) return true;
-            throw new ValidationException(validation.Errors);
-        }
-
-        #endregion
+        #region Implementation of IBuilder<CreateWorkspace>
 
         /// <summary>
         ///     Build the Create Workspace model.
         /// </summary>
         /// <returns></returns>
-        public CreateWorkspace BuildNew()
+        public CreateWorkspace Build()
         {
             return CreateWorkspace.Create(_workspace.Name);
         }
+
+        #endregion
+
+        #region Implementation of IIsValidatable<CreateWorksapceValidation,CreateWorkspace>
+
+        /// <summary>
+        ///     Checks if the current configuration of the Workspace builder is valid.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<bool> IsValid(CancellationToken token = default)
+        {
+            var validator = new CreateWorksapceValidation();
+            var validation = await validator.ValidateAsync(_workspace);
+            if (validation.IsValid) return true;
+
+            throw new ValidationException(validation.Errors);
+        }
+
+        #endregion
 
         #region Static Create Methods
 
@@ -72,6 +83,7 @@ namespace Typeform.Sdk.CSharp.Builders
             Guard.ForNullOrEmptyOrWhitespace(rawJson, nameof(rawJson));
             var model = JsonConvert.DeserializeObject<ViewWorkspace>(rawJson);
             if (model != null) return new WorkspaceBuilder(model.Name);
+
             throw new ArgumentException("The json value provided was not valid.", nameof(rawJson));
         }
 

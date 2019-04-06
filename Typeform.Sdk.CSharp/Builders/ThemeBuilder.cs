@@ -11,7 +11,7 @@ namespace Typeform.Sdk.CSharp.Builders
     /// <summary>
     ///     Theme Builder Object.
     /// </summary>
-    public class ThemeBuilder : IIsValidatable<ThemeValidation, Theme>
+    public class ThemeBuilder : IIsValidatable<ThemeValidation, Theme>, IBuilder<Theme>
     {
         private readonly Theme _themeToCreate;
 
@@ -19,6 +19,20 @@ namespace Typeform.Sdk.CSharp.Builders
         {
             _themeToCreate = new Theme {Name = themeName};
         }
+
+        #region Implementation of IBuilder<Theme>
+
+        /// <summary>
+        ///     Returns the Theme.
+        /// </summary>
+        /// <returns></returns>
+        public Theme Build()
+        {
+            return _themeToCreate;
+        }
+
+        #endregion
+
 
         #region Implementation of IIsValidatable<ThemeValidation,Theme>
 
@@ -38,15 +52,6 @@ namespace Typeform.Sdk.CSharp.Builders
         }
 
         #endregion
-
-        /// <summary>
-        ///     Returns the Theme.
-        /// </summary>
-        /// <returns></returns>
-        public Theme Build()
-        {
-            return _themeToCreate;
-        }
 
         /// <summary>
         ///     Create an instance of the Theme Builder object.

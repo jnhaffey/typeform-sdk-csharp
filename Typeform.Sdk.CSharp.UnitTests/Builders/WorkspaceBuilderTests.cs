@@ -26,7 +26,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Builders
             var builderToUse = WorkspaceBuilder.Create(TestData.Workspace.FullWorkspace.Name);
 
             // ACT
-            Func<CreateWorkspace> funcToTest = () => builderToUse.BuildNew();
+            Func<CreateWorkspace> funcToTest = () => builderToUse.Build();
 
             // ASSERT
             funcToTest.Should().NotThrow<InvalidOperationException>();

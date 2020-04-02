@@ -1,41 +1,26 @@
 ﻿using System;
-using Bogus;
+using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Models.Shared;
 using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
+    [ExcludeFromCodeCoverage]
     public class QueryParametersTest
     {
-        private readonly Randomizer bogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
-
         [Fact]
         public void QueryParameters_Create_With_Page_Parameter_Only()
         {
             // ARRANGE
             // ACT
-            var queryParameterToTest = QueryParameters.Create(page: 100);
+            var queryParameterToTest = QueryParameters.Create(100);
 
             // ASSERT
             queryParameterToTest.Should().BeOfType<QueryParameters>();
             queryParameterToTest.Page.Should().NotBe(1);
             queryParameterToTest.Page.Should().Be(100);
             queryParameterToTest.PageSize.Should().Be(10);
-        }
-
-        [Fact]
-        public void QueryParameters_Create_With_PageSize_Parameter_Only()
-        {
-            // ARRANGE
-            // ACT
-            var queryParameterToTest = QueryParameters.Create(pageSize: 100);
-
-            // ASSERT
-            queryParameterToTest.Should().BeOfType<QueryParameters>();
-            queryParameterToTest.Page.Should().Be(1);
-            queryParameterToTest.PageSize.Should().NotBe(10);
-            queryParameterToTest.PageSize.Should().Be(100);
         }
 
         [Fact]
@@ -49,6 +34,20 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             queryParameterToTest.Should().BeOfType<QueryParameters>();
             queryParameterToTest.Page.Should().NotBe(1);
             queryParameterToTest.Page.Should().Be(10);
+            queryParameterToTest.PageSize.Should().NotBe(10);
+            queryParameterToTest.PageSize.Should().Be(100);
+        }
+
+        [Fact]
+        public void QueryParameters_Create_With_PageSize_Parameter_Only()
+        {
+            // ARRANGE
+            // ACT
+            var queryParameterToTest = QueryParameters.Create(pageSize: 100);
+
+            // ASSERT
+            queryParameterToTest.Should().BeOfType<QueryParameters>();
+            queryParameterToTest.Page.Should().Be(1);
             queryParameterToTest.PageSize.Should().NotBe(10);
             queryParameterToTest.PageSize.Should().Be(100);
         }

@@ -444,4 +444,7 @@
   <data name="ConditionOperation_LaterThanOrOn" xml:space="preserve">
     <value>Später als oder auf</value>
   </data>
+  <data name="Field_PhoneNumber" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
 </root>

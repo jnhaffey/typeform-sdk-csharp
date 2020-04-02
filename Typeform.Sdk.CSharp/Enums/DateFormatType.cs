@@ -7,8 +7,10 @@ namespace Typeform.Sdk.CSharp.Enums
     {
         [Display(ResourceType = typeof(EnumText), Name = "DateFormat_MonthDayYear")]
         MMDDYYYY,
+
         [Display(ResourceType = typeof(EnumText), Name = "DateFormat_DayMonthYear")]
         DDMMYYYY,
+
         [Display(ResourceType = typeof(EnumText), Name = "DateFormat_YearMonthDay")]
         YYYYMMDD
     }

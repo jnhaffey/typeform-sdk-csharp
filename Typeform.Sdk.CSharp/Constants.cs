@@ -1,15 +1,37 @@
-﻿namespace Typeform.Sdk.CSharp
+﻿using System.Text.RegularExpressions;
+
+namespace Typeform.Sdk.CSharp
 {
-    public static class Constants
+    internal static class Constants
     {
         /// <summary>
         ///     Base URL for Typeform.
         /// </summary>
-        public const string BaseUrl = "https://api.typeform.com/";
+        internal const string BaseUrl = "https://api.typeform.com/";
 
         internal static class Headers
         {
             internal const string ContentType = "Content-Type";
+        }
+
+        internal static class UrlPathSegments
+        {
+            internal static class CreateApi
+            {
+                internal const string AccountPathSegment = "me";
+                internal const string FormUrlPathSegment = "forms";
+                internal const string ImageUrlPathSegment = "images";
+                internal const string ThemeUrlPathSegment = "themes";
+                internal const string WorkspaceUrlPathSegment = "workspaces";
+            }
+
+            internal static class ResponseApi
+            {
+            }
+
+            internal static class WebhookApi
+            {
+            }
         }
 
         internal static class MimeTypes
@@ -34,6 +56,20 @@
             internal const string ApiResults = "API Results";
             internal const string ApiContent = "API Content";
             internal const string JsonPatch = "JSON Patch";
+        }
+
+        internal static class PatchOptions
+        {
+            internal static class Workspace
+            {
+                internal const string Name = "/name";
+                internal const string Member = "/member";
+            }
+        }
+
+        internal class RegularExpressions
+        {
+            internal static Regex EmailAddress = new Regex("(@)(.+)$");
         }
     }
 }

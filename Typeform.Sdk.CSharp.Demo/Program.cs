@@ -36,9 +36,9 @@ namespace Typeform.Sdk.CSharp.Demo
                     .Build())
                 .AddSingleton(options =>
                 {
-                    var logger = options.GetService<ILogger<CreateApiClient>>();
+                    var logger = options.GetService<ILogger<CreateClient>>();
                     var keyToUse = options.GetService<IConfiguration>()["apiKey"];
-                    return new CreateApiClient(keyToUse, logger);
+                    return new CreateClient(keyToUse, logger);
                 })
                 .BuildServiceProvider();
 
@@ -52,14 +52,17 @@ namespace Typeform.Sdk.CSharp.Demo
                 var workspaceEndPoints = new WorkSpaceEndPoints(serviceProvider);
                 await workspaceEndPoints.ExecuteRetrieveWorkspaces();
                 var workspaceId = await workspaceEndPoints.ExecuteCreateWorkspace();
-                await workspaceEndPoints.ExecuteRetrieveWorkspace(workspaceId);
-                await workspaceEndPoints.ExecuteUpdateWorkspace(workspaceId);
+                var workspace = await workspaceEndPoints.ExecuteRetrieveWorkspace(workspaceId);
+                //await workspaceEndPoints.ExecuteUpdateWorkspace(workspace);
                 await workspaceEndPoints.ExecuteDeleteWorkspace(workspaceId);
 
                 // THEMES
                 var themeEndPoints = new ThemeEndPoints(serviceProvider);
                 await themeEndPoints.ExecuteRetrieveThemes();
+                //var themeId = await themeEndPoints.ExecuteCreateTheme();
                 //await themeEndPoints.ExecuteRetrieveTheme(themeId);
+                //await themeEndPoints.ExecuteUpdateTheme(themeId);
+                //await themeEndPoints.ExecuteDeleteTheme(themeId);
             }
             catch (Exception ex)
             {

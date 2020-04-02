@@ -4,6 +4,14 @@ namespace Typeform.Sdk.CSharp.Models.Themes
 {
     public class Colors
     {
+        public Colors()
+        {
+            Answer = "#4FB0AE";
+            Background = "#FFFFFF";
+            Button = "#4FB0AE";
+            Question = "#3D3D3D";
+        }
+
         /// <summary>
         ///     Color the theme will apply to answers. Hexadecimal value.
         /// </summary>

@@ -12,19 +12,19 @@ namespace Typeform.Sdk.CSharp.Models.Forms
         }
 
         /// <summary>
-        /// Specifies whether the Logic Jump is based on a question field or Hidden Field.
+        ///     Specifies whether the Logic Jump is based on a question field or Hidden Field.
         /// </summary>
         [JsonProperty("type")]
         public LogicActionType Type { get; set; }
 
         /// <summary>
-        /// Reference to the field that triggers the the Logic Jump.
+        ///     Reference to the field that triggers the the Logic Jump.
         /// </summary>
         [JsonProperty("ref")]
         public string Ref { get; set; }
 
         /// <summary>
-        /// Array of objects that define the Logic Jump's behavior.
+        ///     Array of objects that define the Logic Jump's behavior.
         /// </summary>
         [JsonProperty("actions")]
         public List<Action> Actions { get; set; }

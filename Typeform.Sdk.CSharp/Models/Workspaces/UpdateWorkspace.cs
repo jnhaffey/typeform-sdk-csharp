@@ -1,94 +1,86 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using Typeform.Sdk.CSharp.Extensions;
 using Typeform.Sdk.CSharp.Models.Shared;
-using static Typeform.Sdk.CSharp.Constants.PatchOptions;
+using Typeform.Sdk.CSharp.Models.Workspaces.Validations;
 
 namespace Typeform.Sdk.CSharp.Models.Workspaces
 {
-    public class UpdateWorkspace
+    public class UpdateWorkspace : ViewWorkspace
     {
-        private readonly List<PatchDocument<WorkspacePatchValueEmail>> _updateMemberOptions;
+        internal readonly List<PatchDocument<WorkspacePatchValueEmail>> UpdatedMemberList;
+        private readonly UpdateWorkspaceValidation _validator;
+        internal PatchDocument<string> UpdatedWorkspaceName;
 
-        private UpdateWorkspace()
+        private UpdateWorkspace(ViewWorkspace workspace)
+            : base(workspace)
         {
-            _updateMemberOptions = new List<PatchDocument<WorkspacePatchValueEmail>>();
+            UpdatedMemberList = new List<PatchDocument<WorkspacePatchValueEmail>>();
+            _validator = new UpdateWorkspaceValidation();
         }
 
-        public IReadOnlyList<PatchDocument<WorkspacePatchValueEmail>> UpdateMemberOptions => _updateMemberOptions;
+        public PatchDocument<string> GetNameChange => UpdatedWorkspaceName;
 
-        public PatchDocument<string> UpdateWorkspaceName { get; private set; }
+        public List<PatchDocument<WorkspacePatchValueEmail>> GetMemberUpdates => UpdatedMemberList;
 
-        /// <summary>
-        ///     The ViewWorkspace Id to be use.
-        /// </summary>
-        public string WorkspaceId { get; private set; }
-
-        public static UpdateWorkspace Create(string workspaceId)
+        public static UpdateWorkspace Create(ViewWorkspace workspace)
         {
-            Guard.ForNullOrEmptyOrWhitespace(workspaceId, nameof(workspaceId));
-            return new UpdateWorkspace
-            {
-                WorkspaceId = workspaceId
-            };
+            Guard.ForNullObject(workspace, nameof(workspace));
+            return new UpdateWorkspace(workspace);
         }
 
-        /// <summary>
-        ///     Add patch operation to add/update a name change for the workspace.
-        /// </summary>
-        /// <param name="workspaceName"></param>
-        /// <returns></returns>
-        public UpdateWorkspace ChangeWorkspaceName(string workspaceName)
+        public ViewWorkspace ChangeName(string name)
         {
-            Guard.ForNullOrEmptyOrWhitespace(workspaceName, nameof(workspaceName));
-            if (UpdateWorkspaceName == null)
-                UpdateWorkspaceName = PatchDocument<string>.Create(OperationType.Replace, Workspace.Name)
-                    .ChangeValue(workspaceName);
-            else
-                UpdateWorkspaceName.ChangeValue(workspaceName);
+            Guard.ForNullOrEmptyOrWhitespace(name, nameof(name));
+            UpdatedWorkspaceName = PatchDocument<string>
+                .Create(OperationType.Replace, Constants.PatchOptions.Workspace.Name)
+                .ChangeValue(name);
             return this;
         }
 
-        /// <summary>
-        ///     Add patch operation to add a member to the workspace.
-        /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <returns></returns>
-        public UpdateWorkspace AddMember(string emailAddress)
+        public ViewWorkspace AddMember(string email)
         {
-            Guard.ForNullOrEmptyOrWhitespace(emailAddress, nameof(emailAddress));
-
-            var currentRecord = _updateMemberOptions.FirstOrDefault(x =>
-                x.Operation.Equals(OperationType.Add) &&
-                x.Path.Equals(Workspace.Member) &&
-                x.Value.Email == emailAddress);
-            if (currentRecord == null)
-                _updateMemberOptions.Add(PatchDocument<WorkspacePatchValueEmail>.Create(OperationType.Add,
-                        Workspace.Member)
-                    .ChangeValue(new WorkspacePatchValueEmail {Email = emailAddress}));
+            Guard.ForNullOrEmptyOrWhitespace(email, nameof(email));
+            if (this.IsNew()) throw new InvalidOperationException("");
+            UpdatedMemberList.Add(PatchDocument<WorkspacePatchValueEmail>
+                .Create(OperationType.Add, Constants.PatchOptions.Workspace.Member)
+                .ChangeValue(
+                    new WorkspacePatchValueEmail
+                    {
+                        Email = email
+                    }));
 
             return this;
         }
 
-        /// <summary>
-        ///     Add patch operator to remove a member from the workspace.
-        /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <returns></returns>
-        public UpdateWorkspace RemoveMember(string emailAddress)
+        public ViewWorkspace RemoveMember(string email)
         {
-            Guard.ForNullOrEmptyOrWhitespace(emailAddress, nameof(emailAddress));
-
-            var currentRecord = _updateMemberOptions.FirstOrDefault(x =>
-                x.Operation.Equals(OperationType.Remove) &&
-                x.Path.Equals(Workspace.Member) &&
-                x.Value.Email == emailAddress);
-            if (currentRecord == null)
-                _updateMemberOptions.Add(
-                    PatchDocument<WorkspacePatchValueEmail>.Create(OperationType.Remove, Workspace.Member)
-                        .ChangeValue(new WorkspacePatchValueEmail {Email = emailAddress}));
-
+            Guard.ForNullOrEmptyOrWhitespace(email, nameof(email));
+            if (this.IsNew()) throw new InvalidOperationException("");
+            UpdatedMemberList.Add(PatchDocument<WorkspacePatchValueEmail>
+                .Create(OperationType.Remove, Constants.PatchOptions.Workspace.Member)
+                .ChangeValue(
+                    new WorkspacePatchValueEmail
+                    {
+                        Email = email
+                    }));
             return this;
+        }
+
+        public async Task<bool> IsValid(CancellationToken token)
+        {
+            var validation = await _validator.ValidateAsync(this, token);
+            if (validation.IsValid) return true;
+            throw new ValidationException(validation.Errors);
+        }
+
+        public object ToJsonPatch()
+        {
+            return null;
         }
     }
 }

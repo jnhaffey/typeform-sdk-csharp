@@ -2,7 +2,7 @@
 
 namespace Typeform.Sdk.CSharp.Models.Accounts
 {
-    public class ViewAccount
+    public class Account
     {
         /// <summary>
         ///     Alias for the account.

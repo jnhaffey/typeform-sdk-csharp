@@ -4,11 +4,11 @@ using Typeform.Sdk.CSharp.Abstracts;
 
 namespace Typeform.Sdk.CSharp.ApiClients
 {
-    public class ResponseApiClient : ApiClientBase
+    public class ResponseClient : ClientBase
     {
-        private readonly ILogger<ResponseApiClient> _logger;
+        private readonly ILogger<ResponseClient> _logger;
 
-        public ResponseApiClient(string apiKey = "", ILogger<ResponseApiClient> logger = null)
+        public ResponseClient(string apiKey = "", ILogger<ResponseClient> logger = null)
             : base(apiKey)
         {
             _logger = logger;

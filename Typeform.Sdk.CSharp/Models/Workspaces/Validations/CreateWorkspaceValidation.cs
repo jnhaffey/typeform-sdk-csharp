@@ -3,7 +3,7 @@ using Typeform.Sdk.CSharp.Resources;
 
 namespace Typeform.Sdk.CSharp.Models.Workspaces.Validations
 {
-    public class CreateWorkspaceValidation : AbstractValidator<CreateWorkspace>
+    public class CreateWorkspaceValidation : AbstractValidator<ViewWorkspace>
     {
         public CreateWorkspaceValidation()
         {

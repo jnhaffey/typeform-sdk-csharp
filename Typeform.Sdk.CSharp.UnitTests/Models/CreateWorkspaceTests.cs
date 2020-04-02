@@ -13,10 +13,10 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             // ACT
-            var createWorkspace = CreateWorkspace.Create(TestData.Workspace.FullWorkspace.Name);
+            var createWorkspace = CreateWorkspace.Create(TestData.Workspace.FullViewWorkspace.Name);
 
             // ASSERT
-            createWorkspace.Name.Should().Be(TestData.Workspace.FullWorkspace.Name);
+            createWorkspace.Name.Should().Be(TestData.Workspace.FullViewWorkspace.Name);
         }
     }
 }

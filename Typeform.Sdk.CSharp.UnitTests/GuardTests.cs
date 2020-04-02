@@ -293,43 +293,13 @@ namespace Typeform.Sdk.CSharp.UnitTests
         public void ForInitializedClient_Initialized()
         {
             // ARRANGE
-            var createApiClient = new CreateApiClient(TestData.BogusRandomizer.AlphaNumeric(5));
+            var createApiClient = new CreateClient(TestData.BogusRandomizer.AlphaNumeric(5));
 
             // ACT
             Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
 
             // ASSERT
             actionToTest.Should().NotThrow<UninitializedClientException>();
-        }
-
-        [Fact]
-        public void ForInitializedClient_Uninitialized()
-        {
-            // ARRANGE
-            var clientName = nameof(CreateApiClient);
-            var createApiClient = new CreateApiClient("");
-
-            // ACT
-            Action actionToTest = () => Guard.ForInitializedClient(createApiClient);
-
-            // ASSERT
-            actionToTest.Should().Throw<UninitializedClientException>()
-                .WithMessage($"The '{clientName}' does not contain an API Key.");
-        }
-
-        [Fact]
-        public void ForInvalidOperations_With_Invalid_Object()
-        {
-            // ARRANGE
-            var errorMessage = "OBJECT IS NULL";
-            object testObject = null;
-
-            // ACT
-            Action actionToTest = () => Guard.ForInvalidOperations(testObject, errorMessage);
-
-            // ASSERT
-            actionToTest.Should().Throw<InvalidOperationException>()
-                .WithMessage(errorMessage);
         }
 
         [Fact]
@@ -340,7 +310,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
             var testObject = new object();
 
             // ACT
-            Action actionToTest = () => Guard.ForInvalidOperations(testObject, errorMessage);
+            Action actionToTest = () => Guard.ForNullObject(testObject, errorMessage);
 
             // ASSERT
             actionToTest.Should().NotThrow();

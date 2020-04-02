@@ -9,7 +9,6 @@ using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Abstracts;
-using Typeform.Sdk.CSharp.Builders;
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Exceptions;
 using Typeform.Sdk.CSharp.Extensions;
@@ -17,7 +16,6 @@ using Typeform.Sdk.CSharp.Models.Accounts;
 using Typeform.Sdk.CSharp.Models.Shared;
 using Typeform.Sdk.CSharp.Models.Themes;
 using Typeform.Sdk.CSharp.Models.Workspaces;
-using Typeform.Sdk.CSharp.Modifiers;
 using Typeform.Sdk.CSharp.Validations;
 using static Typeform.Sdk.CSharp.Constants;
 
@@ -26,29 +24,30 @@ namespace Typeform.Sdk.CSharp.ApiClients
     /// <summary>
     ///     Typeform Create API Client.
     /// </summary>
-    public sealed class CreateApiClient : ApiClientBase
+    public sealed class CreateClient : ClientBase
     {
-        private readonly ILogger<CreateApiClient> _logger;
+        private readonly ILogger<CreateClient> _logger;
 
         /// <summary>
         ///     Instantiate an instance of the Create API Client.
         /// </summary>
         /// <param name="apiKey"></param>
         /// <param name="logger"></param>
-        public CreateApiClient(string apiKey = "", ILogger<CreateApiClient> logger = null)
+        public CreateClient(string apiKey = "",
+            ILogger<CreateClient> logger = null)
             : base(apiKey)
         {
             _logger = logger;
         }
 
-        #region ViewAccount
+        #region Account
 
         /// <summary>
         ///     Retrieve your own account information.
         /// </summary>
         /// <exception cref="AuthenticationException"></exception>
-        /// <returns>ViewAccount details.</returns>
-        public async Task<ViewAccount> RetrieveAccount(CancellationToken token = default)
+        /// <returns>Account details.</returns>
+        public async Task<Account> RetrieveAccount(CancellationToken token = default)
         {
             Guard.ForInitializedClient(this);
             var urlQuery = BaseUrl
@@ -61,7 +60,7 @@ namespace Typeform.Sdk.CSharp.ApiClients
                 var apiResults = await urlQuery.GetAsync(token);
                 _logger.DebugRawData(DebugNames.ApiResults, apiResults);
                 _logger.DebugRawData(DebugNames.ApiContent, await apiResults.Content.ReadAsStringAsync());
-                return JsonConvert.DeserializeObject<ViewAccount>(
+                return JsonConvert.DeserializeObject<Account>(
                     await apiResults.Content.ReadAsStringAsync());
             }
             catch (FlurlHttpException ex)
@@ -74,14 +73,15 @@ namespace Typeform.Sdk.CSharp.ApiClients
                     _logger.LogError("API call failed: {@failureDetails}", errorResponse);
                     throw new AuthenticationException(errorResponse.Description);
                 }
+
+                _logger.LogError("An unknown error has occurred. {exception}", ex);
+                throw;
             }
             catch (Exception ex)
             {
                 _logger.LogError("An unknown error has occurred. {exception}", ex);
                 throw;
             }
-
-            return null;
         }
 
         #endregion
@@ -311,13 +311,13 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// <param name="token">Cancellation Token (Optional)</param>
         /// <exception cref="AuthenticationException">Thrown if unable to authenticate.</exception>
         /// <returns></returns>
-        public async Task<Theme> CreateTheme(ThemeBuilder builder,
-            CancellationToken token = default)
-        {
-            Guard.ForInitializedClient(this);
-            if (await builder.IsValid(token)) return await CreateANewTheme(builder.Build(), token);
-            return null;
-        }
+        //public async Task<Theme> CreateTheme(ThemeBuilder builder,
+        //    CancellationToken token = default)
+        //{
+        //    Guard.ForInitializedClient(this);
+        //    if (await builder.IsValid(token)) return await CreateANewTheme(builder.Build(), token);
+        //    return null;
+        //}
 
         private async Task<Theme> CreateANewTheme(Theme themeToCreate, CancellationToken token = default)
         {
@@ -574,24 +574,23 @@ namespace Typeform.Sdk.CSharp.ApiClients
         /// <exception cref="AuthenticationException">Thrown if unable to authenticate.</exception>
         /// <exception cref="RecordNotFoundException">Thrown if no workspace can be found with the id provided.</exception>
         /// <returns></returns>
-        public async Task UpdateWorkspace(WorkspaceModifier modifier,
+        public async Task UpdateWorkspace(UpdateWorkspace workspace,
             CancellationToken token = default)
         {
             Guard.ForInitializedClient(this);
             try
             {
-                if (await modifier.IsValid(token))
+                if (await workspace.IsValid(token))
                 {
-                    var updateWorkspace = modifier.Modify();
                     var urlQuery = BaseUrl
                         .AppendPathSegments(UrlPathSegments.CreateApi.WorkspaceUrlPathSegment,
-                            updateWorkspace.WorkspaceId)
+                            workspace.Id)
                         .WithHeader(Headers.ContentType, MimeTypes.ApplicationJson)
                         .WithOAuthBearerToken(ApiKey);
                     _logger.LogUrlCall(urlQuery.Url);
 
-                    _logger.DebugRawData(DebugNames.JsonPatch, modifier.ToJsonPatch());
-                    var apiResults = await urlQuery.PatchJsonAsync(modifier.ToJsonPatch(), token);
+                    _logger.DebugRawData(DebugNames.JsonPatch, workspace.ToJsonPatch());
+                    var apiResults = await urlQuery.PatchJsonAsync(workspace.ToJsonPatch(), token);
                     _logger.DebugRawData(DebugNames.ApiResults, apiResults);
                     _logger.DebugRawData(DebugNames.ApiContent, await apiResults.Content.ReadAsStringAsync());
                 }
@@ -609,17 +608,16 @@ namespace Typeform.Sdk.CSharp.ApiClients
 
                 if (ex.Call.HttpStatus == HttpStatusCode.NotFound)
                 {
-                    var updateWorkspace = modifier.Modify();
                     var errorResponse =
                         JsonConvert.DeserializeObject<ErrorResponse>(await ex.Call.Response.Content
                             .ReadAsStringAsync());
                     _logger.LogError("API call failed: {@failureDetails}", errorResponse);
-                    throw new RecordNotFoundException(RecordType.Workspace, updateWorkspace.WorkspaceId);
+                    throw new RecordNotFoundException(RecordType.Workspace, workspace.Id);
                 }
             }
             catch (ValidationException ex)
             {
-                _logger.LogError("Build Validation Failure: {@validationErrors}", ex);
+                _logger.LogError("Validation Failure: {@validationErrors}", ex);
                 throw;
             }
             catch (Exception ex)

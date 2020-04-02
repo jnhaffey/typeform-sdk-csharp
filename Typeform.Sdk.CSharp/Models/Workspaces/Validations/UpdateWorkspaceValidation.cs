@@ -8,18 +8,18 @@ namespace Typeform.Sdk.CSharp.Models.Workspaces.Validations
     {
         public UpdateWorkspaceValidation()
         {
-            RuleFor(w => w.WorkspaceId)
+            RuleFor(w => w.Id)
                 .NotEmpty()
                 .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceModifier_MissingWorkspaceId");
 
-            RuleFor(w => w.UpdateMemberOptions)
+            RuleFor(w => w.GetMemberUpdates)
                 .NotEmpty()
-                .When(w => w.UpdateWorkspaceName == null)
+                .When(w => w.GetNameChange == null)
                 .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceModifier_NoChange");
 
-            RuleFor(w => w.UpdateWorkspaceName)
+            RuleFor(w => w.GetNameChange)
                 .NotEmpty()
-                .When(w => w.UpdateMemberOptions.Any() == false)
+                .When(w => w.GetMemberUpdates.Any() == false)
                 .WithLocalizedMessage(typeof(ErrorMessages), "Validation_WorkspaceModifier_NoChange");
         }
     }

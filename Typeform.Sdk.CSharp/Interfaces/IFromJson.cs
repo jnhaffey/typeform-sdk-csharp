@@ -2,6 +2,6 @@
 {
     public interface IFromJson<out TModel>
     {
-        TModel FromJson(string jsonData);
+        TModel CreateFromJson(string jsonData);
     }
 }

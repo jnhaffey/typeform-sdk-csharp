@@ -16,7 +16,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var emailAddress = string.Empty;
 
             // ACT
@@ -31,7 +31,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var emailAddress = TestData.BogusFaker.Internet.Email();
             updateWorkspace.AddMember(emailAddress);
             var emailAddressChangeTo = TestData.BogusFaker.Internet.Email();
@@ -41,11 +41,11 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             updateWorkspace.AddMember(emailAddressChangeTo);
 
             // ASSERT
-            updateWorkspace.UpdateMemberOptions.Should().OnlyHaveUniqueItems();
-            updateWorkspace.UpdateMemberOptions.First().Operation.Should().Be(OperationType.Add);
-            updateWorkspace.UpdateMemberOptions.First().Path.Should().Be("/member");
-            updateWorkspace.UpdateMemberOptions.Should().Contain(x => x.Value.Email.Equals(emailAddress));
-            updateWorkspace.UpdateMemberOptions.Should().Contain(x => x.Value.Email.Equals(emailAddressChangeTo));
+            updateWorkspace.GetMemberUpdates.Should().OnlyHaveUniqueItems();
+            updateWorkspace.GetMemberUpdates.First().Operation.Should().Be(OperationType.Add);
+            updateWorkspace.GetMemberUpdates.First().Path.Should().Be("/member");
+            updateWorkspace.GetMemberUpdates.Should().Contain(x => x.Value.Email.Equals(emailAddress));
+            updateWorkspace.GetMemberUpdates.Should().Contain(x => x.Value.Email.Equals(emailAddressChangeTo));
         }
 
         [Fact]
@@ -53,11 +53,11 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             string emailAddress = null;
 
             // ACT
-            Action actionToTest = () => updateWorkspace.ChangeWorkspaceName(emailAddress);
+            Action actionToTest = () => updateWorkspace.AddMember(emailAddress);
 
             // ASSERT
             actionToTest.Should().Throw<ArgumentNullException>();
@@ -68,17 +68,17 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var emailAddress = TestData.BogusFaker.Internet.Email();
 
             // ACT
             updateWorkspace.AddMember(emailAddress);
 
             // ASSERT
-            updateWorkspace.UpdateMemberOptions.Should().OnlyHaveUniqueItems();
-            updateWorkspace.UpdateMemberOptions.First().Operation.Should().Be(OperationType.Add);
-            updateWorkspace.UpdateMemberOptions.First().Path.Should().Be("/member");
-            updateWorkspace.UpdateMemberOptions.First().Value.Email.Should().Be(emailAddress);
+            updateWorkspace.GetMemberUpdates.Should().OnlyHaveUniqueItems();
+            updateWorkspace.GetMemberUpdates.First().Operation.Should().Be(OperationType.Add);
+            updateWorkspace.GetMemberUpdates.First().Path.Should().Be("/member");
+            updateWorkspace.GetMemberUpdates.First().Value.Email.Should().Be(emailAddress);
         }
 
         [Fact]
@@ -86,18 +86,18 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
-            updateWorkspace.ChangeWorkspaceName(TestData.Workspace.FullWorkspace.Name);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
+            updateWorkspace.ChangeName(TestData.Workspace.FullViewWorkspace.Name);
             var nameToChangeTo = TestData.BogusRandomizer.AlphaNumeric(10);
 
             // ACT
-            updateWorkspace.ChangeWorkspaceName(nameToChangeTo);
+            updateWorkspace.ChangeName(nameToChangeTo);
 
             // ASSERT
-            updateWorkspace.UpdateWorkspaceName.Operation.Should().Be(OperationType.Replace);
-            updateWorkspace.UpdateWorkspaceName.Path.Should().Be("/name");
-            updateWorkspace.UpdateWorkspaceName.Value.Should().NotBe(TestData.Workspace.FullWorkspace.Name);
-            updateWorkspace.UpdateWorkspaceName.Value.Should().Be(nameToChangeTo);
+            updateWorkspace.GetNameChange.Operation.Should().Be(OperationType.Replace);
+            updateWorkspace.GetNameChange.Path.Should().Be("/name");
+            updateWorkspace.GetNameChange.Value.Should().NotBe(TestData.Workspace.FullViewWorkspace.Name);
+            updateWorkspace.GetNameChange.Value.Should().Be(nameToChangeTo);
         }
 
         [Fact]
@@ -105,11 +105,11 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var nameValue = string.Empty;
 
             // ACT
-            Action actionToTest = () => updateWorkspace.ChangeWorkspaceName(nameValue);
+            Action actionToTest = () => updateWorkspace.ChangeName(nameValue);
 
             // ASSERT
             actionToTest.Should().Throw<ArgumentNullException>();
@@ -120,11 +120,11 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             string nameValue = null;
 
             // ACT
-            Action actionToTest = () => updateWorkspace.ChangeWorkspaceName(nameValue);
+            Action actionToTest = () => updateWorkspace.ChangeName(nameValue);
 
             // ASSERT
             actionToTest.Should().Throw<ArgumentNullException>();
@@ -135,29 +135,27 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
 
             // ACT
-            updateWorkspace.ChangeWorkspaceName(TestData.Workspace.FullWorkspace.Name);
+            updateWorkspace.ChangeName(TestData.Workspace.FullViewWorkspace.Name);
 
             // ASSERT
-            updateWorkspace.UpdateWorkspaceName.Operation.Should().Be(OperationType.Replace);
-            updateWorkspace.UpdateWorkspaceName.Path.Should().Be("/name");
-            updateWorkspace.UpdateWorkspaceName.Value.Should().Be(TestData.Workspace.FullWorkspace.Name);
+            updateWorkspace.GetNameChange.Operation.Should().Be(OperationType.Replace);
+            updateWorkspace.GetNameChange.Path.Should().Be("/name");
+            updateWorkspace.GetNameChange.Value.Should().Be(TestData.Workspace.FullViewWorkspace.Name);
         }
 
         [Fact]
         public void Create_Default()
         {
             // ARRANGE
-            var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-
             // ACT
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
 
             // ASSERT
-            updateWorkspace.WorkspaceId.Should().Be(workspaceId);
-            updateWorkspace.UpdateMemberOptions.Should().NotBeNull();
+            updateWorkspace.Id.Should().Be(TestData.Workspace.FullViewWorkspace.Id);
+            updateWorkspace.GetMemberUpdates.Should().NotBeNull();
         }
 
         [Fact]
@@ -165,7 +163,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var emailAddress = string.Empty;
 
             // ACT
@@ -180,7 +178,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var emailAddress = TestData.BogusFaker.Internet.Email();
             updateWorkspace.RemoveMember(emailAddress);
             var emailAddressChangeTo = TestData.BogusFaker.Internet.Email();
@@ -189,11 +187,11 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             updateWorkspace.RemoveMember(emailAddressChangeTo);
 
             // ASSERT
-            updateWorkspace.UpdateMemberOptions.Should().OnlyHaveUniqueItems();
-            updateWorkspace.UpdateMemberOptions.First().Operation.Should().Be(OperationType.Remove);
-            updateWorkspace.UpdateMemberOptions.First().Path.Should().Be("/member");
-            updateWorkspace.UpdateMemberOptions.Should().Contain(x => x.Value.Email.Equals(emailAddress));
-            updateWorkspace.UpdateMemberOptions.Should().Contain(x => x.Value.Email.Equals(emailAddressChangeTo));
+            updateWorkspace.GetMemberUpdates.Should().OnlyHaveUniqueItems();
+            updateWorkspace.GetMemberUpdates.First().Operation.Should().Be(OperationType.Remove);
+            updateWorkspace.GetMemberUpdates.First().Path.Should().Be("/member");
+            updateWorkspace.GetMemberUpdates.Should().Contain(x => x.Value.Email.Equals(emailAddress));
+            updateWorkspace.GetMemberUpdates.Should().Contain(x => x.Value.Email.Equals(emailAddressChangeTo));
         }
 
         [Fact]
@@ -201,7 +199,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             string emailAddress = null;
 
             // ACT
@@ -216,17 +214,17 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         {
             // ARRANGE
             var workspaceId = TestData.BogusRandomizer.AlphaNumeric(10);
-            var updateWorkspace = UpdateWorkspace.Create(workspaceId);
+            var updateWorkspace = UpdateWorkspace.Create(TestData.Workspace.FullViewWorkspace);
             var emailAddress = TestData.BogusFaker.Internet.Email();
 
             // ACT
             updateWorkspace.RemoveMember(emailAddress);
 
             // ASSERT
-            updateWorkspace.UpdateMemberOptions.Should().OnlyHaveUniqueItems();
-            updateWorkspace.UpdateMemberOptions.First().Operation.Should().Be(OperationType.Remove);
-            updateWorkspace.UpdateMemberOptions.First().Path.Should().Be("/member");
-            updateWorkspace.UpdateMemberOptions.First().Value.Email.Should().Be(emailAddress);
+            updateWorkspace.GetMemberUpdates.Should().OnlyHaveUniqueItems();
+            updateWorkspace.GetMemberUpdates.First().Operation.Should().Be(OperationType.Remove);
+            updateWorkspace.GetMemberUpdates.First().Path.Should().Be("/member");
+            updateWorkspace.GetMemberUpdates.First().Value.Email.Should().Be(emailAddress);
         }
     }
 }

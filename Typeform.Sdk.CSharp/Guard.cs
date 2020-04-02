@@ -91,7 +91,7 @@ namespace Typeform.Sdk.CSharp
         /// </summary>
         /// <exception cref="UninitializedClientException"></exception>
         public static void ForInitializedClient<TApiClient>(TApiClient apiClient)
-            where TApiClient : ApiClientBase
+            where TApiClient : ClientBase
         {
             if (string.IsNullOrWhiteSpace(apiClient.ApiKey))
                 throw new UninitializedClientException(typeof(TApiClient).Name);
@@ -161,9 +161,9 @@ namespace Typeform.Sdk.CSharp
         /// <param name="nullCheck"></param>
         /// <param name="message"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        public static void ForInvalidOperations(object nullCheck, string message)
+        public static void ForNullObject(object nullCheck, string parameterName)
         {
-            if (nullCheck == null) throw new InvalidOperationException(message);
+            if (nullCheck == null) throw new NullReferenceException(string.Format(ErrorMessages.Guard_ForNullValue, parameterName));
         }
 
         /// <summary>

@@ -61,6 +61,15 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be performed on a {1} ViewWorkspace..
+        /// </summary>
+        public static string Exception_Workspace_Invalid_Operation {
+            get {
+                return ResourceManager.GetString("Exception_Workspace_Invalid_Operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string Guard_ForAllowedOptions {
@@ -169,7 +178,7 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A Workspace Name is required..
+        ///   Looks up a localized string similar to A ViewWorkspace Name is required..
         /// </summary>
         public static string Validation_WorkspaceBuilder_MissingWorkspaceName {
             get {
@@ -178,7 +187,7 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A Workspace Id is required..
+        ///   Looks up a localized string similar to A ViewWorkspace Id is required..
         /// </summary>
         public static string Validation_WorkspaceModifier_MissingWorkspaceId {
             get {

@@ -1,27 +1,24 @@
-﻿using Newtonsoft.Json;
-
-namespace Typeform.Sdk.CSharp.Models.Workspaces
+﻿namespace Typeform.Sdk.CSharp.Models.Workspaces
 {
-    public class CreateWorkspace
+    public class CreateWorkspace : ViewWorkspace
     {
-        private CreateWorkspace()
+        private CreateWorkspace(string name)
+            : base(name)
         {
         }
-
-        /// <summary>
-        ///     Name of the new workspace.
-        /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; private set; }
 
         public static CreateWorkspace Create(string name)
         {
             Guard.ForNullOrEmptyOrWhitespace(name, nameof(name));
+            return new CreateWorkspace(name);
+        }
 
-            return new CreateWorkspace
-            {
-                Name = name
-            };
+        public ViewWorkspace ChangeName(string name)
+        {
+            Guard.ForNullOrEmptyOrWhitespace(name, nameof(name));
+            Name = name;
+
+            return this;
         }
     }
 }

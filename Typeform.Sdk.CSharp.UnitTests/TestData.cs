@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Bogus;
+using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Enums;
-using Typeform.Sdk.CSharp.Exceptions;
-using Typeform.Sdk.CSharp.Models.Shared;
 using Typeform.Sdk.CSharp.Models.Workspaces;
 
 namespace Typeform.Sdk.CSharp.UnitTests
@@ -12,6 +10,7 @@ namespace Typeform.Sdk.CSharp.UnitTests
     [ExcludeFromCodeCoverage]
     public static class TestData
     {
+        public const string ApiKey = "UNIT_TEST_API_KEY";
         public const string NullValue = null;
         public const string EmptyValue = "";
         public const string WhiteSpaceValue = " ";
@@ -29,45 +28,19 @@ namespace Typeform.Sdk.CSharp.UnitTests
 
             private static readonly string FullWorkspaceFormsUrl = $"{FullWorkspaceSelfUrl}/forms";
 
-            public static ViewWorkspace FullWorkspace = new ViewWorkspace
-            {
-                Id = FullWorkspaceId,
-                Name = "UNIT_TEST_WORKSPACE",
-                Default = true,
-                Shared = false,
-                SelfLink = new HrefObject
-                {
-                    Url = FullWorkspaceSelfUrl
-                },
-                Forms = new WorkspaceForms
-                {
-                    Count = 0,
-                    Url = FullWorkspaceFormsUrl
-                },
-                Members = new List<WorkspaceMember>
-                {
-                    new WorkspaceMember
-                    {
-                        Email = "owner@example.com",
-                        Name = "Account Owner",
-                        Role = MemberRoleType.Owner
-                    },
-                    new WorkspaceMember
-                    {
-                        Email = "member@example.com",
-                        Name = "Account Member",
-                        Role = MemberRoleType.Member
-                    }
-                }
-            };
+            public static readonly string DefaultJson = "{\"name\":\"UNIT_TEST_WORKSPACE\"," +
+                                                        "\"default\":true," +
+                                                        "\"shared\":false," +
+                                                        $"\"forms\":{{\"count\":0,\"href\":\"{FullWorkspaceFormsUrl}\"}}," +
+                                                        $"\"self\":{{\"href\":\"{FullWorkspaceSelfUrl}\"}}," +
+                                                        $"\"members\":[{{\"name\":\"Account Owner\",\"email\":\"owner@example.com\",\"role\":{(int) MemberRoleType.Owner}}}," +
+                                                        $"{{\"name\":\"Account Member\",\"email\":\"member@example.com\",\"role\":{(int) MemberRoleType.Member}}}]," +
+                                                        $"\"id\":\"{FullWorkspaceId}\"}}";
 
-            public static string DefaultJson = $"{{\"id\":\"{FullWorkspace.Id}\"," +
-                                               $"\"name\":\"{FullWorkspace.Name}\"," +
-                                               $"\"default\":{FullWorkspace.Default.ToLowerString()}," +
-                                               $"\"shared\":{FullWorkspace.Shared.ToLowerString()}," +
-                                               $"\"forms\":{{\"count\":{FullWorkspace.Forms.Count},\"href\":\"{FullWorkspace.Forms.Url}\"}}," +
-                                               $"\"self\":{{\"href\":\"{FullWorkspace.SelfLink.Url}\"}}," +
-                                               $"\"members\":[{{\"name\":\"{FullWorkspace.Members[0].Name}\",\"email\":\"{FullWorkspace.Members[0].Email}\",\"role\":{(int) FullWorkspace.Members[0].Role}}},{{\"name\":\"{FullWorkspace.Members[1].Name}\",\"email\":\"{FullWorkspace.Members[1].Email}\",\"role\":{(int) FullWorkspace.Members[1].Role}}}]}}";
+            public static readonly ViewWorkspace FullViewWorkspace =
+                JsonConvert.DeserializeObject<ViewWorkspace>(DefaultJson);
+
+            public static readonly ViewWorkspace Null = null;
         }
 
         public static class Themes

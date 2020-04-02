@@ -27,7 +27,7 @@ namespace Typeform.Sdk.CSharp.Models.Shared
         public TValue Value { get; private set; }
 
         /// <summary>
-        ///     Create an instance of a Workspace Patch.
+        ///     Create an instance of a ViewWorkspace Patch.
         /// </summary>
         /// <param name="operation"></param>
         /// <param name="path"></param>
@@ -45,7 +45,7 @@ namespace Typeform.Sdk.CSharp.Models.Shared
         }
 
         /// <summary>
-        ///     Change the value of the Workspace Patch.
+        ///     Change the value of the ViewWorkspace Patch.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

@@ -142,7 +142,7 @@
     <value>The value provided ({1}) for '{0}' is below the minimum value of {2}.</value>
   </data>
   <data name="Validation_WorkspaceModifier_MissingWorkspaceId" xml:space="preserve">
-    <value>A Workspace Id is required.</value>
+    <value>A ViewWorkspace Id is required.</value>
   </data>
   <data name="Guard_ForBetweenValues" xml:space="preserve">
     <value>The value '{0}' provided for {1} is out of range.  Valid range is {2} through {3}.</value>
@@ -160,6 +160,9 @@
     <value>There are no changes applied to the workspace.</value>
   </data>
   <data name="Validation_WorkspaceBuilder_MissingWorkspaceName" xml:space="preserve">
-    <value>A Workspace Name is required.</value>
+    <value>A ViewWorkspace Name is required.</value>
+  </data>
+  <data name="Exception_Workspace_Invalid_Operation" xml:space="preserve">
+    <value>'{0}' cannot be performed on a {1} ViewWorkspace.</value>
   </data>
 </root>

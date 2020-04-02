@@ -19,7 +19,7 @@ namespace Typeform.Sdk.CSharp.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ErrorMessages {
@@ -61,11 +61,56 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be performed on a {1} ViewWorkspace..
+        /// </summary>
+        public static string Exception_Workspace_Invalid_Operation {
+            get {
+                return ResourceManager.GetString("Exception_Workspace_Invalid_Operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Guard_ForAllowedOptions {
+            get {
+                return ResourceManager.GetString("Guard_ForAllowedOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; provided for {1} is out of range.  Valid range is {2} through {3}..
+        /// </summary>
+        public static string Guard_ForBetweenValues {
+            get {
+                return ResourceManager.GetString("Guard_ForBetweenValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List {2} already contains the value &apos;{1}&apos; provided in {0}..
         /// </summary>
         public static string Guard_ForDuplicateItemsInList {
             get {
                 return ResourceManager.GetString("Guard_ForDuplicateItemsInList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; provided for {1} is not a valid Hex Color.  Format should be &apos;#000&apos; or &apos;#000000&apos;..
+        /// </summary>
+        public static string Guard_ForHexColorValue {
+            get {
+                return ResourceManager.GetString("Guard_ForHexColorValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The URL &apos;{0}&apos; provided for {1} is not valid..
+        /// </summary>
+        public static string Guard_ForInvalidUrl {
+            get {
+                return ResourceManager.GetString("Guard_ForInvalidUrl", resourceCulture);
             }
         }
         
@@ -133,11 +178,29 @@ namespace Typeform.Sdk.CSharp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A Workspace Id is required..
+        ///   Looks up a localized string similar to A ViewWorkspace Name is required..
         /// </summary>
-        public static string Validation_WorkspaceUpdateBuilder_MissingWorkspaceId {
+        public static string Validation_WorkspaceBuilder_MissingWorkspaceName {
             get {
-                return ResourceManager.GetString("Validation_WorkspaceUpdateBuilder_MissingWorkspaceId", resourceCulture);
+                return ResourceManager.GetString("Validation_WorkspaceBuilder_MissingWorkspaceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A ViewWorkspace Id is required..
+        /// </summary>
+        public static string Validation_WorkspaceModifier_MissingWorkspaceId {
+            get {
+                return ResourceManager.GetString("Validation_WorkspaceModifier_MissingWorkspaceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no changes applied to the workspace..
+        /// </summary>
+        public static string Validation_WorkspaceModifier_NoChange {
+            get {
+                return ResourceManager.GetString("Validation_WorkspaceModifier_NoChange", resourceCulture);
             }
         }
     }

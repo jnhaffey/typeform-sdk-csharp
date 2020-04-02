@@ -6,17 +6,17 @@ namespace Typeform.Sdk.CSharp.Demo.EndPoints
 {
     internal class AccountEndPoints
     {
-        private readonly CreateApiClient _createApiClient;
+        private readonly CreateClient _createClient;
 
         public AccountEndPoints(ServiceProvider serviceProvider)
         {
-            _createApiClient = serviceProvider.GetService<CreateApiClient>();
+            _createClient = serviceProvider.GetService<CreateClient>();
         }
 
         public async Task ExecuteRetrieveAccount()
         {
             HelperMethods.PrintStartOfNewExecution("EXECUTING RETRIEVAL OF ACCOUNT");
-            var results = await _createApiClient.RetrieveAccount();
+            var results = await _createClient.RetrieveAccount();
             HelperMethods.PrintEndOfExecution(results);
         }
     }

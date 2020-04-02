@@ -4,11 +4,11 @@ using Typeform.Sdk.CSharp.Abstracts;
 
 namespace Typeform.Sdk.CSharp.ApiClients
 {
-    public class WebhooksApiClient : ApiClientBase
+    public class WebhooksClient : ClientBase
     {
-        private readonly ILogger<WebhooksApiClient> _logger;
+        private readonly ILogger<WebhooksClient> _logger;
 
-        public WebhooksApiClient(string apiKey = "", ILogger<WebhooksApiClient> logger = null)
+        public WebhooksClient(string apiKey = "", ILogger<WebhooksClient> logger = null)
             : base(apiKey)
         {
             _logger = logger;

@@ -1,20 +1,19 @@
 ﻿using System;
-using Bogus;
+using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Models.Shared;
 using Xunit;
 
 namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
+    [ExcludeFromCodeCoverage]
     public class QueryParametersWithSearchTest
     {
-        private readonly Randomizer bogusRandomizer = new Randomizer(DateTime.UtcNow.Millisecond);
-
         [Fact]
         public void QueryParametersWithSearch_ClearSearchFilter()
         {
             // ARRANGE
-            var searchFilterToUse = bogusRandomizer.AlphaNumeric(15);
+            var searchFilterToUse = TestData.BogusRandomizer.AlphaNumeric(15);
             var queryParameters = QueryParametersWithSearch.Create(searchFilterToUse);
 
             // ACT
@@ -59,7 +58,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         public void QueryParametersWithSearch_Create_With_SearchFilter_PageSize_Page_Parameter()
         {
             // ARRANGE
-            var searchFilterValueToUse = bogusRandomizer.AlphaNumeric(25);
+            var searchFilterValueToUse = TestData.BogusRandomizer.AlphaNumeric(25);
 
             // ACT
             var queryParameterToTest = QueryParametersWithSearch.Create(searchFilterValueToUse, 10, 100);
@@ -78,7 +77,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         public void QueryParametersWithSearch_Create_With_SearchFilter_Parameter_Only()
         {
             // ARRANGE
-            var searchFilterValueToUse = bogusRandomizer.AlphaNumeric(25);
+            var searchFilterValueToUse = TestData.BogusRandomizer.AlphaNumeric(25);
 
             // ACT
             var queryParameterToTest = QueryParametersWithSearch.Create(searchFilterValueToUse);
@@ -176,7 +175,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
         public void QueryParametersWithSearch_SetSearchFilter()
         {
             // ARRANGE
-            var searchFilterValue = bogusRandomizer.AlphaNumeric(15);
+            var searchFilterValue = TestData.BogusRandomizer.AlphaNumeric(15);
             var queryParameters = QueryParametersWithSearch.Create();
 
             // ACT

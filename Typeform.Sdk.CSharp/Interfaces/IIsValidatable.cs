@@ -10,6 +10,6 @@ namespace Typeform.Sdk.CSharp.Interfaces
         /// <summary>
         ///     Validates the model.
         /// </summary>
-        Task<bool> IsValid(CancellationToken token = default(CancellationToken));
+        Task<bool> IsValid(CancellationToken token = default);
     }
 }

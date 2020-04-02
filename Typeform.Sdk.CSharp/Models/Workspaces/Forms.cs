@@ -9,6 +9,6 @@ namespace Typeform.Sdk.CSharp.Models.Workspaces
         ///     Number of typeforms in the workspace.
         /// </summary>
         [JsonProperty("count")]
-        public int Count { get; set; }
+        public int Count { get; private set; }
     }
 }

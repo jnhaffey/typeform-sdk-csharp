@@ -14,6 +14,8 @@ namespace Typeform.Sdk.CSharp.Models.Webhook
 
         [JsonProperty("landed_at")] public DateTime LandedAt { get; set; }
 
+        [JsonProperty("hidden")] public Dictionary<string, string> HiddenFields { get; set; }
+
         [JsonProperty("calculated")] public Calculated Calculated { get; set; }
 
         [JsonProperty("definition")] public FormDefinition FormDefinition { get; set; }

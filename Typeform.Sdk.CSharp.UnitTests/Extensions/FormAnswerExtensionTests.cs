@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using FluentAssertions;
-using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Extensions;
 using Typeform.Sdk.CSharp.Models.Webhook;
 using Xunit;
@@ -10,447 +9,427 @@ namespace Typeform.Sdk.CSharp.UnitTests.Extensions
 {
     public class FormAnswerExtensionTests
     {
-        private const string _textValue = "TEST123";
-        private const string _otherValue = "OTHER123";
-        private const int _numberValue = 123;
-        private const string _phoneNumberValue = "+123456789";
-        private const string _emailValue = "TEXT@EXAMPLE.COM";
-        private readonly DateTime _dateValue = new DateTime(2000, 1, 1, 0, 0, 0);
-
-        private readonly Payment _payment = new Payment
+        public FormAnswerExtensionTests()
         {
-            Name = _textValue,
-            Amount = _otherValue,
-            Last4 = _numberValue.ToString(),
-            Success = true
-        };
+            var tfWebhookParser = new WebhookParser();
+            _parsedResponse1 = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
+            _parsedResponse2 = tfWebhookParser.Parse(TestData.Webhook.JsonResponse2);
+        }
+
+        private readonly Response _parsedResponse1;
+        private readonly Response _parsedResponse2;
 
         [Fact]
-        public void GetBooleanAnswer_With_False_Answer()
+        public void GetBooleanAnswer_From_LegalQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Boolean, Boolean = false};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Legal.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Legal.Boolean;
 
             // ACT
-            var result = answerToTest.GetBooleanAnswer();
+            var results = _parsedResponse1.GetBooleanAnswer(questionId);
 
             // ASSERT
-            result.Should().BeFalse();
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetBooleanAnswer_With_NonBoolean_Answer()
+        public void GetBooleanAnswer_From_YesNoQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.YesNo.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.YesNo.Boolean;
 
             // ACT
-            Action action = () => answerToTest.GetBooleanAnswer();
+            var results = _parsedResponse1.GetBooleanAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Boolean}.");
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetBooleanAnswer_With_True_Answer()
+        public void GetChoiceAnswer_From_DropdownQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Boolean, Boolean = true};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Dropdown.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Dropdown.Choice.Label;
 
             // ACT
-            var result = answerToTest.GetBooleanAnswer();
+            var results = _parsedResponse1.GetChoiceAnswer(questionId);
 
             // ASSERT
-            result.Should().BeTrue();
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetChoiceAnswer_With_Label_Answer()
+        public void GetChoiceAnswer_From_SingleChoice_With_Other_Option1()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Choice, Choice = new Choice {Label = _textValue}};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .MultipleChoice_Single_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Single_With_Other
+                .Choice.Label;
 
             // ACT
-            var result = answerToTest.GetChoiceAnswer();
+            var results = _parsedResponse1.GetChoiceAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(_textValue);
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetChoiceAnswer_With_NonChoice_Answer()
+        public void GetChoiceAnswer_From_SingleChoice_With_Other_Option2()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .MultipleChoice_Single_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Single_With_Other
+                .Choice.Other;
 
             // ACT
-            Action action = () => answerToTest.GetChoiceAnswer();
+            var results = _parsedResponse2.GetChoiceAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Choice}.");
+            results.Should().Be(expectedResult);
+        }
+
+
+        [Fact]
+        public void GetChoiceAnswer_From_SingleChoice_Without_Other_Option()
+        {
+            // ARRANGE
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .MultipleChoice_Single_Without_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Single_Without_Other
+                .Choice.Label;
+
+            // ACT
+            var results = _parsedResponse1.GetChoiceAnswer(questionId);
+
+            // ASSERT
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetChoiceAnswer_With_Other_Answer()
+        public void GetChoiceAnswer_From_SinglePictureChoice_With_Other_Option1()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Choice, Choice = new Choice {Other = _textValue}};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .PictureChoice_Single_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Single_With_Other
+                .Choice.Label;
 
             // ACT
-            var result = answerToTest.GetChoiceAnswer();
+            var results = _parsedResponse1.GetChoiceAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(_textValue);
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetChoicesAnswer_With_LabelAndOther_Answer()
+        public void GetChoiceAnswer_From_SinglePictureChoice_With_Other_Option2()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer
-            {
-                Type = FormAnswerType.Choices,
-                Choices = new Choices {Labels = new List<string> {_textValue}, Other = _otherValue}
-            };
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .PictureChoice_Single_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Single_With_Other
+                .Choice.Other;
 
             // ACT
-            var result = answerToTest.GetChoicesAnswer();
+            var results = _parsedResponse2.GetChoiceAnswer(questionId);
 
             // ASSERT
-            result.Should().Contain(_textValue);
-            result.Should().Contain(_otherValue);
+            results.Should().Be(expectedResult);
+        }
+
+
+        [Fact]
+        public void GetChoiceAnswer_From_SinglePictureChoice_Without_Other_Option()
+        {
+            // ARRANGE
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .PictureChoice_Single_Without_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Single_Without_Other
+                .Choice.Label;
+
+            // ACT
+            var results = _parsedResponse1.GetChoiceAnswer(questionId);
+
+            // ASSERT
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetChoicesAnswer_With_MultipleLabel_Answer()
+        public void GetChoicesAnswer_From_MultiChoice_With_Other_Option1()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer
-            {
-                Type = FormAnswerType.Choices,
-                Choices = new Choices {Labels = new List<string> {_textValue, _otherValue}}
-            };
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .MultipleChoice_Multiple_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Multiple_With_Other
+                .Choices.Labels;
+            var expectedMissing = TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Multiple_With_Other
+                .Choices.Other;
 
             // ACT
-            var result = answerToTest.GetChoicesAnswer();
+            var results = _parsedResponse1.GetChoicesAnswer(questionId);
 
             // ASSERT
-            result.Should().Contain(_textValue);
-            result.Should().Contain(_otherValue);
+            results.Should().HaveSameCount(expectedResult);
+            results.Should().Contain(expectedResult);
+            results.Should().NotContain(expectedMissing);
         }
 
         [Fact]
-        public void GetChoicesAnswer_With_NonChoices_Answer()
+        public void GetChoicesAnswer_From_MultiChoice_With_Other_Option2()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .MultipleChoice_Multiple_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Multiple_With_Other
+                .Choices.Labels;
+            expectedResult.Add(TestData.Webhook.ResponseRoot.FormResponse.Answers.MultipleChoice_Multiple_With_Other
+                .Choices.Other);
 
             // ACT
-            Action action = () => answerToTest.GetChoicesAnswer();
+            var results = _parsedResponse2.GetChoicesAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Choices}.");
+            results.Should().HaveSameCount(expectedResult);
+            results.Should().Contain(expectedResult);
         }
 
         [Fact]
-        public void GetChoicesAnswer_With_SingleLabel_Answer()
+        public void GetChoicesAnswer_From_MultiChoice_Without_Other_Option()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer
-                {Type = FormAnswerType.Choices, Choices = new Choices {Labels = new List<string> {_textValue}}};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .MultipleChoice_Multiple_Without_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers
+                .MultipleChoice_Multiple_Without_Other.Choices.Labels;
 
             // ACT
-            var result = answerToTest.GetChoicesAnswer();
+            var results = _parsedResponse1.GetChoicesAnswer(questionId);
 
             // ASSERT
-            result.Should().Contain(_textValue);
+            results.Should().HaveSameCount(expectedResult);
+            results.Should().Contain(expectedResult);
         }
 
         [Fact]
-        public void GetDateAnswer_With_Date_Answer()
+        public void GetChoicesAnswer_From_MultiPictureChoice_With_Other_Option1()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Date, Date = _dateValue};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .PictureChoice_Multiple_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Multiple_With_Other
+                .Choices.Labels;
+            var expectedMissing = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Multiple_With_Other
+                .Choices.Other;
 
             // ACT
-            var result = answerToTest.GetDateAnswer();
+            var results = _parsedResponse1.GetChoicesAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(_dateValue);
+            results.Should().HaveSameCount(expectedResult, $"ExpectedResult: {expectedResult.Count}");
+            results.Should().Contain(expectedResult, $"ExpectedResult: {expectedResult}");
+            results.Should().NotContain(expectedMissing, $"ExpectedMissing: {expectedMissing}");
         }
 
         [Fact]
-        public void GetDateAnswer_With_NonDate_Answer()
+        public void GetChoicesAnswer_From_MultiPictureChoice_With_Other_Option2()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .PictureChoice_Multiple_With_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Multiple_With_Other
+                .Choices.Labels;
+            var expectedOtherResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Multiple_With_Other
+                .Choices.Other;
 
             // ACT
-            Action action = () => answerToTest.GetDateAnswer();
+            var results = _parsedResponse2.GetChoicesAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Date}.");
+            results.Should().HaveCount(expectedResult.Count + 1);
+            results.Should().Contain(expectedResult);
+            results.Should().Contain(expectedOtherResult);
         }
 
         [Fact]
-        public void GetDateAnswer_Without_Date_Answer()
+        public void GetChoicesAnswer_From_MultiPictureChoice_Without_Other_Option()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Date};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields
+                .PictureChoice_Multiple_Without_Other.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PictureChoice_Multiple_Without_Other
+                .Choices.Labels;
 
             // ACT
-            var result = answerToTest.GetDateAnswer();
+            var results = _parsedResponse1.GetChoicesAnswer(questionId);
 
             // ASSERT
-            result.Should().BeNull();
+            results.Should().HaveSameCount(expectedResult);
+            results.Should().Contain(expectedResult);
         }
 
         [Fact]
-        public void GetEmailAnswer_With_Email_Answer()
+        public void GetDateAnswer_From_DateQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Email, Email = _emailValue};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Date.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Date.DateValue;
 
             // ACT
-            var result = answerToTest.GetEmailAnswer();
+            var results = _parsedResponse1.GetDateAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(_emailValue);
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetEmailAnswer_With_NonEmail_Answer()
+        public void GetEmailAnswer_From_EmailQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Email.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Email.EmailValue;
 
             // ACT
-            Action action = () => answerToTest.GetEmailAnswer();
+            var results = _parsedResponse1.GetEmailAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Email}.");
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetEmailAnswer_Without_Email_Answer()
+        public void GetFileUrlAnswer_From_FileUploadQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Email};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.FileUpload.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.FileUpload.FileUrl;
 
             // ACT
-            var result = answerToTest.GetEmailAnswer();
+            var results = _parsedResponse1.GetFileUrlAnswer(questionId);
 
             // ASSERT
-            result.Should().BeNull();
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetFileUrlAnswer_With_FileUrl_Answer()
+        public void GetNumberAnswer_From_NumberQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.FileUrl, FileUrl = _textValue};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Number.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Number.NumberValue;
 
             // ACT
-            var result = answerToTest.GetFileUrlAnswer();
+            var results = _parsedResponse1.GetNumberAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(_textValue);
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetFileUrlAnswer_With_NonFileUrl_Answer()
+        public void GetNumberAnswer_From_OpinionScaleQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Number};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.OpinionScale.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.OpinionScale.Number;
 
             // ACT
-            Action action = () => answerToTest.GetFileUrlAnswer();
+            var results = _parsedResponse1.GetNumberAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Number} and not {FormAnswerType.FileUrl}.");
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetFileUrlAnswer_Without_FileUrl_Answer()
+        public void GetNumberAnswer_From_RatingQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.FileUrl};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Rating.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Rating.Number;
 
             // ACT
-            var result = answerToTest.GetFileUrlAnswer();
+            var results = _parsedResponse1.GetNumberAnswer(questionId);
 
             // ASSERT
-            result.Should().BeNull();
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetNumberAnswer_With_NonNumber_Answer()
+        public void GetPaymentAnswer_From_PaymentQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Payment.Id;
+            var expectedAmountResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Payment.PaymentValue.Amount;
+            var expectedLast4Result = TestData.Webhook.ResponseRoot.FormResponse.Answers.Payment.PaymentValue.Last4;
+            var expectedNameResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Payment.PaymentValue.Name;
+            var expectedSuccessResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Payment.PaymentValue.Success;
 
             // ACT
-            Action action = () => answerToTest.GetNumberAnswer();
+            var results = _parsedResponse1.GetPaymentAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Number}.");
+            results.Amount.Should().Be(expectedAmountResult);
+            results.Last4.Should().Be(expectedLast4Result);
+            results.Name.Should().Be(expectedNameResult);
+            results.Success.Should().Be(expectedSuccessResult);
         }
 
         [Fact]
-        public void GetNumberAnswer_With_Number_Answer()
+        public void GetPhoneNumberAnswer_From_PhoneNumberQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Number, Number = _numberValue};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.PhoneNumber.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.PhoneNumber.Phone_Number;
 
             // ACT
-            var result = answerToTest.GetNumberAnswer();
+            var results = _parsedResponse1.GetPhoneNumberAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(_numberValue);
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetNumberAnswer_Without_Number_Answer()
+        public void GetTextAnswer_From_LongTextQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Number};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.LongText.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.LongText.Text;
 
             // ACT
-            var result = answerToTest.GetNumberAnswer();
+            var results = _parsedResponse1.GetTextAnswer(questionId);
 
             // ASSERT
-            result.Should().Be(0);
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetPaymentAnswer_With_NonPayment_Answer()
+        public void GetTextAnswer_From_ShortTextQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.ShortText.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.ShortText.Text;
 
             // ACT
-            Action action = () => answerToTest.GetPaymentAnswer();
+            var results = _parsedResponse1.GetTextAnswer(questionId);
 
             // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Text} and not {FormAnswerType.Payment}.");
+            results.Should().Be(expectedResult);
         }
 
         [Fact]
-        public void GetPaymentAnswer_With_Payment_Answer()
+        public void GetWebsiteAnswer_From_WebsiteQuestion()
         {
             // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Payment, Payment = _payment};
+            var questionId = TestData.Webhook.ResponseRoot.FormResponse.Definition.Fields.Website.Id;
+            var expectedResult = TestData.Webhook.ResponseRoot.FormResponse.Answers.Website.Url;
 
             // ACT
-            var result = answerToTest.GetPaymentAnswer();
+            var results = _parsedResponse1.GetWebsite(questionId);
 
             // ASSERT
-            result.Should().BeOfType<Payment>();
-            result.Name.Should().Be(_payment.Name);
-            result.Amount.Should().Be(_payment.Amount);
-            result.Last4.Should().Be(_payment.Last4);
-            result.Success.Should().Be(_payment.Success);
-        }
-
-        [Fact]
-        public void GetPaymentAnswer_Without_Payment_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Payment};
-
-            // ACT
-            var result = answerToTest.GetPaymentAnswer();
-
-            // ASSERT
-            result.Should().BeNull();
-        }
-
-        [Fact]
-        public void GetPhoneNumberAnswer_With_NonPhoneNumber_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Number};
-
-            // ACT
-            Action action = () => answerToTest.GetPhoneNumberAnswer();
-
-            // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Number} and not {FormAnswerType.PhoneNumber}.");
-        }
-
-        [Fact]
-        public void GetPhoneNumberAnswer_With_PhoneNumber_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.PhoneNumber, PhoneNumber = _phoneNumberValue};
-
-            // ACT
-            var result = answerToTest.GetPhoneNumberAnswer();
-
-            // ASSERT
-            result.Should().Be(_phoneNumberValue);
-        }
-
-        [Fact]
-        public void GetPhoneNumberAnswer_Without_PhoneNumber_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.PhoneNumber};
-
-            // ACT
-            var result = answerToTest.GetPhoneNumberAnswer();
-
-            // ASSERT
-            result.Should().BeNull();
-        }
-
-        [Fact]
-        public void GetTextAnswer_With_NonText_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Number};
-
-            // ACT
-            Action action = () => answerToTest.GetTextAnswer();
-
-            // ASSERT
-            action.Should().ThrowExactly<InvalidAnswerTypeException>()
-                .WithMessage($"Answer is of type {FormAnswerType.Number} and not {FormAnswerType.Text}.");
-        }
-
-        [Fact]
-        public void GetTextAnswer_With_Text_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text, Text = _textValue};
-
-            // ACT
-            var result = answerToTest.GetTextAnswer();
-
-            // ASSERT
-            result.Should().Be(_textValue);
-        }
-
-        [Fact]
-        public void GetTextAnswer_Without_Text_Answer()
-        {
-            // ARRANGE
-            var answerToTest = new FormAnswer {Type = FormAnswerType.Text};
-
-            // ACT
-            var result = answerToTest.GetTextAnswer();
-
-            // ASSERT
-            result.Should().BeNull();
+            results.Should().Be(expectedResult);
         }
     }
 }

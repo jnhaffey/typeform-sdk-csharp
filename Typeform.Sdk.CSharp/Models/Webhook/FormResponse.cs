@@ -10,9 +10,9 @@ namespace Typeform.Sdk.CSharp.Models.Webhook
 
         [JsonProperty("token")] public string Token { get; set; }
 
-        [JsonProperty("submitted_at")] public DateTime SubmittedAt { get; set; }
+        [JsonProperty("submitted_at")] public DateTimeOffset SubmittedAt { get; set; }
 
-        [JsonProperty("landed_at")] public DateTime LandedAt { get; set; }
+        [JsonProperty("landed_at")] public DateTimeOffset LandedAt { get; set; }
 
         [JsonProperty("hidden")] public Dictionary<string, string> HiddenFields { get; set; }
 

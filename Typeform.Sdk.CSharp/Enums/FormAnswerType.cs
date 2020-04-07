@@ -14,5 +14,6 @@ namespace Typeform.Sdk.CSharp.Enums
         [EnumMember(Value = "file_url")] FileUrl,
         [EnumMember(Value = "payment")] Payment,
         [EnumMember(Value = "phone_number")] PhoneNumber,
+        [EnumMember(Value = "url")] Url,
     }
 }

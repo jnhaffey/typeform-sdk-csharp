@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using Typeform.Sdk.CSharp.Enums;
 using Typeform.Sdk.CSharp.Models.Webhook;
@@ -9,107 +8,6 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
 {
     public class DeserializeWebhookPayloadTests
     {
-        #region Root Tests
-
-        [Fact]
-        public void WebhookParser_Parse_Root_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.EventId.Should().Be("LtWXD3crgy");
-            result.EventType.Should().Be(EventType.FormResponse);
-        }
-
-        [Fact]
-        public void WebhookParser_Parse_Root_To_Type_Response()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.Should().BeOfType<Response>();
-        }
-
-        #region Root FormResponse Tests
-
-        [Fact]
-        public void WebhookParser_Parse_Answers_To_Type_List_Of_FormAnswer()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers.Should().BeOfType<List<FormAnswer>>();
-        }
-
-        [Fact]
-        public void WebhookParser_Parse_Form_Response_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormId.Should().Be("lT4Z3j");
-            result.FormResponse.Token.Should().Be("a3a12ec67a1365927098a606107fac15");
-            result.FormResponse.SubmittedAt.Should().Be(DateTime.Parse("2018-01-18T18:17:02Z"));
-            result.FormResponse.LandedAt.Should().Be(DateTime.Parse("2018-01-18T18:07:02Z"));
-        }
-
-        [Fact]
-        public void WebhookParser_Parse_Form_Response_To_Type_FormResponse()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.Should().BeOfType<FormResponse>();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_HiddenFields_To_Type_Dictionary()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.HiddenFields.Should().BeOfType<Dictionary<string,string>>();
-        }
-
-        [Fact]
-        public void WebhookParser_Parse_HiddenFields_Count_Should_Be_2()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.HiddenFields.Should().HaveCount(2);
-        }
-
-        #region Root FormResponse Hidden Tests
-
         [Fact]
         public void WebhookParse_Parse_HiddenField00_Correct_Properties()
         {
@@ -118,11 +16,13 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var field = 0;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.HiddenFields.Should().ContainKey("key1");
-            result.FormResponse.HiddenFields.Should().ContainValue("value1");
+            result.FormResponse.HiddenFields.Should()
+                .ContainKey(TestData.Webhook.ResponseRoot.FormResponse.Hidden.HiddenFieldKey1);
+            result.FormResponse.HiddenFields.Should()
+                .ContainValue(TestData.Webhook.ResponseRoot.FormResponse.Hidden.HiddenFieldValue1);
         }
 
         [Fact]
@@ -133,16 +33,40 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var field = 1;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.HiddenFields.Should().ContainKey("key2");
-            result.FormResponse.HiddenFields.Should().ContainValue("value2");
+            result.FormResponse.HiddenFields.Should()
+                .ContainKey(TestData.Webhook.ResponseRoot.FormResponse.Hidden.HiddenFieldKey2);
+            result.FormResponse.HiddenFields.Should()
+                .ContainValue(TestData.Webhook.ResponseRoot.FormResponse.Hidden.HiddenFieldValue2);
         }
 
-        #endregion
+        [Fact]
+        public void WebhookParse_Parse_HiddenFields_To_Type_Dictionary()
+        {
+            // ARRANGE
+            var tfWebhookParser = new WebhookParser();
 
-        #region Root FormResponse Calculation Tests
+            // ACT
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
+
+            // ASSERT
+            result.FormResponse.HiddenFields.Should().BeOfType<Dictionary<string, string>>();
+        }
+
+        [Fact]
+        public void WebhookParser_Parse_Answers_To_Type_List_Of_FormAnswer()
+        {
+            // ARRANGE
+            var tfWebhookParser = new WebhookParser();
+
+            // ACT
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
+
+            // ASSERT
+            result.FormResponse.FormAnswers.Should().BeOfType<List<FormAnswer>>();
+        }
 
         [Fact]
         public void WebhookParser_Parse_Calculated_Correct_Properties()
@@ -151,10 +75,11 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var tfWebhookParser = new WebhookParser();
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.Calculated.Score.Should().Be(9);
+            result.FormResponse.Calculated.Score.Should()
+                .Be(TestData.Webhook.ResponseRoot.FormResponse.Calculated.Score);
         }
 
         [Fact]
@@ -164,433 +89,26 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var tfWebhookParser = new WebhookParser();
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
             result.FormResponse.Calculated.Should().BeOfType<Calculated>();
         }
 
-        #endregion
-
-        #region Root FormResponse Answer Tests
-
         [Fact]
-        public void WebhookParse_Parse_Answers00_Correct_Properties()
+        public void WebhookParser_Parse_Definition_Correct_Properties()
         {
             // ARRANGE
             var tfWebhookParser = new WebhookParser();
-            var field = 0;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Text);
-
-            result.FormResponse.FormAnswers[field].Text.Should().Be(
-                "It's cold right now! I live in an older medium-sized city with a university. Geographically, the area is hilly.");
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("DlXFaesGBpoF");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.LongText);
+            result.FormResponse.FormDefinition.Id.Should().Be(TestData.Webhook.ResponseRoot.FormResponse.Definition.Id);
+            result.FormResponse.FormDefinition.Title.Should()
+                .Be(TestData.Webhook.ResponseRoot.FormResponse.Definition.Title);
         }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers01_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 1;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Email);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().Be("laura@example.com");
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("SMEUb7VJz92Q");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.Email);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers02_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 2;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.PhoneNumber);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().Be("+34123456789");
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("Nie87vP4ORlG");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.PhoneNumber);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers03_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 3;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Text);
-
-            result.FormResponse.FormAnswers[field].Text.Should().Be("Laura");
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("JwWggjAKtOkA");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.ShortText);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers04_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 4;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Date);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().Be(DateTime.Parse("2005-10-15"));
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("KoJxDM3c6x8h");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.Date);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers05_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 5;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Choices);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Choices.Should().BeOfType<Choices>();
-            result.FormResponse.FormAnswers[field].Choices.Labels.Should().BeOfType<List<string>>();
-            result.FormResponse.FormAnswers[field].Choices.Labels.Should().HaveCount(2);
-            result.FormResponse.FormAnswers[field].Choices.Labels[0].Should().Be("London");
-            result.FormResponse.FormAnswers[field].Choices.Labels[1].Should().Be("Sydney");
-            result.FormResponse.FormAnswers[field].Choices.Other.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("PNe8ZKBK8C2Q");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.PictureChoice);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers06_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 6;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Number);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(5);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("Q7M2XAwY04dW");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.Number);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers07_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 7;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Boolean);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeTrue();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("gFFf3xAkJKsr");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.Legal);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers08_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 8;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Choice);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Choice.Should().BeOfType<Choice>();
-            result.FormResponse.FormAnswers[field].Choice.Label.Should().Be("London");
-            result.FormResponse.FormAnswers[field].Choice.Other.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("k6TP9oLGgHjl");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.MultipleChoice);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers09_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 9;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Boolean);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeTrue();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(0);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("RUqkXSeXBXSd");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.YesNo);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers10_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 10;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Number);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(2);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("NRsxU591jIW9");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.OpinionScale);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers11_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 11;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Number);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(3);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("WOTdC00F8A3h");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.Rating);
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Answers12_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 12;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormAnswers[field].Type.Should().Be(FormAnswerType.Number);
-
-            result.FormResponse.FormAnswers[field].Text.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Email.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].PhoneNumber.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Date.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Boolean.Should().BeFalse();
-            result.FormResponse.FormAnswers[field].Url.Should().BeNullOrEmpty();
-            result.FormResponse.FormAnswers[field].Number.Should().Be(4);
-            result.FormResponse.FormAnswers[field].FileUrl.Should().BeNullOrEmpty();
-
-            result.FormResponse.FormAnswers[field].Payment.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choice.Should().BeNull();
-            result.FormResponse.FormAnswers[field].Choices.Should().BeNull();
-
-            result.FormResponse.FormAnswers[field].Field.Should().BeOfType<Field>();
-            result.FormResponse.FormAnswers[field].Field.Id.Should().Be("pn48RmPazVdM");
-            result.FormResponse.FormAnswers[field].Field.Type.Should().Be(FieldType.Number);
-        }
-
-        #endregion
-
-        #region Root FormResponse Definition Tests
 
         [Fact]
         public void WebhookParser_Parse_Definition_Fields_Count_Should_Be_13()
@@ -599,10 +117,10 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var tfWebhookParser = new WebhookParser();
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormDefinition.Fields.Should().HaveCount(13);
+            result.FormResponse.FormDefinition.Fields.Should().HaveCount(22);
         }
 
         [Fact]
@@ -612,7 +130,7 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var tfWebhookParser = new WebhookParser();
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
             result.FormResponse.FormDefinition.Fields.Should().BeOfType<List<Field>>();
@@ -625,293 +143,79 @@ namespace Typeform.Sdk.CSharp.UnitTests.Models
             var tfWebhookParser = new WebhookParser();
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
             result.FormResponse.FormDefinition.Should().BeOfType<FormDefinition>();
         }
 
         [Fact]
-        public void WebhookParser_Parse_Definition_Correct_Properties()
+        public void WebhookParser_Parse_Form_Response_Correct_Properties()
         {
             // ARRANGE
             var tfWebhookParser = new WebhookParser();
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormDefinition.Id.Should().Be("lT4Z3j");
-            result.FormResponse.FormDefinition.Title.Should().Be("Webhooks example");
-        }
-
-        #region Root FormResponse Defintion Field Tests
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field00_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 0;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("DlXFaesGBpoF");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "Thanks, {{answer_60906475}}! What's it like where you live? Tell us in a few sentences.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.LongText);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_long_text");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
+            result.FormResponse.FormId.Should().Be(TestData.Webhook.ResponseRoot.FormResponse.FormId);
+            result.FormResponse.Token.Should().Be(TestData.Webhook.ResponseRoot.FormResponse.Token);
+            result.FormResponse.SubmittedAt.Should().Be(TestData.Webhook.ResponseRoot.FormResponse.SubmittedAt);
+            result.FormResponse.LandedAt.Should().Be(TestData.Webhook.ResponseRoot.FormResponse.LandedAt);
         }
 
         [Fact]
-        public void WebhookParse_Parse_Definition_Field01_Correct_Properties()
+        public void WebhookParser_Parse_Form_Response_To_Type_FormResponse()
         {
             // ARRANGE
             var tfWebhookParser = new WebhookParser();
-            var field = 1;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("SMEUb7VJz92Q");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "If you're OK with our city management following up if they have further questions, please give us your email address.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.Email);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_email");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
+            result.FormResponse.Should().BeOfType<FormResponse>();
         }
 
         [Fact]
-        public void WebhookParse_Parse_Definition_Field02_Correct_Properties()
+        public void WebhookParser_Parse_HiddenFields_Count_Should_Be_2()
         {
             // ARRANGE
             var tfWebhookParser = new WebhookParser();
-            var field = 2;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("Nie87vP4ORlG");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should()
-                .Be("Please enter your mobile number so we can follow up.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.PhoneNumber);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_phone");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
+            result.FormResponse.HiddenFields.Should().HaveCount(2);
         }
 
         [Fact]
-        public void WebhookParse_Parse_Definition_Field03_Correct_Properties()
+        public void WebhookParser_Parse_Root_Correct_Properties()
         {
             // ARRANGE
             var tfWebhookParser = new WebhookParser();
-            var field = 3;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("JwWggjAKtOkA");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be("What is your first name?");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.ShortText);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_short_text");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
+            result.EventId.Should().Be(TestData.Webhook.ResponseRoot.EventId);
+            result.EventType.Should().Be(EventType.FormResponse);
         }
 
         [Fact]
-        public void WebhookParse_Parse_Definition_Field04_Correct_Properties()
+        public void WebhookParser_Parse_Root_To_Type_Response()
         {
             // ARRANGE
             var tfWebhookParser = new WebhookParser();
-            var field = 4;
 
             // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
+            var result = tfWebhookParser.Parse(TestData.Webhook.JsonResponse1);
 
             // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("KoJxDM3c6x8h");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should()
-                .Be("When did you move to the place where you live?");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.Date);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_date");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
+            result.Should().BeOfType<Response>();
         }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field05_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 5;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("PNe8ZKBK8C2Q");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should()
-                .Be("Which pictures do you like? You can choose as many as you like.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.PictureChoice);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_picture_choice");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeTrue();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field06_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 6;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("Q7M2XAwY04dW");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "On a scale of 1 to 5, what rating would you give the weather in Sydney? 1 is poor weather, 5 is excellent weather");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.Number);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_number1");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field07_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 7;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("gFFf3xAkJKsr");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "By submitting this form, you understand and accept that we will share your answers with city management. Your answers will be anonymous will not be shared.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.Legal);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_legal");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field08_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 8;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("k6TP9oLGgHjl");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should()
-                .Be("Which of these cities is your favorite?");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.MultipleChoice);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_multiple_choice");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field09_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 9;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("RUqkXSeXBXSd");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should()
-                .Be("Do you have a favorite city we haven't listed?");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.YesNo);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_yes_no");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field10_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 10;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("NRsxU591jIW9");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "How important is the weather to your opinion about a city? 1 is not important, 5 is very important.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.OpinionScale);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_opinion_scale");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field11_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 11;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("WOTdC00F8A3h");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "How would you rate the weather where you currently live? 1 is poor weather, 5 is excellent weather.");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.Rating);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_rating");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        [Fact]
-        public void WebhookParse_Parse_Definition_Field12_Correct_Properties()
-        {
-            // ARRANGE
-            var tfWebhookParser = new WebhookParser();
-            var field = 12;
-
-            // ACT
-            var result = tfWebhookParser.Parse(TestData.Webhook.ResponseData);
-
-            // ASSERT
-            result.FormResponse.FormDefinition.Fields[field].Id.Should().Be("pn48RmPazVdM");
-            result.FormResponse.FormDefinition.Fields[field].Title.Should().Be(
-                "On a scale of 1 to 5, what rating would you give the general quality of life in Sydney? 1 is poor, 5 is excellent");
-            result.FormResponse.FormDefinition.Fields[field].Type.Should().Be(FieldType.Number);
-            result.FormResponse.FormDefinition.Fields[field].Ref.Should().Be("readable_ref_number2");
-            result.FormResponse.FormDefinition.Fields[field].AllowsMultipleSelections.Should().BeFalse();
-            result.FormResponse.FormDefinition.Fields[field].AllowsOtherChoice.Should().BeFalse();
-        }
-
-        #endregion
-
-        #endregion        
-
-        #endregion
-
-        #endregion
     }
 }

@@ -21,4 +21,13 @@
     <ProjectReference Include="..\Typeform.Sdk.CSharp\Typeform.Sdk.CSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="WebhookResponse1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="WebhookResponse2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,532 @@
+{
+  "event_id": "01E58BT3PVFC3D5CN4W8D433ZE",
+  "event_type": "form_response",
+  "form_response": {
+    "form_id": "gXoeR3",
+    "token": "7l8hjyfrjvt31l0if7l8ub70enlq4vya",
+    "landed_at": "2020-04-06T18:23:15Z",
+    "submitted_at": "2020-04-06T18:24:59Z",
+    "calculated": {
+      "score": 9
+    },
+    "hidden": {
+      "hiddenfield1": "hidden_value1",
+      "hiddenfield2": "hidden_value2"
+    },
+    "definition": {
+      "id": "gXoeR3",
+      "title": "SDK Use",
+      "fields": [
+        {
+          "id": "b6p0eo5faGz7",
+          "title": "MultiChoice (single selection without other option)",
+          "type": "multiple_choice",
+          "ref": "sdk_multichoice_single",
+          "properties": {},
+          "choices": [
+            {
+              "id": "LJ0x3iaRMUFi",
+              "label": "Choice1"
+            },
+            {
+              "id": "IrDCB0aqjmiV",
+              "label": "Choice2"
+            },
+            {
+              "id": "kfPG92Xg2UKm",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "qIxWIZGIJAV4",
+          "title": "MultiChoice (single selection with other option)",
+          "type": "multiple_choice",
+          "allow_other_choice": true,
+          "ref": "sdk_multichoice_single_other",
+          "properties": {},
+          "choices": [
+            {
+              "id": "Zxsk9Y85dqDH",
+              "label": "Choice1"
+            },
+            {
+              "id": "eQCGsHyXlTXG",
+              "label": "Choice2"
+            },
+            {
+              "id": "zKg16wqzWbag",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "hnfaIIwfYdsV",
+          "title": "MultiChoice (multi-selection without other option)",
+          "type": "multiple_choice",
+          "allow_multiple_selections": true,
+          "ref": "sdk_multichoice_multi",
+          "properties": {},
+          "choices": [
+            {
+              "id": "q4Mte3CtC4Ac",
+              "label": "Choice1"
+            },
+            {
+              "id": "VQMdBeDfGtJ6",
+              "label": "Choice2"
+            },
+            {
+              "id": "OzQ3RZzfl8pt",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "oy0lMI97wKQG",
+          "title": "MultiChoice (multi-selection with other option)",
+          "type": "multiple_choice",
+          "allow_multiple_selections": true,
+          "allow_other_choice": true,
+          "ref": "sdk_multichoice_multi_other",
+          "properties": {},
+          "choices": [
+            {
+              "id": "gR4cMzlz8jb8",
+              "label": "Choice1"
+            },
+            {
+              "id": "OpCM2MMr7RRw",
+              "label": "Choice2"
+            },
+            {
+              "id": "H7CLIvUxvDmI",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "jRTzbVFtvj5L",
+          "title": "Phone Number",
+          "type": "phone_number",
+          "ref": "sdk_phonenumber",
+          "properties": {}
+        },
+        {
+          "id": "o6NXRuJwIouc",
+          "title": "Short Text",
+          "type": "short_text",
+          "ref": "sdk_shorttext",
+          "properties": {}
+        },
+        {
+          "id": "hlTuVzJcMt4v",
+          "title": "Long Text",
+          "type": "long_text",
+          "ref": "sdk_longtext",
+          "properties": {}
+        },
+        {
+          "id": "QbiP5ItH7mAP",
+          "title": "Picture Choice (single selection without other option)",
+          "type": "picture_choice",
+          "ref": "sdk_picturechoice_single",
+          "properties": {},
+          "choices": [
+            {
+              "id": "lhP9Q2POJ4at",
+              "label": "Choice1"
+            },
+            {
+              "id": "YiDfNNxBtrig",
+              "label": "Choice2"
+            },
+            {
+              "id": "c5zkefIvL3DH",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "aOCz7ABFtThF",
+          "title": "Picture Choice (single selection with other option)",
+          "type": "picture_choice",
+          "allow_other_choice": true,
+          "ref": "sdk_picturechoice_single_other",
+          "properties": {},
+          "choices": [
+            {
+              "id": "fIolPJLWdNpZ",
+              "label": "Choice1"
+            },
+            {
+              "id": "FwcZRdRVj40k",
+              "label": "Choice2"
+            },
+            {
+              "id": "iABSwSvGfux9",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "fThk3NrYI3DJ",
+          "title": "Picture Choice (Multi-selection without other option)",
+          "type": "picture_choice",
+          "allow_multiple_selections": true,
+          "ref": "sdk_picturechoice_multi",
+          "properties": {},
+          "choices": [
+            {
+              "id": "ZDExcxH9RdVw",
+              "label": "Choice1"
+            },
+            {
+              "id": "vO3xkbbFvp0l",
+              "label": "Choice2"
+            },
+            {
+              "id": "t30L9bxl4sVn",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "IAFWMalgu2Rz",
+          "title": "Picture Choice (Multi-selection with other option)",
+          "type": "picture_choice",
+          "allow_multiple_selections": true,
+          "allow_other_choice": true,
+          "ref": "sdk_picturechoice_multi_other",
+          "properties": {},
+          "choices": [
+            {
+              "id": "QKeHIPZ40964",
+              "label": "Choice1"
+            },
+            {
+              "id": "O44YhBEr467O",
+              "label": "Choice2"
+            },
+            {
+              "id": "QOUmimORgG18",
+              "label": "Choice3"
+            }
+          ]
+        },
+        {
+          "id": "uK18t6Dt3tw7",
+          "title": "Yes No",
+          "type": "yes_no",
+          "ref": "sdk_yesno",
+          "properties": {}
+        },
+        {
+          "id": "kAkebx9n6XIR",
+          "title": "Email",
+          "type": "email",
+          "ref": "sdk_email",
+          "properties": {}
+        },
+        {
+          "id": "ViKTN1UFwEwl",
+          "title": "Opinion Scale",
+          "type": "opinion_scale",
+          "ref": "sdk_opinionscale",
+          "properties": {}
+        },
+        {
+          "id": "FHxfo7IZDdrB",
+          "title": "Rating",
+          "type": "rating",
+          "ref": "sdk_rating",
+          "properties": {}
+        },
+        {
+          "id": "q62rc244E7hb",
+          "title": "Date",
+          "type": "date",
+          "ref": "sdk_date",
+          "properties": {}
+        },
+        {
+          "id": "Ip5QFtQ3ezSn",
+          "title": "Number",
+          "type": "number",
+          "ref": "sdk_number",
+          "properties": {}
+        },
+        {
+          "id": "SFYDO4A0sFRM",
+          "title": "Dropdown",
+          "type": "dropdown",
+          "ref": "sdk_dropdown",
+          "properties": {}
+        },
+        {
+          "id": "VCaJiDfFs74Z",
+          "title": "Legal",
+          "type": "legal",
+          "ref": "sdk_legal",
+          "properties": {}
+        },
+        {
+          "id": "Qrx0o0d14L09",
+          "title": "File Upload",
+          "type": "file_upload",
+          "ref": "sdk_fileupload",
+          "properties": {}
+        },
+        {
+          "id": "ka2570L2lnis",
+          "title": "Website",
+          "type": "website",
+          "ref": "sdk_website",
+          "properties": {}
+        },
+        {
+          "id": "bXf79h87jhSFD",
+          "title": "Payment",
+          "type": "payment",
+          "ref": "sdk_payment",
+          "properties": {}
+        }
+      ]
+    },
+    "answers": [
+      {
+        "type": "choice",
+        "choice": {
+          "label": "Choice1"
+        },
+        "field": {
+          "id": "b6p0eo5faGz7",
+          "type": "multiple_choice",
+          "ref": "sdk_multichoice_single"
+        }
+      },
+      {
+        "type": "choice",
+        "choice": {
+          "label": "Choice1"
+        },
+        "field": {
+          "id": "qIxWIZGIJAV4",
+          "type": "multiple_choice",
+          "ref": "sdk_multichoice_single_other"
+        }
+      },
+      {
+        "type": "choices",
+        "choices": {
+          "labels": [
+            "Choice1",
+            "Choice2"
+          ]
+        },
+        "field": {
+          "id": "hnfaIIwfYdsV",
+          "type": "multiple_choice",
+          "ref": "sdk_multichoice_multi"
+        }
+      },
+      {
+        "type": "choices",
+        "choices": {
+          "labels": [
+            "Choice1",
+            "Choice2"
+          ]
+        },
+        "field": {
+          "id": "oy0lMI97wKQG",
+          "type": "multiple_choice",
+          "ref": "sdk_multichoice_multi_other"
+        }
+      },
+      {
+        "type": "phone_number",
+        "phone_number": "+12345678900",
+        "field": {
+          "id": "jRTzbVFtvj5L",
+          "type": "phone_number",
+          "ref": "sdk_phonenumber"
+        }
+      },
+      {
+        "type": "text",
+        "text": "TEXT",
+        "field": {
+          "id": "o6NXRuJwIouc",
+          "type": "short_text",
+          "ref": "sdk_shorttext"
+        }
+      },
+      {
+        "type": "text",
+        "text": "TEXT",
+        "field": {
+          "id": "hlTuVzJcMt4v",
+          "type": "long_text",
+          "ref": "sdk_longtext"
+        }
+      },
+      {
+        "type": "choice",
+        "choice": {
+          "label": "Choice1"
+        },
+        "field": {
+          "id": "QbiP5ItH7mAP",
+          "type": "picture_choice",
+          "ref": "sdk_picturechoice_single"
+        }
+      },
+      {
+        "type": "choice",
+        "choice": {
+          "label": "Choice1"
+        },
+        "field": {
+          "id": "aOCz7ABFtThF",
+          "type": "picture_choice",
+          "ref": "sdk_picturechoice_single_other"
+        }
+      },
+      {
+        "type": "choices",
+        "choices": {
+          "labels": [
+            "Choice1",
+            "Choice2"
+          ]
+        },
+        "field": {
+          "id": "fThk3NrYI3DJ",
+          "type": "picture_choice",
+          "ref": "sdk_picturechoice_multi"
+        }
+      },
+      {
+        "type": "choices",
+        "choices": {
+          "labels": [
+            "Choice1",
+            "Choice2"
+          ]
+        },
+        "field": {
+          "id": "IAFWMalgu2Rz",
+          "type": "picture_choice",
+          "ref": "sdk_picturechoice_multi_other"
+        }
+      },
+      {
+        "type": "boolean",
+        "boolean": true,
+        "field": {
+          "id": "uK18t6Dt3tw7",
+          "type": "yes_no",
+          "ref": "sdk_yesno"
+        }
+      },
+      {
+        "type": "email",
+        "email": "johndoe@example.com",
+        "field": {
+          "id": "kAkebx9n6XIR",
+          "type": "email",
+          "ref": "sdk_email"
+        }
+      },
+      {
+        "type": "number",
+        "number": 5,
+        "field": {
+          "id": "ViKTN1UFwEwl",
+          "type": "opinion_scale",
+          "ref": "sdk_opinionscale"
+        }
+      },
+      {
+        "type": "number",
+        "number": 2,
+        "field": {
+          "id": "FHxfo7IZDdrB",
+          "type": "rating",
+          "ref": "sdk_rating"
+        }
+      },
+      {
+        "type": "date",
+        "date": "2000-01-01",
+        "field": {
+          "id": "q62rc244E7hb",
+          "type": "date",
+          "ref": "sdk_date"
+        }
+      },
+      {
+        "type": "number",
+        "number": 5,
+        "field": {
+          "id": "Ip5QFtQ3ezSn",
+          "type": "number",
+          "ref": "sdk_number"
+        }
+      },
+      {
+        "type": "choice",
+        "choice": {
+          "label": "Choice 1"
+        },
+        "field": {
+          "id": "SFYDO4A0sFRM",
+          "type": "dropdown",
+          "ref": "sdk_dropdown"
+        }
+      },
+      {
+        "type": "boolean",
+        "boolean": true,
+        "field": {
+          "id": "VCaJiDfFs74Z",
+          "type": "legal",
+          "ref": "sdk_legal"
+        }
+      },
+      {
+        "type": "file_url",
+        "file_url": "https://api.typeform.com/responses/files/eddde18397d2858d055b30eeac59f478406386534120173e799ec512dea155fa/typeform_test",
+        "field": {
+          "id": "Qrx0o0d14L09",
+          "type": "file_upload",
+          "ref": "sdk_fileupload"
+        }
+      },
+      {
+        "type": "url",
+        "url": "http://www.example.com",
+        "field": {
+          "id": "ka2570L2lnis",
+          "type": "website",
+          "ref": "sdk_website"
+        }
+      },
+      {
+        "type": "payment",
+        "payment": {
+          "amount": "1",
+          "last4": "1234",
+          "name": "John Doe",
+          "success": true
+        },
+        "field": {
+          "id": "bXf79h87jhSFD",
+          "type": "payment",
+          "ref": "sdk_payment"
+        }
+      }
+    ]
+  }
+}

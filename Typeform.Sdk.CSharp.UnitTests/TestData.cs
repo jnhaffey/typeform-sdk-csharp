@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Bogus;
 using Newtonsoft.Json;
 using Typeform.Sdk.CSharp.Enums;
@@ -63,12 +65,751 @@ namespace Typeform.Sdk.CSharp.UnitTests
 
         public static class Webhook
         {
-            public static readonly string ResponseData = "{\"event_id\":\"LtWXD3crgy\",\"event_type\":\"form_response\"," +
-                                      "\"form_response\":{\"form_id\":\"lT4Z3j\",\"token\":\"a3a12ec67a1365927098a606107fac15\",\"submitted_at\":\"2018-01-18T18:17:02Z\",\"landed_at\":\"2018-01-18T18:07:02Z\",\"hidden\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
-                                      "\"calculated\":{\"score\":9}," +
-                                      "\"definition\":{\"id\":\"lT4Z3j\",\"title\":\"Webhooks example\"," +
-                                      "\"fields\":[{\"id\":\"DlXFaesGBpoF\",\"title\":\"Thanks, {{answer_60906475}}! What's it like where you live? Tell us in a few sentences.\",\"type\":\"long_text\",\"ref\":\"readable_ref_long_text\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"SMEUb7VJz92Q\",\"title\":\"If you're OK with our city management following up if they have further questions, please give us your email address.\",\"type\":\"email\",\"ref\":\"readable_ref_email\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"Nie87vP4ORlG\",\"title\":\"Please enter your mobile number so we can follow up.\",\"type\":\"phone_number\",\"ref\":\"readable_ref_phone\",\"properties\":{}},{\"id\":\"JwWggjAKtOkA\",\"title\":\"What is your first name?\",\"type\":\"short_text\",\"ref\":\"readable_ref_short_text\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"KoJxDM3c6x8h\",\"title\":\"When did you move to the place where you live?\",\"type\":\"date\",\"ref\":\"readable_ref_date\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"PNe8ZKBK8C2Q\",\"title\":\"Which pictures do you like? You can choose as many as you like.\",\"type\":\"picture_choice\",\"ref\":\"readable_ref_picture_choice\",\"allow_multiple_selections\":true,\"allow_other_choice\":false},{\"id\":\"Q7M2XAwY04dW\",\"title\":\"On a scale of 1 to 5, what rating would you give the weather in Sydney? 1 is poor weather, 5 is excellent weather\",\"type\":\"number\",\"ref\":\"readable_ref_number1\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"gFFf3xAkJKsr\",\"title\":\"By submitting this form, you understand and accept that we will share your answers with city management. Your answers will be anonymous will not be shared.\",\"type\":\"legal\",\"ref\":\"readable_ref_legal\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"k6TP9oLGgHjl\",\"title\":\"Which of these cities is your favorite?\",\"type\":\"multiple_choice\",\"ref\":\"readable_ref_multiple_choice\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"RUqkXSeXBXSd\",\"title\":\"Do you have a favorite city we haven't listed?\",\"type\":\"yes_no\",\"ref\":\"readable_ref_yes_no\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"NRsxU591jIW9\",\"title\":\"How important is the weather to your opinion about a city? 1 is not important, 5 is very important.\",\"type\":\"opinion_scale\",\"ref\":\"readable_ref_opinion_scale\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"WOTdC00F8A3h\",\"title\":\"How would you rate the weather where you currently live? 1 is poor weather, 5 is excellent weather.\",\"type\":\"rating\",\"ref\":\"readable_ref_rating\",\"allow_multiple_selections\":false,\"allow_other_choice\":false},{\"id\":\"pn48RmPazVdM\",\"title\":\"On a scale of 1 to 5, what rating would you give the general quality of life in Sydney? 1 is poor, 5 is excellent\",\"type\":\"number\",\"ref\":\"readable_ref_number2\",\"allow_multiple_selections\":false,\"allow_other_choice\":false}]}," +
-                                      "\"answers\":[{\"type\":\"text\",\"text\":\"It's cold right now! I live in an older medium-sized city with a university. Geographically, the area is hilly.\",\"field\":{\"id\":\"DlXFaesGBpoF\",\"type\":\"long_text\"}},{\"type\":\"email\",\"email\":\"laura@example.com\",\"field\":{\"id\":\"SMEUb7VJz92Q\",\"type\":\"email\"}},{\"type\":\"phone_number\",\"phone_number\":\"+34123456789\",\"field\":{\"id\":\"Nie87vP4ORlG\",\"type\":\"phone_number\"}},{\"type\":\"text\",\"text\":\"Laura\",\"field\":{\"id\":\"JwWggjAKtOkA\",\"type\":\"short_text\"}},{\"type\":\"date\",\"date\":\"2005-10-15\",\"field\":{\"id\":\"KoJxDM3c6x8h\",\"type\":\"date\"}},{\"type\":\"choices\",\"choices\":{\"labels\":[\"London\",\"Sydney\"]},\"field\":{\"id\":\"PNe8ZKBK8C2Q\",\"type\":\"picture_choice\"}},{\"type\":\"number\",\"number\":5,\"field\":{\"id\":\"Q7M2XAwY04dW\",\"type\":\"number\"}},{\"type\":\"boolean\",\"boolean\":true,\"field\":{\"id\":\"gFFf3xAkJKsr\",\"type\":\"legal\"}},{\"type\":\"choice\",\"choice\":{\"label\":\"London\"},\"field\":{\"id\":\"k6TP9oLGgHjl\",\"type\":\"multiple_choice\"}},{\"type\":\"boolean\",\"boolean\":true,\"field\":{\"id\":\"RUqkXSeXBXSd\",\"type\":\"yes_no\"}},{\"type\":\"number\",\"number\":2,\"field\":{\"id\":\"NRsxU591jIW9\",\"type\":\"opinion_scale\"}},{\"type\":\"number\",\"number\":3,\"field\":{\"id\":\"WOTdC00F8A3h\",\"type\":\"rating\"}},{\"type\":\"number\",\"number\":4,\"field\":{\"id\":\"pn48RmPazVdM\",\"type\":\"number\"}}]}}";
+            public static string JsonResponse1 = File.ReadAllText("WebhookResponse1.json");
+            public static string JsonResponse2 = File.ReadAllText("WebhookResponse2.json");
+
+            public static class ResponseRoot
+            {
+                public const string EventId = "01E58BT3PVFC3D5CN4W8D433ZE";
+                public const string EventType = "form_response";
+
+                public static class FormResponse
+                {
+                    public const string FormId = "gXoeR3";
+                    public const string Token = "7l8hjyfrjvt31l0if7l8ub70enlq4vya";
+                    public static DateTime LandedAt = DateTime.Parse("2020-04-06T18:23:15Z");
+                    public static DateTime SubmittedAt = DateTime.Parse("2020-04-06T18:24:59Z");
+
+                    public static class Calculated
+                    {
+                        public static int Score = 9;
+                    }
+
+                    public static class Hidden
+                    {
+                        public const string HiddenFieldKey1 = "hiddenfield1";
+                        public const string HiddenFieldValue1 = "hidden_value1";
+                        public const string HiddenFieldKey2 = "hiddenfield2";
+                        public const string HiddenFieldValue2 = "hidden_value2";
+                    }
+
+                    public static class Definition
+                    {
+                        public const string Id = "gXoeR3";
+                        public const string Title = "SDK Use";
+
+                        public static class Fields
+                        {
+                            public static class MultipleChoice_Single_Without_Other
+                            {
+                                public const string Id = "b6p0eo5faGz7";
+                                public const string Title = "MultiChoice (single selection without other option)";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const string Ref = "sdk_multichoice_single";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "LJ0x3iaRMUFi";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "IrDCB0aqjmiV";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "kfPG92Xg2UKm";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class MultipleChoice_Single_With_Other
+                            {
+                                public const string Id = "qIxWIZGIJAV4";
+                                public const string Title = "MultiChoice (single selection with other option)";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const bool AllowOtherChoice = true;
+                                public const string Ref = "sdk_multichoice_single_other";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "Zxsk9Y85dqDH";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "eQCGsHyXlTXG";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "zKg16wqzWbag";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class MultipleChoice_Multiple_Without_Other
+                            {
+                                public const string Id = "hnfaIIwfYdsV";
+                                public const string Title = "MultiChoice (mulit selection without other option)";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const bool AllowMultipleSelections = true;
+                                public const string Ref = "sdk_multichoice_multi";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "q4Mte3CtC4Ac";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "VQMdBeDfGtJ6";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "OzQ3RZzfl8pt";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class MultipleChoice_Multiple_With_Other
+                            {
+                                public const string Id = "oy0lMI97wKQG";
+                                public const string Title = "MultiChoice (multi selection with other option)";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const bool AllowMultipleSelections = true;
+                                public const bool AllowOtherChoice = true;
+                                public const string Ref = "sdk_multichoice_multi_other";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "gR4cMzlz8jb8";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "OpCM2MMr7RRw";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "H7CLIvUxvDmI";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class PhoneNumber
+                            {
+                                public const string Id = "jRTzbVFtvj5L";
+                                public const string Title = "Phone Number";
+                                public const FieldType Type = FieldType.PhoneNumber;
+                                public const string Ref = "sdk_phonenumber";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class ShortText
+                            {
+                                public const string Id = "o6NXRuJwIouc";
+                                public const string Title = "Short Text";
+                                public const FieldType Type = FieldType.ShortText;
+                                public const string Ref = "sdk_shorttext";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class LongText
+                            {
+                                public const string Id = "hlTuVzJcMt4v";
+                                public const string Title = "Long Text";
+                                public const FieldType Type = FieldType.LongText;
+                                public const string Ref = "sdk_longtext";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class PictureChoice_Single_Without_Other
+                            {
+                                public const string Id = "QbiP5ItH7mAP";
+                                public const string Title = "Picture Choice (single selection without other option)";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const string Ref = "sdk_picturechoice_single";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "lhP9Q2POJ4at";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "YiDfNNxBtrig";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "c5zkefIvL3DH";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class PictureChoice_Single_With_Other
+                            {
+                                public const string Id = "aOCz7ABFtThF";
+                                public const string Title = "Picture Choice (single selection with other option)";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const bool AllowOtherChoice = true;
+                                public const string Ref = "sdk_picturechoice_single_other";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "fIolPJLWdNpZ";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "FwcZRdRVj40k";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "iABSwSvGfux9";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class PictureChoice_Multiple_Without_Other
+                            {
+                                public const string Id = "fThk3NrYI3DJ";
+                                public const string Title = "PictureChoice (mulit selection without other option)";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const bool AllowMultipleSelections = true;
+                                public const string Ref = "sdk_picturechoice_multi";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "ZDExcxH9RdVw";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "vO3xkbbFvp0l";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "t30L9bxl4sVn";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class PictureChoice_Multiple_With_Other
+                            {
+                                public const string Id = "IAFWMalgu2Rz";
+                                public const string Title = "Picture Choice (multi selection with other option)";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const bool AllowMultipleSelections = true;
+                                public const bool AllowOtherChoice = true;
+                                public const string Ref = "sdk_picturechoice_multi_other";
+
+                                public static class Properties
+                                {
+                                }
+
+                                public static class Choices
+                                {
+                                    public const string Id1 = "QKeHIPZ40964";
+                                    public const string Label1 = "Choice1";
+
+                                    public const string Id2 = "O44YhBEr467O";
+                                    public const string Label2 = "Choice2";
+
+                                    public const string Id3 = "QOUmimORgG18";
+                                    public const string Label3 = "Choice3";
+                                }
+                            }
+
+                            public static class YesNo
+                            {
+                                public const string Id = "uK18t6Dt3tw7";
+                                public const string Title = "Yes No";
+                                public const FieldType Type = FieldType.YesNo;
+                                public const string Ref = "sdk_yesno";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Email
+                            {
+                                public const string Id = "kAkebx9n6XIR";
+                                public const string Title = "Email";
+                                public const FieldType Type = FieldType.Email;
+                                public const string Ref = "sdk_email";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class OpinionScale
+                            {
+                                public const string Id = "ViKTN1UFwEwl";
+                                public const string Title = "Opinion Scale";
+                                public const FieldType Type = FieldType.OpinionScale;
+                                public const string Ref = "sdk_opinioncale";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Rating
+                            {
+                                public const string Id = "FHxfo7IZDdrB";
+                                public const string Title = "Rating";
+                                public const FieldType Type = FieldType.Rating;
+                                public const string Ref = "sdk_rating";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Date
+                            {
+                                public const string Id = "q62rc244E7hb";
+                                public const string Title = "Date";
+                                public const FieldType Type = FieldType.Date;
+                                public const string Ref = "sdk_date";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Number
+                            {
+                                public const string Id = "Ip5QFtQ3ezSn";
+                                public const string Title = "Number";
+                                public const FieldType Type = FieldType.Number;
+                                public const string Ref = "sdk_number";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Dropdown
+                            {
+                                public const string Id = "SFYDO4A0sFRM";
+                                public const string Title = "Dropdown";
+                                public const FieldType Type = FieldType.Dropdown;
+                                public const string Ref = "sdk_dropdown";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Legal
+                            {
+                                public const string Id = "VCaJiDfFs74Z";
+                                public const string Title = "Legal";
+                                public const FieldType Type = FieldType.Legal;
+                                public const string Ref = "sdk_legal";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class FileUpload
+                            {
+                                public const string Id = "Qrx0o0d14L09";
+                                public const string Title = "File Upload";
+                                public const FieldType Type = FieldType.FileUpload;
+                                public const string Ref = "sdk_fileupload";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Website
+                            {
+                                public const string Id = "ka2570L2lnis";
+                                public const string Title = "Website";
+                                public const FieldType Type = FieldType.Website;
+                                public const string Ref = "sdk_website";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+
+                            public static class Payment
+                            {
+                                public const string Id = "bXf79h87jhSFD";
+                                public const string Title = "Payment";
+                                public const FieldType Type = FieldType.Payment;
+                                public const string Ref = "sdk_payment";
+
+                                public static class Properties
+                                {
+                                }
+                            }
+                        }
+                    }
+
+                    public static class Answers
+                    {
+                        public static class MultipleChoice_Single_Without_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choice;
+
+                            public static class Choice
+                            {
+                                public const string Label = "Choice1";
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "b6p0eo5faGz7";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const string Ref = "sdk_multichoice_single";
+                            }
+                        }
+
+                        public static class MultipleChoice_Single_With_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choice;
+
+                            public static class Choice
+                            {
+                                public const string Label = "Choice1";
+                                public const string Other = "TEXT";
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "qIxWIZGIJAV4";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const string Ref = "sdk_multichoice_single_other";
+                            }
+                        }
+
+                        public static class MultipleChoice_Multiple_Without_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choices;
+
+                            public static class Choices
+                            {
+                                public static List<string> Labels = new List<string> {"Choice1", "Choice2"};
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "hnfaIIwfYdsV";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const string Ref = "sdk_multichoice_multi";
+                            }
+                        }
+
+                        public static class MultipleChoice_Multiple_With_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choices;
+
+                            public static class Choices
+                            {
+                                public const string Other = "TEXT";
+                                public static List<string> Labels = new List<string> {"Choice1", "Choice2"};
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "oy0lMI97wKQG";
+                                public const FieldType Type = FieldType.MultipleChoice;
+                                public const string Ref = "sdk_multichoice_multi_other";
+                            }
+                        }
+
+                        public static class PhoneNumber
+                        {
+                            public const FormAnswerType Type = FormAnswerType.PhoneNumber;
+                            public const string Phone_Number = "+12345678900";
+
+                            public static class Field
+                            {
+                                public const string Id = "jRTzbVFtvj5L";
+                                public const FieldType Type = FieldType.PhoneNumber;
+                                public const string Ref = "sdk_phonenumber";
+                            }
+                        }
+
+                        public static class ShortText
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Text;
+                            public const string Text = "TEXT";
+
+                            public static class Field
+                            {
+                                public const string Id = "o6NXRuJwIouc";
+                                public const FieldType Type = FieldType.ShortText;
+                                public const string Ref = "sdk_shorttext";
+                            }
+                        }
+
+                        public static class LongText
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Text;
+                            public const string Text = "TEXT";
+
+                            public static class Field
+                            {
+                                public const string Id = "hlTuVzJcMt4v";
+                                public const FieldType Type = FieldType.LongText;
+                                public const string Ref = "sdk_longtext";
+                            }
+                        }
+
+                        public static class PictureChoice_Single_Without_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choice;
+
+                            public static class Choice
+                            {
+                                public const string Label = "Choice1";
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "QbiP5ItH7mAP";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const string Ref = "sdk_picturechoice_single";
+                            }
+                        }
+
+                        public static class PictureChoice_Single_With_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choice;
+
+                            public static class Choice
+                            {
+                                public const string Label = "Choice1";
+                                public const string Other = "TEXT";
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "aOCz7ABFtThF";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const string Ref = "sdk_picturechoice_single_other";
+                            }
+                        }
+
+                        public static class PictureChoice_Multiple_Without_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choices;
+
+                            public static class Choices
+                            {
+                                public static List<string> Labels = new List<string> {"Choice1", "Choice2"};
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "fThk3NrYI3DJ";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const string Ref = "sdk_picturechoice_multi";
+                            }
+                        }
+
+                        public static class PictureChoice_Multiple_With_Other
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choices;
+
+                            public static class Choices
+                            {
+                                public const string Other = "TEXT";
+                                public static List<string> Labels = new List<string> {"Choice1", "Choice2"};
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "IAFWMalgu2Rz";
+                                public const FieldType Type = FieldType.PictureChoice;
+                                public const string Ref = "sdk_picturechoice_multi_other";
+                            }
+                        }
+
+                        public static class YesNo
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Boolean;
+                            public const bool Boolean = true;
+
+                            public static class Field
+                            {
+                                public const string Id = "uK18t6Dt3tw7";
+                                public const FieldType Type = FieldType.YesNo;
+                                public const string Ref = "sdk_yesno";
+                            }
+                        }
+
+                        public static class Email
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Email;
+                            public const string EmailValue = "johndoe@example.com";
+
+                            public static class Field
+                            {
+                                public const string Id = "kAkebx9n6XIR";
+                                public const FieldType Type = FieldType.Email;
+                                public const string Ref = "sdk_email";
+                            }
+                        }
+
+                        public static class OpinionScale
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Number;
+                            public const int Number = 5;
+
+                            public static class Field
+                            {
+                                public const string Id = "ViKTN1UFwEwl";
+                                public const FieldType Type = FieldType.OpinionScale;
+                                public const string Ref = "sdk_opinioncale";
+                            }
+                        }
+
+                        public static class Rating
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Number;
+                            public const int Number = 2;
+
+                            public static class Field
+                            {
+                                public const string Id = "FHxfo7IZDdrB";
+                                public const string Title = "Rating";
+                                public const FieldType Type = FieldType.Rating;
+                                public const string Ref = "sdk_rating";
+                            }
+                        }
+
+                        public static class Date
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Date;
+                            public static DateTime DateValue = DateTime.Parse("2000-01-01");
+
+                            public static class Field
+                            {
+                                public const string Id = "q62rc244E7hb";
+                                public const FieldType Type = FieldType.Date;
+                                public const string Ref = "sdk_date";
+                            }
+                        }
+
+                        public static class Number
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Number;
+                            public const int NumberValue = 5;
+
+                            public static class Field
+                            {
+                                public const string Id = "Ip5QFtQ3ezSn";
+                                public const FieldType Type = FieldType.Number;
+                                public const string Ref = "sdk_number";
+                            }
+                        }
+
+                        public static class Dropdown
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Choice;
+
+                            public static class Choice
+                            {
+                                public const string Label = "Choice 1";
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "SFYDO4A0sFRM";
+                                public const FieldType Type = FieldType.Dropdown;
+                                public const string Ref = "sdk_dropdown";
+                            }
+                        }
+
+                        public static class Legal
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Boolean;
+                            public const bool Boolean = true;
+
+                            public static class Field
+                            {
+                                public const string Id = "VCaJiDfFs74Z";
+                                public const FieldType Type = FieldType.Legal;
+                                public const string Ref = "sdk_legal";
+                            }
+                        }
+
+                        public static class FileUpload
+                        {
+                            public const FormAnswerType Type = FormAnswerType.FileUrl;
+
+                            public const string FileUrl =
+                                "https://api.typeform.com/responses/files/eddde18397d2858d055b30eeac59f478406386534120173e799ec512dea155fa/typeform_test";
+
+                            public static class Field
+                            {
+                                public const string Id = "Qrx0o0d14L09";
+                                public const FieldType Type = FieldType.FileUpload;
+                                public const string Ref = "sdk_fileupload";
+                            }
+                        }
+
+                        public static class Website
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Url;
+                            public const string Url = "http://www.example.com";
+
+                            public static class Field
+                            {
+                                public const string Id = "ka2570L2lnis";
+                                public const FieldType Type = FieldType.Website;
+                                public const string Ref = "sdk_website";
+                            }
+                        }
+
+                        public static class Payment
+                        {
+                            public const FormAnswerType Type = FormAnswerType.Payment;
+
+                            public static class PaymentValue
+                            {
+                                public const string Amount = "1";
+                                public const string Last4 = "1234";
+                                public const string Name = "John Doe";
+                                public const bool Success = true;
+                            }
+
+                            public static class Field
+                            {
+                                public const string Id = "bXf79h87jhSFD";
+                                public const FieldType Type = FieldType.Payment;
+                                public const string Ref = "sdk_payment";
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

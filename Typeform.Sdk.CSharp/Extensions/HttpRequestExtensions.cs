@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
+using Flurl.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace Typeform.Sdk.CSharp.Extensions
 {
@@ -16,49 +17,52 @@ namespace Typeform.Sdk.CSharp.Extensions
         private const int DefaultBufferSize = 1024;
         private static readonly Encoding encoding = new UTF8Encoding();
 
-        public static async Task<Result> IsWebhookResponseValid(this HttpRequest request, string key)
+        public static async Task<Result<string>> ValidateAndRetrievePayload(this HttpRequest request, string key)
         {
             if (request.Headers.Keys.Contains(SignatureHeader))
             {
                 var headerValue = request.Headers[SignatureHeader].FirstOrDefault();
                 if (string.IsNullOrWhiteSpace(headerValue))
-                    return Result.Failure($"'{SignatureHeader}' has not value.");
+                    return Result.Failure<string>($"'{SignatureHeader}' has not value.");
 
-                var json = await request.ReadAsStringAsync();
-                var payload = encoding.GetBytes(json);
-                using (var hmac256 = new HMACSHA256(encoding.GetBytes(key)))
+                using (var reader = new StreamReader(request.Body, encoding))
                 {
-                    var hashPayload = hmac256.ComputeHash(payload);
-                    var base64String = Convert.ToBase64String(hashPayload);
-                    var hashResult = $"sha256={base64String}";
-                    if (hashResult.Equals(headerValue))
-                        return Result.Success();
-                    return Result.Failure(
-                        $"'{SignatureHeader}' does not match. Header: `{headerValue}` | Hash: `{hashResult}`");
+                    var json = await reader.ReadToEndAsync();
+                    var payload = encoding.GetBytes(json);
+                    using (var hmac256 = new HMACSHA256(encoding.GetBytes(key)))
+                    {
+                        var hashPayload = hmac256.ComputeHash(payload);
+                        var base64String = Convert.ToBase64String(hashPayload);
+                        var hashResult = $"sha256={base64String}";
+                        if (hashResult.Equals(headerValue))
+                            return Result.Success(json);
+                        return Result.Failure<string>(
+                            $"'{SignatureHeader}' does not match. Header: `{headerValue}` | Hash: `{hashResult}`");
+                    }
                 }
             }
 
-            return Result.Failure($"'{SignatureHeader}' Header not found.");
+            return Result.Failure<string>($"'{SignatureHeader}' Header not found.");
         }
 
-        private static async Task<string> ReadAsStringAsync(this HttpRequest request)
+        public static async Task<Result<string>> ValidateAndRetrievePayload(this HttpRequestMessage request, string key)
         {
-            request.EnableRewind();
+            var headerValue = request.GetHeaderValue(SignatureHeader);
+            if (string.IsNullOrWhiteSpace(headerValue))
+                return Result.Failure<string>($"'{SignatureHeader}' Header not found or empty.");
 
-            string result = null;
-            using (var reader = new StreamReader(
-                request.Body,
-                Encoding.UTF8,
-                true,
-                DefaultBufferSize,
-                true))
+            var json = await request.Content.ReadAsStringAsync();
+            var payload = encoding.GetBytes(json);
+            using (var hmac256 = new HMACSHA256(encoding.GetBytes(key)))
             {
-                result = await reader.ReadToEndAsync();
+                var hashPayload = hmac256.ComputeHash(payload);
+                var base64String = Convert.ToBase64String(hashPayload);
+                var hashResult = $"sha256={base64String}";
+                if (hashResult.Equals(headerValue))
+                    return Result.Success(json);
+                return Result.Failure<string>(
+                    $"'{SignatureHeader}' does not match. Header: `{headerValue}` | Hash: `{hashResult}`");
             }
-
-            request.Body.Seek(0, SeekOrigin.Begin);
-
-            return result;
         }
     }
 }
